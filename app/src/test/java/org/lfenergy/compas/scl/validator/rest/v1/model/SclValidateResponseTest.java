@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.rest.v1.model;
 
+import org.lfenergy.compas.scl.validator.model.AbstractPojoTester;
+
 class SclValidateResponseTest extends AbstractPojoTester {
     @Override
     protected Class<?> getClassToBeTested() {

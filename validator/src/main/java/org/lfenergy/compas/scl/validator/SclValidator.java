@@ -4,7 +4,10 @@
 package org.lfenergy.compas.scl.validator;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
+
+import java.util.List;
 
 public interface SclValidator {
-    String validate(SclFileType type, String sclData);
+    List<ValidationError> validate(SclFileType type, String sclData);
 }

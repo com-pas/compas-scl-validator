@@ -4,11 +4,13 @@
 package org.lfenergy.compas.scl.validator.rest.v1.model;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 
@@ -17,14 +19,14 @@ import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDA
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SclValidateResponse {
     @Schema(description = "")
-    @XmlElement(name = "SclData", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
-    protected String sclData;
+    @XmlElement(name = "ValidationErrors", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    protected List<ValidationError> validationErrorList;
 
-    public String getSclData() {
-        return sclData;
+    public List<ValidationError> getValidationErrorList() {
+        return validationErrorList;
     }
 
-    public void setSclData(String sclData) {
-        this.sclData = sclData;
+    public void setValidationErrorList(List<ValidationError> validationErrorList) {
+        this.validationErrorList = validationErrorList;
     }
 }

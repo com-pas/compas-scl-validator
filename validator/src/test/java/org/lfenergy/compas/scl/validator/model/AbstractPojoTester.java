@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1.model;
+package org.lfenergy.compas.scl.validator.model;
 
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.ValidatorBuilder;
@@ -11,7 +11,7 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.Test;
 
-abstract class AbstractPojoTester {
+public abstract class AbstractPojoTester {
     @Test
     void validateSettersAndGetters() {
         var personPojo = PojoClassFactory.getPojoClass(getClassToBeTested());

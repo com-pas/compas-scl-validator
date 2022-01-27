@@ -5,13 +5,16 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Collections;
+import java.util.List;
 
 @ApplicationScoped
 public class SclRiseclipseValidator implements SclValidator {
     @Override
-    public String validate(SclFileType type, String sclData) {
-        return sclData;
+    public List<ValidationError> validate(SclFileType type, String sclData) {
+        return Collections.emptyList();
     }
 }

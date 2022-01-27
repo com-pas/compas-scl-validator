@@ -10,12 +10,14 @@ import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.config.XmlPathConfig.xmlPathConfig;
@@ -39,7 +41,8 @@ class SclValidatorResourceTest {
         var request = new SclValidateRequest();
         request.setSclData(readFile());
 
-        when(sclValidatorService.validate(sclFileTye, request.getSclData())).thenReturn(request.getSclData());
+        when(sclValidatorService.validate(sclFileTye, request.getSclData()))
+                .thenReturn(List.of(new ValidationError()));
 
         var response = given()
                 .pathParam(TYPE_PATH_PARAM, sclFileTye)
@@ -54,9 +57,9 @@ class SclValidatorResourceTest {
 
         var xmlPath = response.xmlPath()
                 .using(xmlPathConfig().declaredNamespace("saa", SCL_VALIDATOR_SERVICE_V1_NS_URI));
-        var scl = xmlPath.getString("saa:SclValidateResponse.SclData");
-        assertNotNull(scl);
-        assertEquals(request.getSclData(), scl);
+        var errors = xmlPath.getList("saa:SclValidateResponse.ValidationErrors");
+        assertNotNull(errors);
+        assertEquals(1, errors.size());
         verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());
     }
 

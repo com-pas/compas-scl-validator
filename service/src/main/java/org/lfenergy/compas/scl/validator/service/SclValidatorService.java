@@ -5,9 +5,11 @@ package org.lfenergy.compas.scl.validator.service;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.List;
 
 @ApplicationScoped
 public class SclValidatorService {
@@ -18,7 +20,7 @@ public class SclValidatorService {
         this.validator = validator;
     }
 
-    public String validate(SclFileType type, String sclData) {
+    public List<ValidationError> validate(SclFileType type, String sclData) {
         return validator.validate(type, sclData);
     }
 }

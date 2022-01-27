@@ -34,7 +34,7 @@ public class SclValidatorResource {
     public SclValidateResponse validateSCL(@PathParam(TYPE_PATH_PARAM) SclFileType type,
                                            @Valid SclValidateRequest request) {
         var response = new SclValidateResponse();
-        response.setSclData(sclValidatorService.validate(type, request.getSclData()));
+        response.setValidationErrorList(sclValidatorService.validate(type, request.getSclData()));
         return response;
     }
 }
