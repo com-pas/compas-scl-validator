@@ -23,6 +23,11 @@ SPDX-License-Identifier: Apache-2.0
             <artifactId>validator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+            <artifactId>fr.centralesupelec.edf.riseclipse.iec61850.scl</artifactId>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -43,6 +48,35 @@ SPDX-License-Identifier: Apache-2.0
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/ocl</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        ../riseclipse-ocl-constraints-scl2003/fr.centralesupelec.edf.riseclipse.iec61850.scl.ocl
+                                    </directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>.project</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.jboss.jandex</groupId>
                 <artifactId>jandex-maven-plugin</artifactId>

@@ -14,3 +14,7 @@
 	path = riseclipse/riseclipse-metamodel-scl2003
 	url = git@github.com:riseclipse/riseclipse-metamodel-scl2003.git
 	ignore = untracked
+[submodule "riseclipse/riseclipse-ocl-constraints-scl2003"]
+	path = riseclipse/riseclipse-ocl-constraints-scl2003
+	url = git@github.com:riseclipse/riseclipse-ocl-constraints-scl2003.git
+	ignore = untracked
