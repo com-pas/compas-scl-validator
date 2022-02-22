@@ -14,6 +14,19 @@ SPDX-License-Identifier: Apache-2.0
 
 Service to validate SCL Files.
 
+## Development
+
+For the RiseClipse implementation of the validator parts of the RiseClipse project are being used. Currently, these
+parts aren't distributed to any Maven Repository, so the Git Repositories need to be included. This is done using Git
+Submodules.
+
+To clone the project or update the project this means that the Git commands are sometimes a little different. To clone
+the project use the following command `git clone --recurse-submodules git@github.com:com-pas/compas-scl-validator.git`.
+This will also clone the submodules.  
+If the project is already cloned and a submodule is added use the following commands, first `git submodule init` and
+next `git submodule update`.
+
+More about Git Submodules can be found [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
 ## Common Environment variables
 
