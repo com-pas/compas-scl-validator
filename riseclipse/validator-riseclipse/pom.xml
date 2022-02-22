@@ -10,7 +10,7 @@ SPDX-License-Identifier: Apache-2.0
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.lfenergy.compas.scl.validator</groupId>
-        <artifactId>compas-scl-validator</artifactId>
+        <artifactId>riseclipse</artifactId>
         <version>local-SNAPSHOT</version>
     </parent>
 

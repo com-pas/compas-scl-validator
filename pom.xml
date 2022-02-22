@@ -33,7 +33,7 @@ SPDX-License-Identifier: Apache-2.0
 
     <modules>
         <module>validator</module>
-        <module>validator-riseclipse</module>
+        <module>riseclipse</module>
         <module>service</module>
         <module>app</module>
     </modules>

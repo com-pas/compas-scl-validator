@@ -1,0 +1,9 @@
+[submodule "riseclipse/riseclipse-developer"]
+	path = riseclipse/riseclipse-developer
+	url = git@github.com:riseclipse/riseclipse-developer.git
+[submodule "riseclipse/riseclipse-main"]
+	path = riseclipse/riseclipse-main
+	url = git@github.com:riseclipse/riseclipse-main.git
+[submodule "riseclipse/riseclipse-metamodel-scl2003"]
+	path = riseclipse/riseclipse-metamodel-scl2003
+	url = git@github.com:riseclipse/riseclipse-metamodel-scl2003.git
