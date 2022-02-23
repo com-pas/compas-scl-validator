@@ -17,7 +17,5 @@ public class OclFileCollectorTest {
 
         assertNotNull(result);
         assertEquals(226, result.size());
-
-        result.forEach(System.out::println);
     }
 }
