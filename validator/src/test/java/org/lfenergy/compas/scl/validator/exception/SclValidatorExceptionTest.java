@@ -15,4 +15,15 @@ class SclValidatorExceptionTest {
         Assertions.assertEquals(SclValidatorErrorCode.NO_SCL_ELEMENT_FOUND_ERROR_CODE, exception.getErrorCode());
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
+
+    @Test
+    void constructor_WhenCalledWithMessageAndExceptionm_ThenMessageAndExceptionCanBeRetrieved() {
+        var expectedMessage = "The message";
+        var expectedException = new RuntimeException();
+        var exception = new SclValidatorException(SclValidatorErrorCode.NO_SCL_ELEMENT_FOUND_ERROR_CODE, expectedMessage, expectedException);
+
+        Assertions.assertEquals(SclValidatorErrorCode.NO_SCL_ELEMENT_FOUND_ERROR_CODE, exception.getErrorCode());
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+        Assertions.assertEquals(expectedException, exception.getCause());
+    }
 }

@@ -9,4 +9,5 @@ public class SclValidatorErrorCode {
     }
 
     public static final String NO_SCL_ELEMENT_FOUND_ERROR_CODE = "SVS-0001";
+    public static final String LOADING_OCL_FILES_FAILED = "SVS-0002";
 }

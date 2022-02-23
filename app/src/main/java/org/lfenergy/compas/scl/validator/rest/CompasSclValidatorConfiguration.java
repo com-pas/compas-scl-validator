@@ -4,6 +4,7 @@
 package org.lfenergy.compas.scl.validator.rest;
 
 import org.lfenergy.compas.core.commons.ElementConverter;
+import org.lfenergy.compas.scl.validator.resource.OclFileCollector;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -16,5 +17,11 @@ public class CompasSclValidatorConfiguration {
     @ApplicationScoped
     public ElementConverter createElementConverter() {
         return new ElementConverter();
+    }
+
+    @Produces
+    @ApplicationScoped
+    public OclFileCollector createOclFileCollector() {
+        return new OclFileCollector();
     }
 }

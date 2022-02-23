@@ -3,9 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
+import org.lfenergy.compas.scl.validator.resource.OclFileCollector;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class SclRiseclipseValidatorTest {
-    private SclRiseclipseValidator sclValidator = new SclRiseclipseValidator();
+    private SclRiseclipseValidator sclValidator;
+
+    @BeforeEach
+    public void setup() {
+        var oclFileCollector = new OclFileCollector();
+        this.sclValidator = new SclRiseclipseValidator(oclFileCollector);
+    }
 
     @Test
     void validate_WhenCalled_ThenEmptyListReturned() {
