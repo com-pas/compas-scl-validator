@@ -3,10 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.resource;
 
+import org.eclipse.emf.common.util.URI;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.List;

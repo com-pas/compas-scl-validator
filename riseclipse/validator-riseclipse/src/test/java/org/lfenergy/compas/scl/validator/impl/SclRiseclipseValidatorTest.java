@@ -10,6 +10,8 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.resource.OclFileCollector;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,13 +26,20 @@ class SclRiseclipseValidatorTest {
     }
 
     @Test
-    void validate_WhenCalled_ThenEmptyListReturned() {
+    void validate_WhenCalled_ThenEmptyListReturned() throws IOException {
         var type = SclFileType.CID;
-        var sclData = "Some String";
+        var sclData = readSCL();
 
         var result = sclValidator.validate(type, sclData);
 
         assertNotNull(result);
         assertEquals(0, result.size());
+    }
+
+    private String readSCL() throws IOException {
+        var inputStream = getClass().getResourceAsStream("/scl/scl_test_file.scd");
+        assert inputStream != null;
+
+        return new String(inputStream.readAllBytes());
     }
 }

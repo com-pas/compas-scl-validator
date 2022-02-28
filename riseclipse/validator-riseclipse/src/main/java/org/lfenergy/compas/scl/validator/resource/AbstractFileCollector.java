@@ -3,9 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.resource;
 
+import org.eclipse.emf.common.util.URI;
+
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.Collections;
@@ -22,7 +23,8 @@ public abstract class AbstractFileCollector {
                     var oclDirectoryPath = fileSystem.getPath(directory);
                     return Files.walk(oclDirectoryPath)
                             .filter(filter::filter)
-                            .map(Path::toUri)
+                            .map(Path::toString)
+                            .map(URI::createFileURI)
                             .collect(Collectors.toList());
                 }
             } else {
@@ -31,7 +33,7 @@ public abstract class AbstractFileCollector {
                         .filter(filter::filter)
                         .map(Path::toFile)
                         .filter(File::isFile)
-                        .map(File::toURI)
+                        .map(file -> URI.createFileURI(file.getAbsolutePath()))
                         .collect(Collectors.toList());
             }
         }
