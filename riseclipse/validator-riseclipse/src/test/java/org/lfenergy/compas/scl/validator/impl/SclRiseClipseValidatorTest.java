@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
-import org.lfenergy.compas.scl.validator.resource.OclFileCollector;
+import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-class SclRiseclipseValidatorTest {
-    private SclRiseclipseValidator sclValidator;
+class SclRiseClipseValidatorTest {
+    private SclRiseClipseValidator sclValidator;
 
     @BeforeEach
     public void setup() {
-        var oclFileCollector = new OclFileCollector();
-        this.sclValidator = new SclRiseclipseValidator(oclFileCollector);
+        var oclFileCollector = new CompasOclFileCollector(null);
+        this.sclValidator = new SclRiseClipseValidator(oclFileCollector);
     }
 
     @Test
@@ -33,7 +33,7 @@ class SclRiseclipseValidatorTest {
         var result = sclValidator.validate(type, sclData);
 
         assertNotNull(result);
-        assertEquals(0, result.size());
+        assertEquals(15, result.size());
     }
 
     private String readSCL() throws IOException {

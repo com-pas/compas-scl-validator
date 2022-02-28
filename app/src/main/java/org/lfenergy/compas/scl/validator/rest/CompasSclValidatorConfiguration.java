@@ -4,7 +4,8 @@
 package org.lfenergy.compas.scl.validator.rest;
 
 import org.lfenergy.compas.core.commons.ElementConverter;
-import org.lfenergy.compas.scl.validator.resource.OclFileCollector;
+import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
+import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -21,7 +22,7 @@ public class CompasSclValidatorConfiguration {
 
     @Produces
     @ApplicationScoped
-    public OclFileCollector createOclFileCollector() {
-        return new OclFileCollector();
+    public OclFileCollector createOclFileCollector(ValidatorProperties properties) {
+        return new CompasOclFileCollector(properties.oclCustomDirectory());
     }
 }

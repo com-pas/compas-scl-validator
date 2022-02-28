@@ -22,36 +22,30 @@ Submodules.
 
 To clone the project or update the project this means that the Git commands are sometimes a little different. To clone
 the project use the following command `git clone --recurse-submodules git@github.com:com-pas/compas-scl-validator.git`.
-This will also clone the submodules.  
-If the project is already cloned and a submodule is added use the following commands, first `git submodule init` and
-next `git submodule update`.
-
-More about Git Submodules can be found [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+This will also clone the submodules.
 
 Tip: The URL to the submodules are configured in the file `.gitmodules`, but these are using the SSH URL. There is a way
-described in the URL above that the URL can be overwritten locally HTTPS URL of the GIT Repository.  
-`Since the URL in the .gitmodules file is what other people will first try to clone/fetch from, make sure to use a URL that they can access if possible. For example, if you use a different URL to push to than others would to pull from, use the one that others have access to. You can overwrite this value locally with git config submodule."riseclipse/riseclipse-developer".url HTTPS_URL for your own use. When applicable, a relative URL can be helpful.`
+described in the URL above that the URL can be overwritten locally with an HTTPS URL of the GIT Repository.
+
+Check the [Development](DEVELOPMENT.md) page for more detail information how to work with this repository, because of
+the mixture with RiseClipse.
 
 ## Common Environment variables
 
-Below environment variable(s) can be used to configure which claims and information are used to fill the UserInfo
-response.
+Below environment variable(s) can be used to configure the validator.
 
-| Environment variable             | Java Property                   | Description                                                 | Example          |
-| -------------------------------- | ------------------------------- | ----------------------------------------------------------- | ---------------- |
-| USERINFO_NAME_CLAIMNAME          | compas.userinfo.name.claimname  | The Name of the user logged in.                             | name             |
-| USERINFO_WHO_CLAIMNAME           | compas.userinfo.who.claimname   | The Name of the user used in the Who History.               | name             |
-| USERINFO_SESSION_WARNING         | compas.userinfo.session.warning | Number of minutes a Session Warning can be displayed.       | 20               |
-| USERINFO_SESSION_EXPIRES         | compas.userinfo.session.expires | Number of minutes a Session Expires to display in Frontend. | 30               |
+| Environment variable                  | Java Property                         | Description                                       | Example   |
+|---------------------------------------|---------------------------------------|---------------------------------------------------|-----------|
+| COMPAS_VALIDATOR_OCL_CUSTOM_DIRECTORY | compas.validator.ocl.custom.directory | Reference to a directory to load custom OCL Files | /data/ocl |
 
 ## Security
 
 To use most of the endpoints the users needs to be authenticated using JWT in the authorization header. There are 4
 environment variables that can be set in the container to configure the validation/processing of the JWT.
 
-| Environment variable             | Java Property                    | Description                                        | Example                                                                |
-| -------------------------------- | -------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------- |
-| JWT_VERIFY_KEY                   | smallrye.jwt.verify.key.location | Location of certificates to verify the JWT.        | http://localhost:8089/auth/realms/compas/protocol/openid-connect/certs |
-| JWT_VERIFY_ISSUER                | mp.jwt.verify.issuer             | The issuer of the JWT.                             | http://localhost:8089/auth/realms/compas                               |
-| JWT_VERIFY_CLIENT_ID             | mp.jwt.verify.audiences          | The Client ID that should be in the "aud" claim.   | scl-validator                                                          |
-| JWT_GROUPS_PATH                  | smallrye.jwt.path.groups         | The JSON Path where to find the roles of the user. | resource_access/scl-validator/roles                                    |
+| Environment variable | Java Property                    | Description                                        | Example                                                                |
+|----------------------|----------------------------------|----------------------------------------------------|------------------------------------------------------------------------|
+| JWT_VERIFY_KEY       | smallrye.jwt.verify.key.location | Location of certificates to verify the JWT.        | http://localhost:8089/auth/realms/compas/protocol/openid-connect/certs |
+| JWT_VERIFY_ISSUER    | mp.jwt.verify.issuer             | The issuer of the JWT.                             | http://localhost:8089/auth/realms/compas                               |
+| JWT_VERIFY_CLIENT_ID | mp.jwt.verify.audiences          | The Client ID that should be in the "aud" claim.   | scl-validator                                                          |
+| JWT_GROUPS_PATH      | smallrye.jwt.path.groups         | The JSON Path where to find the roles of the user. | resource_access/scl-validator/roles                                    |
