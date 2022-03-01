@@ -44,8 +44,8 @@ to check if the directory "src" is a Java Source Directory, for instance the mod
 
 ## Eclipse
 
-Example about how to use Eclipse OCL was
-found [here](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.ocl.doc%2Fhelp%2FPivotStandalone.html).
+Example about how to use Eclipse OCL was found
+[here](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.ocl.doc%2Fhelp%2FPivotStandalone.html).
 
 ## Running the application in dev mode
 
