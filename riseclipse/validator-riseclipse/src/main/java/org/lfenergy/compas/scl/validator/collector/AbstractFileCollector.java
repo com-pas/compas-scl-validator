@@ -5,6 +5,8 @@ package org.lfenergy.compas.scl.validator.collector;
 
 import org.eclipse.emf.common.util.URI;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,10 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
  * Abstract class to support retrieving default files from the ClassPath or from a Directory.
  */
 public abstract class AbstractFileCollector implements OclFileCollector {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFileCollector.class);
+
+    private static final String DEFAULT_OCL_DIRECTORY = "/ocl/";
+
     /**
      * Search for all files (with extension ocl) in the directory 'ocl' on the classpath.
      *
@@ -32,17 +38,22 @@ public abstract class AbstractFileCollector implements OclFileCollector {
         Function<Path, Boolean> filter = path -> path.toString().endsWith(".ocl");
 
         try {
-            var resource = getClass().getResource("/ocl");
+            LOGGER.debug("Using Thread to search for Resource");
+            var resource = Thread.currentThread().getContextClassLoader().getResource(DEFAULT_OCL_DIRECTORY);
+            if (resource == null) {
+                LOGGER.debug("Using Class to search for Resource");
+                resource = getClass().getResource(DEFAULT_OCL_DIRECTORY);
+            }
             if (resource != null) {
                 var uri = resource.toURI();
+                LOGGER.debug("Resource '{}' found with schema '{}'.", uri, uri.getScheme());
                 // The directory is in a JAR, search will be different.
                 if (uri.getScheme().equals("jar")) {
                     try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-                        var oclDirectoryPath = fileSystem.getPath("/ocl");
+                        var oclDirectoryPath = fileSystem.getPath(DEFAULT_OCL_DIRECTORY);
                         return Files.walk(oclDirectoryPath)
                                 .filter(filter::apply)
-                                .map(Path::toString)
-                                .map(URI::createFileURI)
+                                .map(path -> URI.createURI(path.toUri().toString()))
                                 .collect(Collectors.toList());
                     }
                 } else {
@@ -54,6 +65,8 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                             .map(file -> URI.createFileURI(file.getAbsolutePath()))
                             .collect(Collectors.toList());
                 }
+            } else {
+                LOGGER.error("No Resource '{}' found!", DEFAULT_OCL_DIRECTORY);
             }
             return Collections.emptyList();
         } catch (URISyntaxException | IOException exp) {

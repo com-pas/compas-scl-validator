@@ -21,16 +21,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.CREATE_OCL_TEMP_FILES_FAILED;
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.WRITE_TO_OCL_TEMP_FILES_FAILED;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.*;
 
-public class RiseClipseOCLValidator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RiseClipseOCLValidator.class);
+public class OclFileLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OclFileLoader.class);
 
     private final Path oclTempFile;
     private final OCL ocl;
 
-    public RiseClipseOCLValidator(OCL ocl) {
+    public OclFileLoader(OCL ocl) {
         this.ocl = ocl;
 
         // *.ocl Complete OCL documents support required
@@ -47,14 +46,13 @@ public class RiseClipseOCLValidator {
 
     public void addOCLDocument(URI oclUri) {
         if (oclUri == null) {
-            throw new SclValidatorException("", "Unable to create URI for temporary file");
+            throw new SclValidatorException(NO_URI_PASSED, "Unable to create URI for temporary file");
         }
 
         // We want to check the validity of OCL files
         // So, we have to do it now, before concatenating it to oclTempFile
         CSResource oclResource;
         try {
-            LOGGER.debug("Loading OCL File '{}'.", oclUri);
             oclResource = ocl.getCSResource(oclUri);
 
             if (!oclResource.getErrors().isEmpty()) {
@@ -67,7 +65,7 @@ public class RiseClipseOCLValidator {
             } else {
                 try {
                     BufferedWriter o = Files.newBufferedWriter(oclTempFile, StandardOpenOption.APPEND);
-                    o.write("import 'file:" + oclUri + "'\n");
+                    o.write("import '" + oclUri + "'\n");
                     o.close();
                 } catch (IOException exp) {
                     throw new SclValidatorException(WRITE_TO_OCL_TEMP_FILES_FAILED, "Unable to write temporary OCL file", exp);
@@ -81,9 +79,13 @@ public class RiseClipseOCLValidator {
     public void prepareValidator(ComposedEValidator validator) {
         URI uri = URI.createFileURI(oclTempFile.toFile().getAbsolutePath());
         if (uri == null) {
-            throw new SclValidatorException("", "Unable to create URI for temporary file");
+            throw new SclValidatorException(PREPARE_OCL_TEMP_FILES_FAILED, "Unable to create URI for temporary file");
         }
         CompleteOCLEObjectValidator oclValidator = new CompleteOCLEObjectValidator(SclPackage.eINSTANCE, uri);
         validator.addChild(oclValidator);
+    }
+
+    public void cleanup() {
+        oclTempFile.toFile().delete();
     }
 }

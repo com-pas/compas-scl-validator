@@ -4,11 +4,15 @@
 package org.lfenergy.compas.scl.validator.collector;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CompasOclFileCollectorTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompasOclFileCollectorTest.class);
+
     @Test
     void getDefaultOclFiles_WhenCalledWithoutCustomDirectory_ThenListReturned() {
         var collector = new CompasOclFileCollector(null);

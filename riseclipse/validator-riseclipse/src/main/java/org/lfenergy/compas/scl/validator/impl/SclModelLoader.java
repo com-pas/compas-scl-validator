@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.resource;
+package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceFactoryImpl;
 import org.eclipse.emf.common.util.URI;

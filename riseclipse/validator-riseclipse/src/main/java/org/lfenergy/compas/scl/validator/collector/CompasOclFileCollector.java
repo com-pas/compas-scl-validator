@@ -4,6 +4,8 @@
 package org.lfenergy.compas.scl.validator.collector;
 
 import org.eclipse.emf.common.util.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
  * directory configured.
  */
 public class CompasOclFileCollector extends AbstractFileCollector {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompasOclFileCollector.class);
+
     private final String oclCustomDirectory;
 
     public CompasOclFileCollector(String oclCustomDirectory) {
@@ -21,10 +25,11 @@ public class CompasOclFileCollector extends AbstractFileCollector {
 
     @Override
     public List<URI> getOclFiles() {
-        var oclFiles = new ArrayList<URI>();
-        oclFiles.addAll(getDefaultOclFilesFromClasspath());
+        LOGGER.debug("Searching for OCL Files in classpath.");
 
+        var oclFiles = new ArrayList<>(getDefaultOclFilesFromClasspath());
         if (oclCustomDirectory != null) {
+            LOGGER.debug("Searching for OCL Files in custom directory '{}'.", oclCustomDirectory);
             oclFiles.addAll(getFilesFromDirectory(oclCustomDirectory, (path) -> path.toString().endsWith(".ocl")));
         }
         return oclFiles;

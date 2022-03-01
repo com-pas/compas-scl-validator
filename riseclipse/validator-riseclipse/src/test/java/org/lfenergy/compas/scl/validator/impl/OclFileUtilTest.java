@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.collector;
+package org.lfenergy.compas.scl.validator.impl;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.Test;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
-
-import java.util.stream.Collectors;
+import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
+import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,14 +15,8 @@ class OclFileUtilTest {
     private OclFileCollector collector = new CompasOclFileCollector(null);
 
     @Test
-    void includeOnType_WhenCalledWithDefaultOclList_ThenExpectedNrOfItemsReturned() {
-        var result = collector.getOclFiles()
-                .stream()
-                .filter(uri -> OclFileUtil.includeOnType(uri, SclFileType.CID))
-                .collect(Collectors.toList());
-
-        assertNotNull(result);
-        assertEquals(202, result.size());
+    void constructor_WhenConstructorCalled_ThenShouldThrowExceptionCauseForbidden() {
+        assertThrows(UnsupportedOperationException.class, OclFileUtil::new);
     }
 
     @Test
@@ -71,6 +65,6 @@ class OclFileUtilTest {
                 .stream()
                 .filter(uri -> uri.toFileString().endsWith(oclFileName))
                 .findFirst()
-                .get();
+                .orElseThrow();
     }
 }
