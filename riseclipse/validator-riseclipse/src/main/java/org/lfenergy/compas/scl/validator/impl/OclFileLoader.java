@@ -4,7 +4,6 @@
 package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.ocl.pivot.resource.CSResource;
@@ -20,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.*;
 
@@ -54,25 +54,33 @@ public class OclFileLoader {
         CSResource oclResource;
         try {
             oclResource = ocl.getCSResource(oclUri);
-
             if (!oclResource.getErrors().isEmpty()) {
-                StringBuilder message = new StringBuilder("Syntax error in '" + oclUri + "':\n");
-                EList<Diagnostic> errors = oclResource.getErrors();
-                for (Diagnostic error : errors) {
-                    message.append("Error: ").append(error.getMessage()).append("\n");
-                }
-                LOGGER.error(message.toString());
+                logErrorMessage(oclUri, oclResource.getErrors());
             } else {
-                try {
-                    BufferedWriter o = Files.newBufferedWriter(oclTempFile, StandardOpenOption.APPEND);
-                    o.write("import '" + oclUri + "'\n");
-                    o.close();
-                } catch (IOException exp) {
-                    throw new SclValidatorException(WRITE_TO_OCL_TEMP_FILES_FAILED, "Unable to write temporary OCL file", exp);
-                }
+                appendToTempFile(oclUri);
             }
         } catch (IOException exp) {
             LOGGER.error("Unable to read OCL file '{}'", oclUri, exp);
+        }
+    }
+
+    private void appendToTempFile(URI oclUri) {
+        try {
+            BufferedWriter o = Files.newBufferedWriter(oclTempFile, StandardOpenOption.APPEND);
+            o.write("import '" + oclUri + "'\n");
+            o.close();
+        } catch (IOException exp) {
+            throw new SclValidatorException(WRITE_TO_OCL_TEMP_FILES_FAILED, "Unable to write temporary OCL file", exp);
+        }
+    }
+
+    private void logErrorMessage(URI oclUri, List<Diagnostic> errors) {
+        StringBuilder message = new StringBuilder("Syntax error in '" + oclUri + "':\n");
+        for (Diagnostic error : errors) {
+            message.append("Error: ").append(error.getMessage()).append("\n");
+        }
+        if (LOGGER.isErrorEnabled()) {
+            LOGGER.error(message.toString());
         }
     }
 
@@ -86,8 +94,12 @@ public class OclFileLoader {
     }
 
     public void cleanup() {
-        if (!oclTempFile.toFile().delete()) {
-            LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile);
+        try {
+            if (!Files.deleteIfExists(oclTempFile)) {
+                LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile);
+            }
+        } catch (IOException exp) {
+            LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile, exp);
         }
     }
 }

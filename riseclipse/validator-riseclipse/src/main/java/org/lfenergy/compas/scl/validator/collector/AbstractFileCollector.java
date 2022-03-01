@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_CUSTOM_OCL_FILES_FAILED;
@@ -35,7 +35,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
      * @throws SclValidatorException Thrown when there is some I/O or URI Syntax Error.
      */
     protected List<URI> getDefaultOclFilesFromClasspath() {
-        Function<Path, Boolean> filter = path -> path.toString().endsWith(".ocl");
+        Predicate<Path> filter = path -> path.toString().endsWith(".ocl");
 
         try {
             LOGGER.debug("Using Thread to search for Resource");
@@ -52,7 +52,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                     try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                         var oclDirectoryPath = fileSystem.getPath(DEFAULT_OCL_DIRECTORY);
                         try (var walk = Files.walk(oclDirectoryPath)) {
-                            return walk.filter(filter::apply)
+                            return walk.filter(filter::test)
                                     .map(path -> URI.createURI(path.toUri().toString()))
                                     .collect(Collectors.toList());
                         }
@@ -60,7 +60,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                 } else {
                     var oclDirectoryPath = Paths.get(uri);
                     try (var walk = Files.walk(oclDirectoryPath)) {
-                        return walk.filter(filter::apply)
+                        return walk.filter(filter::test)
                                 .map(Path::toFile)
                                 .filter(File::isFile)
                                 .map(file -> URI.createFileURI(file.getAbsolutePath()))
@@ -83,13 +83,13 @@ public abstract class AbstractFileCollector implements OclFileCollector {
      * @param filter        The filter used to filter the list of file, use '(path) -> true' to return them all.
      * @return The list of Files as URI found.
      */
-    protected List<URI> getFilesFromDirectory(String directoryName, Function<Path, Boolean> filter) {
+    protected List<URI> getFilesFromDirectory(String directoryName, Predicate<Path> filter) {
         try {
             File directory = new File(directoryName);
             if (directory.exists() && directory.isDirectory()) {
                 var oclDirectoryPath = Paths.get(directory.toURI());
                 try (var walk = Files.walk(oclDirectoryPath)) {
-                    return walk.filter(filter::apply)
+                    return walk.filter(filter::test)
                             .map(Path::toFile)
                             .filter(File::isFile)
                             .map(file -> URI.createFileURI(file.getAbsolutePath()))

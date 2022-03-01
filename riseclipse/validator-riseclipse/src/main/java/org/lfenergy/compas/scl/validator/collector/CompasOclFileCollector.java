@@ -30,7 +30,7 @@ public class CompasOclFileCollector extends AbstractFileCollector {
         var oclFiles = new ArrayList<>(getDefaultOclFilesFromClasspath());
         if (oclCustomDirectory != null) {
             LOGGER.debug("Searching for OCL Files in custom directory '{}'.", oclCustomDirectory);
-            oclFiles.addAll(getFilesFromDirectory(oclCustomDirectory, (path) -> path.toString().endsWith(".ocl")));
+            oclFiles.addAll(getFilesFromDirectory(oclCustomDirectory, path -> path.toString().endsWith(".ocl")));
         }
         return oclFiles;
     }
