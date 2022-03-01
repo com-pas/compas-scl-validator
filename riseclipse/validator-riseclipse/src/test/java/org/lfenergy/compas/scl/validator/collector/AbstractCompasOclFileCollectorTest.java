@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AbstractCompasOclFileCollectorTest {
-    protected void executeAndValidateOclFileCollector(OclFileCollector collector, int expectedFiles) {
+    protected void assertValidateOclFileCollector(OclFileCollector collector, int expectedFiles) {
         var result = collector.getOclFiles();
 
         assertNotNull(result);
