@@ -21,6 +21,9 @@ RUN chown 1001 /work \
     && chown 1001:root /work
 COPY --chown=1001:root target/*-runner /work/application
 
+RUN mkdir -p /data/ocl
+VOLUME /data/ocl
+
 EXPOSE 8080
 USER 1001
 

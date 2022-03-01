@@ -18,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_SCL_FILE_ERROR_CODE;
+
 public class SclModelLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclModelLoader.class);
 
@@ -44,7 +46,7 @@ public class SclModelLoader {
             resource.load(new ByteArrayInputStream(sclData.getBytes(StandardCharsets.UTF_8)), options);
             return resource;
         } catch (Exception exp) {
-            throw new SclValidatorException("", "Problem loading SCL Data", exp);
+            throw new SclValidatorException(LOADING_SCL_FILE_ERROR_CODE, "Problem loading SCL Data", exp);
         }
     }
 }

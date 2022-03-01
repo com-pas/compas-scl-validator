@@ -148,9 +148,6 @@ SPDX-License-Identifier: Apache-2.0
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-plugin.version}</version>
-                    <configuration>
-                        <trimStackTrace>false</trimStackTrace>
-                    </configuration>
                 </plugin>
 
                 <plugin>
