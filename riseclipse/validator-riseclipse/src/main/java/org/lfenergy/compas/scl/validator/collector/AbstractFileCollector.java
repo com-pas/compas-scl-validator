@@ -52,7 +52,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                     try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                         var oclDirectoryPath = fileSystem.getPath(DEFAULT_OCL_DIRECTORY);
                         try (var walk = Files.walk(oclDirectoryPath)) {
-                            return walk.filter(filter::test)
+                            return walk.filter(filter)
                                     .map(path -> URI.createURI(path.toUri().toString()))
                                     .collect(Collectors.toList());
                         }
@@ -60,7 +60,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                 } else {
                     var oclDirectoryPath = Paths.get(uri);
                     try (var walk = Files.walk(oclDirectoryPath)) {
-                        return walk.filter(filter::test)
+                        return walk.filter(filter)
                                 .map(Path::toFile)
                                 .filter(File::isFile)
                                 .map(file -> URI.createFileURI(file.getAbsolutePath()))
@@ -89,7 +89,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
             if (directory.exists() && directory.isDirectory()) {
                 var oclDirectoryPath = Paths.get(directory.toURI());
                 try (var walk = Files.walk(oclDirectoryPath)) {
-                    return walk.filter(filter::test)
+                    return walk.filter(filter)
                             .map(Path::toFile)
                             .filter(File::isFile)
                             .map(file -> URI.createFileURI(file.getAbsolutePath()))

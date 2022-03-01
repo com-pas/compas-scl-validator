@@ -22,23 +22,22 @@ import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.OCL_MODEL_PACKAGE_NOT_FOUND;
 import static org.lfenergy.compas.scl.validator.impl.MessageUtil.cleanupMessage;
 
-@ApplicationScoped
 public class SclRiseClipseValidator implements SclValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclRiseClipseValidator.class);
 
     private final List<URI> oclFiles = new ArrayList<>();
+    private final Path tempDirectory;
 
-    @Inject
-    public SclRiseClipseValidator(OclFileCollector oclFileCollector) {
+    public SclRiseClipseValidator(OclFileCollector oclFileCollector, Path tempDirectory) {
         this.oclFiles.addAll(oclFileCollector.getOclFiles());
+        this.tempDirectory = tempDirectory;
 
         // Check if the SclPackage can be initialized.
         var sclPck = SclPackage.eINSTANCE;
@@ -58,7 +57,7 @@ public class SclRiseClipseValidator implements SclValidator {
         // Create an OCL that creates a ResourceSet using the minimal EPackage.Registry
         var ocl = OCL.newInstance(registry);
 
-        OclFileLoader oclFileLoader = new OclFileLoader(ocl);
+        OclFileLoader oclFileLoader = new OclFileLoader(ocl, tempDirectory);
         try {
             // Load all the OCL Files, adding them to the OCL Instance.
             if (!oclFiles.isEmpty()) {
@@ -125,7 +124,7 @@ public class SclRiseClipseValidator implements SclValidator {
         public Diagnostic validate(Resource resource) {
             BasicDiagnostic diagnostics = createDefaultDiagnostic(resource);
             for (EObject eObject : resource.getContents()) {
-                validate(eObject, diagnostics);
+                super.validate(eObject, diagnostics);
             }
             return diagnostics;
         }

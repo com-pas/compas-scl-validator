@@ -11,6 +11,7 @@ import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,7 +23,7 @@ class SclRiseClipseValidatorTest {
     @BeforeEach
     public void setup() {
         var oclFileCollector = new CompasOclFileCollector(null);
-        this.sclValidator = new SclRiseClipseValidator(oclFileCollector);
+        this.sclValidator = new SclRiseClipseValidator(oclFileCollector, Path.of("./target/data/temp"));
     }
 
     @Test

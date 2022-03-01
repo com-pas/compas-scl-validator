@@ -6,8 +6,13 @@ package org.lfenergy.compas.scl.validator.rest;
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithName;
 
+import java.nio.file.Path;
+
 @ConfigMapping(prefix = "compas.validator")
 public interface ValidatorProperties {
     @WithName("ocl.custom.directory")
     String oclCustomDirectory();
+
+    @WithName("temp.directory")
+    Path tempDirectory();
 }

@@ -29,7 +29,7 @@ public class OclFileLoader {
     private final Path oclTempFile;
     private final OCL ocl;
 
-    public OclFileLoader(OCL ocl) {
+    public OclFileLoader(OCL ocl, Path tempDirectoryPath) {
         this.ocl = ocl;
 
         // *.ocl Complete OCL documents support required
@@ -37,8 +37,14 @@ public class OclFileLoader {
         // *.oclstdlib OCL Standard Library support required
         org.eclipse.ocl.xtext.oclstdlib.OCLstdlibStandaloneSetup.doSetup();
 
+        // First make sure the directory for temporary file exists.
+        var tempDirectory = tempDirectoryPath.toFile();
+        if (!tempDirectory.exists() && !tempDirectory.mkdirs()) {
+            throw new SclValidatorException(CREATE_OCL_TEMP_DIR_FAILED, "Unable to create temporary directory");
+        }
+
         try {
-            oclTempFile = Files.createTempFile("allConstraints", ".ocl");
+            oclTempFile = Files.createTempFile(tempDirectoryPath, "allConstraints", ".ocl");
         } catch (IOException exp) {
             throw new SclValidatorException(CREATE_OCL_TEMP_FILES_FAILED, "Unable to create temporary file", exp);
         }

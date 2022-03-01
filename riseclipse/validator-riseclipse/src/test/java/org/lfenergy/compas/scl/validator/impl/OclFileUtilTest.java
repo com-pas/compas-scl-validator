@@ -21,43 +21,27 @@ class OclFileUtilTest {
 
     @Test
     void includeOnType_WhenCalledWithExpectedSclFileTypeUri_ThenReturnTrue() {
-        var oclFileName = "/ocl/FileSpecifics/CID/ExtRef.ocl";
-        var uri = getResource(oclFileName);
-
-        var result = OclFileUtil.includeOnType(uri, SclFileType.CID);
-
-        assertTrue(result);
+        assertTrue(executeTest("/ocl/FileSpecifics/CID/ExtRef.ocl"));
     }
 
     @Test
     void includeOnType_WhenCalledWithUnexpectedSclFileTypeUri_ThenReturnFalse() {
-        var oclFileName = "/ocl/FileSpecifics/ICD/DOType.ocl";
-        var uri = getResource(oclFileName);
-
-        var result = OclFileUtil.includeOnType(uri, SclFileType.CID);
-
-        assertFalse(result);
+        assertFalse(executeTest("/ocl/FileSpecifics/ICD/DOType.ocl"));
     }
 
     @Test
     void includeOnType_WhenCalledWithCommonUri_ThenReturnTrue() {
-        var oclFileName = "/ocl/FileSpecifics/Common/ReportControl.ocl";
-        var uri = getResource(oclFileName);
-
-        var result = OclFileUtil.includeOnType(uri, SclFileType.CID);
-
-        assertTrue(result);
-
+        assertTrue(executeTest("/ocl/FileSpecifics/Common/ReportControl.ocl"));
     }
 
     @Test
     void includeOnType_WhenCalledWithNoFileSpecificUri_ThenReturnTrue() {
-        var oclFileName = "/ocl/SemanticConstraints/Server.ocl";
+        assertTrue(executeTest("/ocl/SemanticConstraints/Server.ocl"));
+    }
+
+    private boolean executeTest(String oclFileName) {
         var uri = getResource(oclFileName);
-
-        var result = OclFileUtil.includeOnType(uri, SclFileType.CID);
-
-        assertTrue(result);
+        return OclFileUtil.includeOnType(uri, SclFileType.CID);
     }
 
     private URI getResource(String oclFileName) {
