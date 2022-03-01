@@ -86,6 +86,8 @@ public class OclFileLoader {
     }
 
     public void cleanup() {
-        oclTempFile.toFile().delete();
+        if (!oclTempFile.toFile().delete()) {
+            LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile);
+        }
     }
 }

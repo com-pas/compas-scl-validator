@@ -51,19 +51,21 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                 if (uri.getScheme().equals("jar")) {
                     try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                         var oclDirectoryPath = fileSystem.getPath(DEFAULT_OCL_DIRECTORY);
-                        return Files.walk(oclDirectoryPath)
-                                .filter(filter::apply)
-                                .map(path -> URI.createURI(path.toUri().toString()))
-                                .collect(Collectors.toList());
+                        try (var walk = Files.walk(oclDirectoryPath)) {
+                            return walk.filter(filter::apply)
+                                    .map(path -> URI.createURI(path.toUri().toString()))
+                                    .collect(Collectors.toList());
+                        }
                     }
                 } else {
                     var oclDirectoryPath = Paths.get(uri);
-                    return Files.walk(oclDirectoryPath)
-                            .filter(filter::apply)
-                            .map(Path::toFile)
-                            .filter(File::isFile)
-                            .map(file -> URI.createFileURI(file.getAbsolutePath()))
-                            .collect(Collectors.toList());
+                    try (var walk = Files.walk(oclDirectoryPath)) {
+                        return walk.filter(filter::apply)
+                                .map(Path::toFile)
+                                .filter(File::isFile)
+                                .map(file -> URI.createFileURI(file.getAbsolutePath()))
+                                .collect(Collectors.toList());
+                    }
                 }
             } else {
                 LOGGER.error("No Resource '{}' found!", DEFAULT_OCL_DIRECTORY);
@@ -86,12 +88,13 @@ public abstract class AbstractFileCollector implements OclFileCollector {
             File directory = new File(directoryName);
             if (directory.exists() && directory.isDirectory()) {
                 var oclDirectoryPath = Paths.get(directory.toURI());
-                return Files.walk(oclDirectoryPath)
-                        .filter(filter::apply)
-                        .map(Path::toFile)
-                        .filter(File::isFile)
-                        .map(file -> URI.createFileURI(file.getAbsolutePath()))
-                        .collect(Collectors.toList());
+                try (var walk = Files.walk(oclDirectoryPath)) {
+                    return walk.filter(filter::apply)
+                            .map(Path::toFile)
+                            .filter(File::isFile)
+                            .map(file -> URI.createFileURI(file.getAbsolutePath()))
+                            .collect(Collectors.toList());
+                }
             }
             return Collections.emptyList();
         } catch (IOException exp) {
