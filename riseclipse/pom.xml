@@ -73,13 +73,6 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.eclipse.ocl</groupId>
                 <artifactId>org.eclipse.ocl.pivot</artifactId>
                 <version>${eclipse.ocl.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- optional dependency, not needed -->
-                        <groupId>org.eclipse.emf</groupId>
-                        <artifactId>org.eclipse.emf.codegen.ecore</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.ocl</groupId>

@@ -41,7 +41,7 @@ class OclFileLoaderTest {
     }
 
     @Test
-    void addOCLDocument_WhenCalledWithNull_ThenExceptionThrown() throws IOException {
+    void addOCLDocument_WhenCalledWithNull_ThenExceptionThrown() {
         var exception = assertThrows(SclValidatorException.class,
                 () -> loader.addOCLDocument(null));
 
@@ -80,7 +80,7 @@ class OclFileLoaderTest {
     }
 
     private URI findOCL(String filename) {
-        var url = getClass().getResource("/ocl/" + filename);
+        var url = getClass().getResource("/ocl-testfiles/" + filename);
         if (url != null) {
             return URI.createFileURI(url.getPath());
         }
