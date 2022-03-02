@@ -19,6 +19,7 @@ import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
+import org.lfenergy.compas.scl.validator.util.OclFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.OCL_MODEL_PACKAGE_NOT_FOUND;
-import static org.lfenergy.compas.scl.validator.impl.MessageUtil.cleanupMessage;
+import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
 
 public class SclRiseClipseValidator implements SclValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclRiseClipseValidator.class);

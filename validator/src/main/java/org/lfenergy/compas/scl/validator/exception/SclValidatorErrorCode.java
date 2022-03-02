@@ -17,7 +17,6 @@ public class SclValidatorErrorCode {
     public static final String CREATE_OCL_TEMP_FILES_FAILED = "SVS-2001";
     public static final String CREATE_OCL_TEMP_DIR_FAILED = "SVS-2002";
     public static final String WRITE_TO_OCL_TEMP_FILES_FAILED = "SVS-2003";
-    public static final String PREPARE_OCL_TEMP_FILES_FAILED = "SVS-2004";
     public static final String OCL_MODEL_PACKAGE_NOT_FOUND = "SVS-2005";
     public static final String NO_URI_PASSED = "SVS-2006";
 }

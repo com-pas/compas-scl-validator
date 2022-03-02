@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.impl;
+package org.lfenergy.compas.scl.validator.util;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.lfenergy.compas.scl.validator.impl.MessageUtil.cleanupMessage;
+import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
 
 class MessageUtilTest {
     @Test

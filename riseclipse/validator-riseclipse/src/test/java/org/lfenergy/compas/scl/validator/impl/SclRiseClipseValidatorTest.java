@@ -5,18 +5,16 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.lfenergy.compas.scl.validator.util.TestSupportUtil.readSCL;
 
-@ExtendWith(MockitoExtension.class)
 class SclRiseClipseValidatorTest {
     private SclRiseClipseValidator sclValidator;
 
@@ -29,18 +27,11 @@ class SclRiseClipseValidatorTest {
     @Test
     void validate_WhenCalled_ThenEmptyListReturned() throws IOException {
         var type = SclFileType.CID;
-        var sclData = readSCL();
+        var sclData = readSCL("example.scd");
 
         var result = sclValidator.validate(type, sclData);
 
         assertNotNull(result);
         assertEquals(15, result.size());
-    }
-
-    private String readSCL() throws IOException {
-        var inputStream = getClass().getResourceAsStream("/scl/scl_test_file.scd");
-        assert inputStream != null;
-
-        return new String(inputStream.readAllBytes());
     }
 }

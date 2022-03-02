@@ -92,9 +92,6 @@ public class OclFileLoader {
 
     public void prepareValidator(ComposedEValidator validator) {
         URI uri = URI.createFileURI(oclTempFile.toFile().getAbsolutePath());
-        if (uri == null) {
-            throw new SclValidatorException(PREPARE_OCL_TEMP_FILES_FAILED, "Unable to create URI for temporary file");
-        }
         CompleteOCLEObjectValidator oclValidator = new CompleteOCLEObjectValidator(SclPackage.eINSTANCE, uri);
         validator.addChild(oclValidator);
     }
