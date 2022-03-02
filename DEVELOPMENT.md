@@ -76,22 +76,3 @@ If you want to build an _über-jar_, execute the following command:
 
 The application is now runnable using `java -jar app/target/quarkus-app/quarkus-run.jar`.
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./app/target/code-with-quarkus-local-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html
-.
-

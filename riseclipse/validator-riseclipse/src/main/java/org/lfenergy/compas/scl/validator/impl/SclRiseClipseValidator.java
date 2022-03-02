@@ -60,25 +60,24 @@ public class SclRiseClipseValidator implements SclValidator {
         OclFileLoader oclFileLoader = new OclFileLoader(ocl, tempDirectory);
         try {
             // Load all the OCL Files, adding them to the OCL Instance.
-            if (!oclFiles.isEmpty()) {
-                oclFiles.stream()
-                        .filter(uri -> OclFileUtil.includeOnType(uri, type))
-                        .forEach(oclFileLoader::addOCLDocument);
-            }
+            LOGGER.info("Loading OCL Files for type '{}'.", type);
+            oclFiles.stream()
+                    .filter(uri -> OclFileUtil.includeOnType(uri, type))
+                    .forEach(oclFileLoader::addOCLDocument);
 
             // Create the validator and prepare it with the OCL Files.
             var validator = ComposedEValidator.install(SclPackage.eINSTANCE);
             oclFileLoader.prepareValidator(validator);
 
             // Load the SCL File as Resource ready to be processed.
+            LOGGER.info("Loading SCL Data for type '{}'.", type);
             var sclLoader = new SclModelLoader(ocl);
             var resource = sclLoader.load(sclData);
-            if (resource != null) {
-                LOGGER.info("Validating SCL Data for type '{}'.", type);
-                var diagnostician = new CompasDiagnostician();
-                var diagnostic = diagnostician.validate(resource);
-                processDiagnostic(diagnostic, validationErrors);
-            }
+
+            LOGGER.info("Validating SCL Data for type '{}'.", type);
+            var diagnostician = new CompasDiagnostician();
+            var diagnostic = diagnostician.validate(resource);
+            processDiagnostic(diagnostic, validationErrors);
         } finally {
             oclFileLoader.cleanup();
         }
