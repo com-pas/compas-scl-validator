@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.rest;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.lfenergy.compas.core.commons.ElementConverter;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
@@ -14,6 +15,18 @@ import javax.enterprise.inject.Produces;
 /**
  * Create Beans from other dependencies that are used in the application.
  */
+@RegisterForReflection(targets = {
+        org.lfenergy.compas.core.jaxrs.model.ErrorResponse.class,
+        org.lfenergy.compas.core.jaxrs.model.ErrorMessage.class,
+        org.eclipse.ocl.pivot.internal.resource.OCLASResourceFactory.class,
+        org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl.class,
+        org.eclipse.xtext.resource.IResourceFactory.class,
+        org.eclipse.xtext.resource.XtextResourceFactory.class,
+        org.eclipse.xtext.resource.XtextResource.class,
+        java.lang.Boolean.class, java.lang.Byte.class,
+        java.lang.Double.class, java.lang.Float.class,
+        java.lang.Integer.class, java.lang.Long.class,
+        java.lang.Short.class}, ignoreNested = false)
 public class CompasSclValidatorConfiguration {
     @Produces
     @ApplicationScoped

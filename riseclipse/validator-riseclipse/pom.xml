@@ -19,6 +19,7 @@ SPDX-License-Identifier: Apache-2.0
 
     <properties>
         <riseclipse.developer.root>${project.basedir}/../riseclipse-developer</riseclipse.developer.root>
+        <riseclipse.extra.root>${project.basedir}/../riseclipse-extra-p2</riseclipse.extra.root>
     </properties>
 
     <dependencies>
@@ -35,6 +36,15 @@ SPDX-License-Identifier: Apache-2.0
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.resources</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.osgi</groupId>
+            <artifactId>org.eclipse.osgi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.osgi</groupId>
+            <artifactId>org.eclipse.osgi.services</artifactId>
         </dependency>
 
         <dependency>
@@ -57,6 +67,11 @@ SPDX-License-Identifier: Apache-2.0
         <dependency>
             <groupId>org.eclipse.ocl</groupId>
             <artifactId>org.eclipse.ocl.xtext.oclstdlib</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.xtext</groupId>
+            <artifactId>org.eclipse.xtext</artifactId>
         </dependency>
 
         <dependency>

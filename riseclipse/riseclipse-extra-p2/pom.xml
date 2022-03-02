@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2022 Alliander N.V.
+
+SPDX-License-Identifier: Apache-2.0
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+        <artifactId>fr.centralesupelec.edf.riseclipse.developer.maven</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+        <relativePath>../riseclipse-developer/fr.centralesupelec.edf.riseclipse.developer.maven/pom.xml</relativePath>
+    </parent>
+
+    <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+    <artifactId>fr.centralesupelec.edf.riseclipse.developer.p2_extra_to_m2</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>
+        This project generates a maven repository for needed Eclipse plug-ins not available on
+        maven-central (EMF, OCL…). It enables maven build of fat jars which use such Eclipse plug-ins.
+    </description>
+
+    <build>
+        <plugins>
+            <!-- create aggregated maven repository -->
+            <plugin>
+                <groupId>org.eclipse.tycho.extras</groupId>
+                <artifactId>tycho-eclipserun-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <work>${project.build.directory}/maven/tmp/cbi</work>
+                    <repositories>
+                        <repository>
+                            <!-- This is the platform used to run the aggregator, not the one where artifacts are fetched -->
+                            <id>Eclipse platform</id>
+                            <layout>p2</layout>
+                            <url>http://download.eclipse.org/releases/2020-06/</url>
+                        </repository>
+                        <repository>
+                            <id>CBI aggregator</id>
+                            <layout>p2</layout>
+                            <url>https://download.eclipse.org/cbi/updates/aggregator/headless/4.13/I20200825-1209</url>
+                        </repository>
+                    </repositories>
+
+                    <argLine>-Declipse.p2.mirrors=false</argLine>
+                    <appArgLine>-data ${project.build.directory}/maven/tmp/workspace -application
+                        org.eclipse.cbi.p2repo.cli.headless aggregate --buildRoot target/maven/repository --buildModel
+                        src/main/resources/riseclipse.aggr --action BUILD
+                    </appArgLine>
+
+                    <dependencies>
+                        <dependency>
+                            <artifactId>org.eclipse.equinox.p2.sdk</artifactId>
+                            <type>eclipse-feature</type>
+                        </dependency>
+                        <dependency>
+                            <artifactId>org.eclipse.cbi.p2repo.aggregator.engine.feature</artifactId>
+                            <type>eclipse-feature</type>
+                        </dependency>
+                        <dependency>
+                            <artifactId>org.eclipse.cbi.p2repo.p2.maven.indexer.feature</artifactId>
+                            <type>eclipse-feature</type>
+                        </dependency>
+                    </dependencies>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>aggregate-maven-repository</id>
+                        <goals>
+                            <goal>eclipse-run</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

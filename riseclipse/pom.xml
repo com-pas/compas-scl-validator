@@ -19,6 +19,7 @@ SPDX-License-Identifier: Apache-2.0
 
     <modules>
         <module>riseclipse-developer</module>
+        <module>riseclipse-extra-p2</module>
         <module>riseclipse-main</module>
         <module>riseclipse-metamodel-scl2003</module>
         <module>validator-riseclipse</module>
@@ -26,13 +27,19 @@ SPDX-License-Identifier: Apache-2.0
 
     <properties>
         <eclipse.core.resources.version>3.16.0</eclipse.core.resources.version>
+        <eclipse.osgi.version>3.17.100</eclipse.osgi.version>
+        <eclipse.osgi.services.version>3.10.200</eclipse.osgi.services.version>
         <eclipse.emf.ecore.version>2.25.0</eclipse.emf.ecore.version>
         <eclipse.emf.common.version>2.23.0</eclipse.emf.common.version>
         <eclipse.ocl.version>1.17.0</eclipse.ocl.version>
+        <eclipse.xtext.version>2.25.0</eclipse.xtext.version>
         <antlr.runtime.version>3.2.0</antlr.runtime.version>
         <riseclipse.version>1.1.0-SNAPSHOT</riseclipse.version>
 
+        <tycho.version>2.5.0</tycho.version>
+
         <riseclipse.developer.root>${project.basedir}/riseclipse-developer</riseclipse.developer.root>
+        <riseclipse.extra.root>${project.basedir}/riseclipse-extra-p2</riseclipse.extra.root>
     </properties>
 
     <repositories>
@@ -40,6 +47,12 @@ SPDX-License-Identifier: Apache-2.0
             <id>local-eclipse-p2-mirror</id>
             <url>
                 file:///${riseclipse.developer.root}/fr.centralesupelec.edf.riseclipse.developer.p2_to_m2/target/maven/repository/final
+            </url>
+        </repository>
+        <repository>
+            <id>local-eclipse-p2-extra-mirror</id>
+            <url>
+                file:///${riseclipse.extra.root}/target/maven/repository/final
             </url>
         </repository>
     </repositories>
@@ -56,6 +69,17 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.eclipse.core</groupId>
                 <artifactId>org.eclipse.core.resources</artifactId>
                 <version>${eclipse.core.resources.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi</artifactId>
+                <version>${eclipse.osgi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi.services</artifactId>
+                <version>${eclipse.osgi.services.version}</version>
             </dependency>
 
             <dependency>
@@ -111,6 +135,12 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.eclipse.ocl</groupId>
                 <artifactId>org.eclipse.ocl.xtext.oclstdlib</artifactId>
                 <version>${eclipse.ocl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.xtext</groupId>
+                <artifactId>org.eclipse.xtext</artifactId>
+                <version>${eclipse.xtext.version}</version>
             </dependency>
 
             <dependency>
