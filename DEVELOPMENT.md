@@ -13,15 +13,19 @@ next `git submodule update`.
 
 More about Git Submodules can be found [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
-Tip: The URL to the submodules are configured in the file `.gitmodules`, but these are using the SSH URL. There is a way
-described in the URL above that the URL can be overwritten locally with an HTTPS URL of the GIT Repository.
+**Remark**: The URLs to the submodules are configured in the file `.gitmodules`, but these are using the SSH URLs. There
+is a way described [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules) that the URL can be overwritten locally
+with an HTTPS URL of the GIT Repository. Because of the subdirectory where the submodules are in, this doesn't work
+exactly that way. Use the following commands to update the URLs locally to HTTPS.
 
 ```
-Since the URL in the .gitmodules file is what other people will first try to clone/fetch from, make sure to use a URL 
-that they can access if possible. For example, if you use a different URL to push to than others would to pull from, 
-use the one that others have access to. You can overwrite this value locally with git config 
-submodule."riseclipse/riseclipse-developer".url HTTPS_URL for your own use. When applicable, a relative URL can be 
-helpful.
+git config submodule.riseclipse/riseclipse-developer.url https://github.com/riseclipse/riseclipse-developer.git
+git config submodule.riseclipse/riseclipse-main.url https://github.com/riseclipse/riseclipse-main.git
+git config submodule.riseclipse/riseclipse-metamodel-scl2003.url https://github.com/riseclipse/riseclipse-metamodel-scl2003.git
+git config submodule.riseclipse/riseclipse-ocl-constraints-scl2003.url https://github.com/riseclipse/riseclipse-ocl-constraints-scl2003.git
+
+git submodule init
+git submodule update
 ```
 
 ## IntelliJ
