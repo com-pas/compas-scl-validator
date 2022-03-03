@@ -86,6 +86,12 @@ SPDX-License-Identifier: Apache-2.0
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.lfenergy.compas.scl.validator</groupId>
+            <artifactId>validator-riseclipse</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -110,6 +116,11 @@ SPDX-License-Identifier: Apache-2.0
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jacoco</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -156,8 +167,13 @@ SPDX-License-Identifier: Apache-2.0
 
             <properties>
                 <quarkus.package.type>native</quarkus.package.type>
-                <quarkus.native.container-build>true</quarkus.native.container-build> <!-- Allows for creating a Linux executable without GraalVM being installed -->
-                <quarkus.container-image.build>true</quarkus.container-image.build> <!-- Also make a Docker Image, so the native test will be executed against the container -->
+                <!-- Allows for creating a Linux executable without GraalVM being installed -->
+                <quarkus.native.container-build>true</quarkus.native.container-build>
+                <!-- Also make a Docker Image, so the native test will be executed against the container -->
+                <quarkus.container-image.build>true</quarkus.container-image.build>
+                <quarkus.native.additional-build-args>
+                    --allow-incomplete-classpath
+                </quarkus.native.additional-build-args>
             </properties>
 
             <build>
@@ -174,8 +190,12 @@ SPDX-License-Identifier: Apache-2.0
                                 </goals>
                                 <configuration>
                                     <systemPropertyVariables>
-                                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                                        <native.image.path>
+                                            ${project.build.directory}/${project.build.finalName}-runner
+                                        </native.image.path>
+                                        <java.util.logging.manager>
+                                            org.jboss.logmanager.LogManager
+                                        </java.util.logging.manager>
                                         <maven.home>${maven.home}</maven.home>
                                     </systemPropertyVariables>
                                 </configuration>
@@ -201,8 +221,8 @@ SPDX-License-Identifier: Apache-2.0
             <id>release</id>
 
             <properties>
-                <!-- Properties only used for publishing a native docker image (default to Docker Hub) -->
                 <quarkus.container-image.build>true</quarkus.container-image.build>
+                <!-- Properties only used for publishing a native docker image (default to Docker Hub) -->
                 <quarkus.container-image.push>true</quarkus.container-image.push>
                 <quarkus.container-image.additional-tags>latest</quarkus.container-image.additional-tags>
             </properties>

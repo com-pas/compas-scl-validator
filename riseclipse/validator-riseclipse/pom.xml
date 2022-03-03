@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2022 Alliander N.V.
+
+SPDX-License-Identifier: Apache-2.0
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.lfenergy.compas.scl.validator</groupId>
+        <artifactId>riseclipse</artifactId>
+        <version>local-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>validator-riseclipse</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <riseclipse.developer.root>${project.basedir}/../riseclipse-developer</riseclipse.developer.root>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.lfenergy.compas.scl.validator</groupId>
+            <artifactId>validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+            <artifactId>fr.centralesupelec.edf.riseclipse.iec61850.scl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>org.eclipse.core.resources</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.ocl</groupId>
+            <artifactId>org.eclipse.ocl.pivot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.ocl</groupId>
+            <artifactId>org.eclipse.ocl.xtext.completeocl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.ocl</groupId>
+            <artifactId>org.eclipse.ocl.xtext.oclstdlib</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.antlr.runtime</groupId>
+            <artifactId>org.antlr.runtime</artifactId>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/ocl</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        ../riseclipse-ocl-constraints-scl2003/fr.centralesupelec.edf.riseclipse.iec61850.scl.ocl
+                                    </directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>.project</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jboss.jandex</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

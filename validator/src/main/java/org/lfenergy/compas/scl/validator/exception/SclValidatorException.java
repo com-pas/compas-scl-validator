@@ -9,4 +9,8 @@ public class SclValidatorException extends CompasException {
     public SclValidatorException(String errorCode, String message) {
         super(errorCode, message);
     }
+
+    public SclValidatorException(String errorCode, String msg, Throwable throwable) {
+        super(errorCode, msg, throwable);
+    }
 }
