@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.impl;
 
-import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceFactoryImpl;
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceSetImpl;
 import org.eclipse.emf.common.util.URI;
@@ -32,9 +31,6 @@ public class SclModelLoader {
         this.resourceSet.getResourceFactoryRegistry()
                 .getExtensionToFactoryMap()
                 .put(Resource.Factory.Registry.DEFAULT_EXTENSION, new SclResourceFactoryImpl());
-
-        // Register the package to ensure it is available during loading.
-        this.resourceSet.getPackageRegistry().put(SclPackage.eNS_URI, SclPackage.eINSTANCE);
     }
 
     public Resource load(String sclData) {
