@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
@@ -21,7 +22,6 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.NO_URI_PASSED;
-import static org.lfenergy.compas.scl.validator.util.TestSupportUtil.createSclOcl;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +31,12 @@ class OclFileLoaderTest {
 
     @BeforeEach
     void setup() throws IOException {
+        // Initialize the OCL Libraries
+        OclUtil.setupOcl();
+
         var tempDirectory = "./target/data/temp";
         var tempDirectoryPath = Path.of(tempDirectory);
-        loader = new OclFileLoader(createSclOcl(), tempDirectoryPath);
+        loader = new OclFileLoader(tempDirectoryPath);
         tempFile = Files.walk(tempDirectoryPath)
                 .filter(path -> path.toString().contains(File.separator + "allConstraints"))
                 .findFirst()

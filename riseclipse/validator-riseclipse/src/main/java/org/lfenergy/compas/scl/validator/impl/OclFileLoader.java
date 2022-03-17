@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.ocl.pivot.resource.CSResource;
 import org.eclipse.ocl.pivot.utilities.OCL;
@@ -29,13 +30,12 @@ public class OclFileLoader {
     private final Path oclTempFile;
     private final OCL ocl;
 
-    public OclFileLoader(OCL ocl, Path tempDirectoryPath) {
-        this.ocl = ocl;
-
-        // *.ocl Complete OCL documents support required
-        org.eclipse.ocl.xtext.completeocl.CompleteOCLStandaloneSetup.doSetup();
-        // *.oclstdlib OCL Standard Library support required
-        org.eclipse.ocl.xtext.oclstdlib.OCLstdlibStandaloneSetup.doSetup();
+    public OclFileLoader(Path tempDirectoryPath) {
+        // Create an EPackage.Registry for the SclPackage.
+        var registry = new EPackageRegistryImpl();
+        registry.put(SclPackage.eNS_URI, SclPackage.eINSTANCE);
+        // Create an OCL that creates a ResourceSet using the minimal EPackage.Registry
+        this.ocl = OCL.newInstance(registry);
 
         // First make sure the directory for temporary file exists.
         var tempDirectory = tempDirectoryPath.toFile();
@@ -97,6 +97,8 @@ public class OclFileLoader {
     }
 
     public void cleanup() {
+        ocl.dispose();
+
         try {
             if (!Files.deleteIfExists(oclTempFile)) {
                 LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile);

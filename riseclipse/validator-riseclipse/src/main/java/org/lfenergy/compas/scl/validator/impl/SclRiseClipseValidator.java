@@ -8,18 +8,16 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.impl.EValidatorRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EObjectValidator;
-import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
-import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.lfenergy.compas.scl.validator.util.OclFileUtil;
+import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +25,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.OCL_MODEL_PACKAGE_NOT_FOUND;
 import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
 
 public class SclRiseClipseValidator implements SclValidator {
@@ -40,11 +37,8 @@ public class SclRiseClipseValidator implements SclValidator {
         this.oclFiles.addAll(oclFileCollector.getOclFiles());
         this.tempDirectory = tempDirectory;
 
-        // Check if the SclPackage can be initialized.
-        var sclPck = SclPackage.eINSTANCE;
-        if (sclPck == null) {
-            throw new SclValidatorException(OCL_MODEL_PACKAGE_NOT_FOUND, "SCL package not found");
-        }
+        // Initialize the OCL Libraries
+        OclUtil.setupOcl();
     }
 
     @Override
@@ -52,31 +46,27 @@ public class SclRiseClipseValidator implements SclValidator {
         // List with Validation Error Results if there are any.
         var validationErrors = new ArrayList<ValidationError>();
 
-        // Create an EPackage.Registry for the SclPackage.
-        var registry = new EPackageRegistryImpl();
-        registry.put(SclPackage.eNS_URI, SclPackage.eINSTANCE);
-        // Create an OCL that creates a ResourceSet using the minimal EPackage.Registry
-        var ocl = OCL.newInstance(registry);
+        // Create the validator and prepare it with the OCL Files.
+        var validatorRegistry = new EValidatorRegistryImpl();
+        var validator = new ComposedEValidator(null);
+        validatorRegistry.put(SclPackage.eINSTANCE, validator);
 
-        OclFileLoader oclFileLoader = new OclFileLoader(ocl, tempDirectory);
+        OclFileLoader oclFileLoader = new OclFileLoader(tempDirectory);
         try {
             // Load all the OCL Files, adding them to the OCL Instance.
             LOGGER.info("Loading OCL Files for type '{}'.", type);
             oclFiles.stream()
-                    .filter(uri -> OclFileUtil.includeOnType(uri, type))
+                    .filter(uri -> OclUtil.includeOnType(uri, type))
                     .forEach(oclFileLoader::addOCLDocument);
-
-            // Create the validator and prepare it with the OCL Files.
-            var validator = ComposedEValidator.install(SclPackage.eINSTANCE);
             oclFileLoader.prepareValidator(validator);
 
             // Load the SCL File as Resource ready to be processed.
             LOGGER.info("Loading SCL Data for type '{}'.", type);
-            var sclLoader = new SclModelLoader(ocl);
+            var sclLoader = new SclModelLoader();
             var resource = sclLoader.load(sclData);
 
             LOGGER.info("Validating SCL Data for type '{}'.", type);
-            var diagnostician = new CompasDiagnostician();
+            var diagnostician = new CompasDiagnostician(validatorRegistry);
             var diagnostic = diagnostician.validate(resource);
             processDiagnostic(diagnostic, validationErrors);
         } finally {
@@ -105,6 +95,10 @@ public class SclRiseClipseValidator implements SclValidator {
      * Simple extension of the Diagnostician to make working with the Resource easier.
      */
     private static class CompasDiagnostician extends Diagnostician {
+        public CompasDiagnostician(Registry eValidatorRegistry) {
+            super(eValidatorRegistry);
+        }
+
         /**
          * Create a basic diagnostic instance from the resource.
          *
