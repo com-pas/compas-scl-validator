@@ -11,7 +11,9 @@ import org.eclipse.ocl.pivot.resource.CSResource;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.eclipse.ocl.xtext.completeocl.validation.CompleteOCLEObjectValidator;
+import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +29,13 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
 public class OclFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(OclFileLoader.class);
 
+    private final List<URI> oclFiles;
     private final Path oclTempFile;
     private final OCL ocl;
 
-    public OclFileLoader(Path tempDirectoryPath) {
+    public OclFileLoader(Path tempDirectoryPath, List<URI> oclFiles) {
+        this.oclFiles = oclFiles;
+
         // Create an EPackage.Registry for the SclPackage.
         var registry = new EPackageRegistryImpl();
         registry.put(SclPackage.eNS_URI, SclPackage.eINSTANCE);
@@ -48,6 +53,12 @@ public class OclFileLoader {
         } catch (IOException exp) {
             throw new SclValidatorException(CREATE_OCL_TEMP_FILES_FAILED, "Unable to create temporary file", exp);
         }
+    }
+
+    public void loadOCLDocuments(SclFileType type) {
+        oclFiles.stream()
+                .filter(uri -> OclUtil.includeOnType(uri, type))
+                .forEach(this::addOCLDocument);
     }
 
     public void addOCLDocument(URI oclUri) {

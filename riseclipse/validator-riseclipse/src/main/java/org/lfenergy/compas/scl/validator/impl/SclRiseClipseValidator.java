@@ -51,13 +51,11 @@ public class SclRiseClipseValidator implements SclValidator {
         var validator = new ComposedEValidator(null);
         validatorRegistry.put(SclPackage.eINSTANCE, validator);
 
-        OclFileLoader oclFileLoader = new OclFileLoader(tempDirectory);
+        OclFileLoader oclFileLoader = new OclFileLoader(tempDirectory, oclFiles);
         try {
             // Load all the OCL Files, adding them to the OCL Instance.
             LOGGER.info("Loading OCL Files for type '{}'.", type);
-            oclFiles.stream()
-                    .filter(uri -> OclUtil.includeOnType(uri, type))
-                    .forEach(oclFileLoader::addOCLDocument);
+            oclFileLoader.loadOCLDocuments(type);
             oclFileLoader.prepareValidator(validator);
 
             // Load the SCL File as Resource ready to be processed.
