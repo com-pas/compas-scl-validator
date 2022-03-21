@@ -11,12 +11,12 @@ import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OclFileUtilTest {
+class OclUtilTest {
     private OclFileCollector collector = new CompasOclFileCollector(null);
 
     @Test
     void constructor_WhenConstructorCalled_ThenShouldThrowExceptionCauseForbidden() {
-        assertThrows(UnsupportedOperationException.class, OclFileUtil::new);
+        assertThrows(UnsupportedOperationException.class, OclUtil::new);
     }
 
     @Test
@@ -41,7 +41,7 @@ class OclFileUtilTest {
 
     private boolean executeTest(String oclFileName) {
         var uri = getResource(oclFileName);
-        return OclFileUtil.includeOnType(uri, SclFileType.CID);
+        return OclUtil.includeOnType(uri, SclFileType.CID);
     }
 
     private URI getResource(String oclFileName) {

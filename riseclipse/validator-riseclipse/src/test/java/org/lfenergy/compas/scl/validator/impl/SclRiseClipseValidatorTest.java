@@ -25,7 +25,7 @@ class SclRiseClipseValidatorTest {
     }
 
     @Test
-    void validate_WhenCalled_ThenEmptyListReturned() throws IOException {
+    void validate_WhenCalled_ThenExpectedValidationErrorsReturned() throws IOException {
         var type = SclFileType.CID;
         var sclData = readSCL("example.scd");
 

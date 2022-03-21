@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_SCL_FILE_ERROR_CODE;
-import static org.lfenergy.compas.scl.validator.util.TestSupportUtil.createSclOcl;
 import static org.lfenergy.compas.scl.validator.util.TestSupportUtil.readSCL;
 
 class SclModelLoaderTest {
@@ -19,7 +18,7 @@ class SclModelLoaderTest {
 
     @BeforeEach
     void setup() {
-        loader = new SclModelLoader(createSclOcl());
+        loader = new SclModelLoader();
     }
 
     @Test

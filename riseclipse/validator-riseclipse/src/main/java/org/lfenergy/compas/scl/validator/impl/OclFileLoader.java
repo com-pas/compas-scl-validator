@@ -5,12 +5,15 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.ocl.pivot.resource.CSResource;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.eclipse.ocl.xtext.completeocl.validation.CompleteOCLEObjectValidator;
+import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +29,18 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
 public class OclFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(OclFileLoader.class);
 
+    private final List<URI> oclFiles;
     private final Path oclTempFile;
     private final OCL ocl;
 
-    public OclFileLoader(OCL ocl, Path tempDirectoryPath) {
-        this.ocl = ocl;
+    public OclFileLoader(Path tempDirectoryPath, List<URI> oclFiles) {
+        this.oclFiles = oclFiles;
 
-        // *.ocl Complete OCL documents support required
-        org.eclipse.ocl.xtext.completeocl.CompleteOCLStandaloneSetup.doSetup();
-        // *.oclstdlib OCL Standard Library support required
-        org.eclipse.ocl.xtext.oclstdlib.OCLstdlibStandaloneSetup.doSetup();
+        // Create an EPackage.Registry for the SclPackage.
+        var registry = new EPackageRegistryImpl();
+        registry.put(SclPackage.eNS_URI, SclPackage.eINSTANCE);
+        // Create an OCL that creates a ResourceSet using the minimal EPackage.Registry
+        this.ocl = OCL.newInstance(registry);
 
         // First make sure the directory for temporary file exists.
         var tempDirectory = tempDirectoryPath.toFile();
@@ -48,6 +53,12 @@ public class OclFileLoader {
         } catch (IOException exp) {
             throw new SclValidatorException(CREATE_OCL_TEMP_FILES_FAILED, "Unable to create temporary file", exp);
         }
+    }
+
+    public void loadOCLDocuments(SclFileType type) {
+        oclFiles.stream()
+                .filter(uri -> OclUtil.includeOnType(uri, type))
+                .forEach(this::addOCLDocument);
     }
 
     public void addOCLDocument(URI oclUri) {
@@ -97,6 +108,8 @@ public class OclFileLoader {
     }
 
     public void cleanup() {
+        ocl.dispose();
+
         try {
             if (!Files.deleteIfExists(oclTempFile)) {
                 LOGGER.warn("Unable to remove temporary file '{}'.", oclTempFile);
