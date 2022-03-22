@@ -18,9 +18,6 @@ SPDX-License-Identifier: Apache-2.0
     <packaging>pom</packaging>
 
     <modules>
-        <module>riseclipse-developer</module>
-        <module>riseclipse-main</module>
-        <module>riseclipse-metamodel-scl2003</module>
         <module>validator-riseclipse</module>
     </modules>
 
@@ -113,4 +110,19 @@ SPDX-License-Identifier: Apache-2.0
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>include-riseclipse</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>riseclipse-developer</module>
+                <module>riseclipse-main</module>
+                <module>riseclipse-metamodel-scl2003</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
