@@ -17,6 +17,13 @@ SPDX-License-Identifier: Apache-2.0
     <artifactId>riseclipse</artifactId>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>riseclipse-developer</module>
+        <module>riseclipse-main</module>
+        <module>riseclipse-metamodel-scl2003</module>
+        <module>validator-riseclipse</module>
+    </modules>
+
     <properties>
         <eclipse.core.resources.version>3.16.0</eclipse.core.resources.version>
         <eclipse.emf.ecore.version>2.26.0</eclipse.emf.ecore.version>
@@ -36,6 +43,19 @@ SPDX-License-Identifier: Apache-2.0
             </url>
         </repository>
     </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
@@ -106,28 +126,4 @@ SPDX-License-Identifier: Apache-2.0
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <id>include-riseclipse</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <modules>
-                <module>riseclipse-developer</module>
-                <module>riseclipse-main</module>
-                <module>riseclipse-metamodel-scl2003</module>
-                <module>validator-riseclipse</module>
-            </modules>
-        </profile>
-
-        <!--        <profile>-->
-        <!--            <id>exclude-riseclipse</id>-->
-
-        <!--            <modules>-->
-        <!--                <module>validator-riseclipse</module>-->
-        <!--            </modules>-->
-        <!--        </profile>-->
-    </profiles>
 </project>
