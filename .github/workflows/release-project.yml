@@ -66,6 +66,6 @@ jobs:
       - name: Deploy with Maven to GitHub Packages and Docker Hub
         # Now deploy all the CoMPAS Modules to GitHub Package, but excluded the RiseClipse Submodules.
         # The RiseClipse modules can't be deployed, because of missing information in the POM Files.
-        run: ./mvnw -B -s custom_maven_settings.xml -Prelease,\!include-riseclipse deploy
+        run: ./mvnw -B -s custom_maven_settings.xml -Prelease,\!include-riseclipse,exclude-riseclipse deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
