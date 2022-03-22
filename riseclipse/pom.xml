@@ -28,13 +28,6 @@ SPDX-License-Identifier: Apache-2.0
         <riseclipse.developer.root>${project.basedir}/riseclipse-developer</riseclipse.developer.root>
     </properties>
 
-    <modules>
-        <module>riseclipse-developer</module>
-        <module>riseclipse-main</module>
-        <module>riseclipse-metamodel-scl2003</module>
-        <module>validator-riseclipse</module>
-    </modules>
-
     <repositories>
         <repository>
             <id>local-eclipse-p2-mirror</id>
@@ -114,21 +107,27 @@ SPDX-License-Identifier: Apache-2.0
         </dependencies>
     </dependencyManagement>
 
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>include-riseclipse</id>-->
-    <!--            <activation>-->
-    <!--                <activeByDefault>true</activeByDefault>-->
-    <!--            </activation>-->
+    <profiles>
+        <profile>
+            <id>include-riseclipse</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
-    <!--        </profile>-->
+            <modules>
+                <module>riseclipse-developer</module>
+                <module>riseclipse-main</module>
+                <module>riseclipse-metamodel-scl2003</module>
+                <module>validator-riseclipse</module>
+            </modules>
+        </profile>
 
-    <!--        <profile>-->
-    <!--            <id>exclude-riseclipse</id>-->
+        <!--        <profile>-->
+        <!--            <id>exclude-riseclipse</id>-->
 
-    <!--            <modules>-->
-    <!--                <module>validator-riseclipse</module>-->
-    <!--            </modules>-->
-    <!--        </profile>-->
-    <!--    </profiles>-->
+        <!--            <modules>-->
+        <!--                <module>validator-riseclipse</module>-->
+        <!--            </modules>-->
+        <!--        </profile>-->
+    </profiles>
 </project>
