@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2022 Alliander N.V.
+
+SPDX-License-Identifier: Apache-2.0
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.lfenergy.compas.scl.validator</groupId>
+        <artifactId>compas-scl-validator</artifactId>
+        <version>local-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>riseclipse</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>riseclipse-developer</module>
+        <module>riseclipse-main</module>
+        <module>riseclipse-metamodel-scl2003</module>
+        <module>validator-riseclipse</module>
+    </modules>
+
+    <properties>
+        <eclipse.core.resources.version>3.16.0</eclipse.core.resources.version>
+        <eclipse.emf.ecore.version>2.26.0</eclipse.emf.ecore.version>
+        <eclipse.emf.common.version>2.24.0</eclipse.emf.common.version>
+        <eclipse.ocl.version>1.17.0</eclipse.ocl.version>
+        <antlr.runtime.version>3.2.0</antlr.runtime.version>
+        <riseclipse.version>1.1.0-SNAPSHOT</riseclipse.version>
+
+        <riseclipse.developer.root>${project.basedir}/riseclipse-developer</riseclipse.developer.root>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>local-eclipse-p2-mirror</id>
+            <url>
+                file:///${riseclipse.developer.root}/fr.centralesupelec.edf.riseclipse.developer.p2_to_m2/target/maven/repository/final
+            </url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+                <artifactId>fr.centralesupelec.edf.riseclipse.iec61850.scl</artifactId>
+                <version>${riseclipse.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.core</groupId>
+                <artifactId>org.eclipse.core.resources</artifactId>
+                <version>${eclipse.core.resources.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.emf</groupId>
+                <artifactId>org.eclipse.emf.common</artifactId>
+                <version>${eclipse.emf.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.emf</groupId>
+                <artifactId>org.eclipse.emf.ecore</artifactId>
+                <version>${eclipse.emf.ecore.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.ocl</groupId>
+                <artifactId>org.eclipse.ocl.pivot</artifactId>
+                <version>${eclipse.ocl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.ocl</groupId>
+                <artifactId>org.eclipse.ocl.xtext.completeocl</artifactId>
+                <version>${eclipse.ocl.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>antlr-runtime</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- optional dependency, not needed -->
+                        <groupId>org.eclipse.ocl</groupId>
+                        <artifactId>org.eclipse.ocl.pivot.uml</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- optional dependency, not needed -->
+                        <groupId>org.eclipse.emf</groupId>
+                        <artifactId>org.eclipse.emf.codegen</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- Wrong groupid in org.eclipse.xtext/2.25.0.M1, leading to wrong version -->
+                        <groupId>org.eclipse.platform</groupId>
+                        <artifactId>org.eclipse.equinox.common</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.ocl</groupId>
+                <artifactId>org.eclipse.ocl.xtext.oclstdlib</artifactId>
+                <version>${eclipse.ocl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr.runtime</groupId>
+                <artifactId>org.antlr.runtime</artifactId>
+                <version>${antlr.runtime.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
