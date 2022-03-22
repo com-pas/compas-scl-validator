@@ -26,12 +26,27 @@ public class CompasOclFileCollector extends AbstractFileCollector {
     @Override
     public List<URI> getOclFiles() {
         LOGGER.debug("Searching for OCL Files in classpath.");
-
         var oclFiles = new ArrayList<>(getDefaultOclFilesFromClasspath());
+
         if (oclCustomDirectory != null) {
             LOGGER.debug("Searching for OCL Files in custom directory '{}'.", oclCustomDirectory);
             oclFiles.addAll(getFilesFromDirectory(oclCustomDirectory, path -> path.toString().endsWith(".ocl")));
         }
+
+        logListOfFiles(oclFiles);
         return oclFiles;
+    }
+
+    /**
+     * Log the list of files found during startup.
+     *
+     * @param oclFiles The List of Files found.
+     */
+    protected void logListOfFiles(ArrayList<URI> oclFiles) {
+        if (oclFiles != null && !oclFiles.isEmpty()) {
+            oclFiles.forEach(oclFile -> LOGGER.info("Found OCL File '{}'", oclFile));
+        } else {
+            LOGGER.warn("No OCL Files found!");
+        }
     }
 }
