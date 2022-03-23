@@ -6,6 +6,7 @@ package org.lfenergy.compas.scl.validator.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.lfenergy.compas.scl.validator.util.OclUtil;
 
 import java.io.IOException;
 
@@ -18,6 +19,9 @@ class SclModelLoaderTest {
 
     @BeforeEach
     void setup() {
+        // Initialize the OCL Libraries
+        OclUtil.setupOcl();
+
         loader = new SclModelLoader();
     }
 
