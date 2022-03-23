@@ -55,10 +55,13 @@ jobs:
           output_file: custom_maven_settings.xml
           servers: '[{ "id": "github-packages-compas", "username": "OWNER", "password": "${{ secrets.GITHUB_TOKEN }}" }]'
       - name: Set version with Maven
+        # Only set the version for the CoMPAS Modules, excluding the RiseClipse Modules.
         run: ./mvnw -B versions:set -DgroupId=org.lfenergy.compas.scl.validator -DnewVersion=${{ steps.extract_tagname.outputs.tagname }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy with Maven to GitHub Packages and Docker Hub
+        # We neeed to pass the Repository information, because these are missing/need to be overwritten for the
+        # RiseClipse Submodules for which we can't update the POM files.
         run: |
           ./mvnw -B -s custom_maven_settings.xml \
                  -DaltDeploymentRepository=github-packages-compas::default::https://maven.pkg.github.com/com-pas/compas-scl-validator \
