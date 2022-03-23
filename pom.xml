@@ -25,6 +25,9 @@ SPDX-License-Identifier: Apache-2.0
         <sonarqube-plugin.version>3.2.0</sonarqube-plugin.version>
 
         <compas.core.version>0.8.0</compas.core.version>
+        <jaxb.bind.version>2.3.6</jaxb.bind.version>
+
+        <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
 
         <quarkus.platform.version>2.7.5.Final</quarkus.platform.version>
         <slf4j.version>1.7.36</slf4j.version>
@@ -36,6 +39,9 @@ SPDX-License-Identifier: Apache-2.0
         <module>riseclipse</module>
         <module>service</module>
         <module>app</module>
+        <module>scl2003</module>
+        <module>scl2007b</module>
+        <module>scl2007b4</module>
     </modules>
 
     <distributionManagement>
@@ -82,6 +88,11 @@ SPDX-License-Identifier: Apache-2.0
                 <artifactId>validator-riseclipse</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.lfenergy.compas.xsd</groupId>
+                <artifactId>compas-scl-xsd</artifactId>
+                <version>${compas.scl.xsd.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.lfenergy.compas.core</groupId>
@@ -97,6 +108,12 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.lfenergy.compas.core</groupId>
                 <artifactId>jaxrs-commons</artifactId>
                 <version>${compas.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.bind.version}</version>
             </dependency>
 
             <dependency>
@@ -141,6 +158,33 @@ SPDX-License-Identifier: Apache-2.0
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <parameters>${maven.compiler.parameters}</parameters>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jvnet.jaxb2.maven2</groupId>
+                    <artifactId>maven-jaxb2-plugin</artifactId>
+                    <version>0.14.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-namespace-prefix</artifactId>
+                            <version>1.3</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>xjc</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <args>
+                            <arg>-extension</arg>
+                            <arg>-Xnamespace-prefix</arg>
+                        </args>
                     </configuration>
                 </plugin>
 
