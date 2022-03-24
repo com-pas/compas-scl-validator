@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -16,12 +17,15 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
 
 public class XSDValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
@@ -67,7 +71,7 @@ public class XSDValidator {
 
     }
 
-    public static void validate( String sclFile ) {
+    public static void validate(ArrayList<ValidationError> errors, String sclFile ) {
         xsdValidator.reset();
 
         try {
@@ -78,6 +82,9 @@ public class XSDValidator {
             LOGGER.error( "[XSD validation] IOException: " + e.getMessage() );
         }
         catch( SAXException e ) {
+            var validationError = new ValidationError();
+            errors.add(validationError);
+            validationError.setMessage("[XSD validation] SAXException: " + e.getMessage());
             LOGGER.error( "[XSD validation] SAXException: " + e.getMessage() );
         }
     }
