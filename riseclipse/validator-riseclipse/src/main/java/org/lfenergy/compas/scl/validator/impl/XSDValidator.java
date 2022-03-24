@@ -1,12 +1,12 @@
+// SPDX-FileCopyrightText: 2022 Alliander N.V.
+//
+// SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.impl;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
