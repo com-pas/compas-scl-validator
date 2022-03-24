@@ -43,6 +43,9 @@ public class SclRiseClipseValidator implements SclValidator {
 
     @Override
     public List<ValidationError> validate(SclFileType type, String sclData) {
+        XSDValidator.prepare("/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b/target/xsd/SCL2007B/SCL.xsd");
+        XSDValidator.validate(sclData);
+
         // List with Validation Error Results if there are any.
         var validationErrors = new ArrayList<ValidationError>();
 
