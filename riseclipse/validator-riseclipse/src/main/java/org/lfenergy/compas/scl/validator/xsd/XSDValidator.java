@@ -1,11 +1,10 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.impl;
+package org.lfenergy.compas.scl.validator.xsd;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
@@ -28,12 +27,18 @@ import org.xml.sax.SAXParseException;
 public class XSDValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
 
-    private static Validator xsdValidator;
+    private Validator xsdValidator;
 
-    public static void prepare( ArrayList<ValidationError> errors, String xsdFile ) {
+    private final ArrayList<ValidationError> errorList;
+
+    public XSDValidator(ArrayList<ValidationError> errorList) {
+        this.errorList = errorList;
+    }
+
+    public void prepare(String xsdFile) {
         SchemaFactory factory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
 
-        Source schemaFile = new StreamSource( new File( xsdFile ) );
+        Source schemaFile = new StreamSource(new File(xsdFile) );
         Schema schema;
         try {
             schema = factory.newSchema( schemaFile );
@@ -45,11 +50,9 @@ public class XSDValidator {
         }
 
         xsdValidator.setErrorHandler( new ErrorHandler() {
-
             @Override
             public void warning( SAXParseException exception ) {
-                var validationError = new ValidationError();
-                errors.add(validationError);
+                var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
                 LOGGER.warn( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
@@ -58,8 +61,7 @@ public class XSDValidator {
 
             @Override
             public void error( SAXParseException exception ) {
-                var validationError = new ValidationError();
-                errors.add(validationError);
+                var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
                 LOGGER.error( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
@@ -68,22 +70,20 @@ public class XSDValidator {
 
             @Override
             public void fatalError( SAXParseException exception ) {
-                var validationError = new ValidationError();
-                errors.add(validationError);
+                var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
                 LOGGER.error( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage() );
                 LOGGER.error( "[XSD validation] fatal error for schema validation, stopping" );
-                return;
             }
         } );
 
     }
 
-    public static void validate(String sclFile ) {
+    public void validate(String sclFile ) {
         try {
-            SAXSource source = new SAXSource( new InputSource( new StringReader(sclFile) ) );
+            SAXSource source = new SAXSource(new InputSource(new StringReader(sclFile)));
             xsdValidator.validate( source );
         }
         catch( IOException e ) {
@@ -94,43 +94,9 @@ public class XSDValidator {
         }
     }
 
-    // From https://stackoverflow.com/questions/5353783/why-org-apache-xerces-parsers-saxparser-does-not-skip-bom-in-utf8-encoded-xml
-
-    private static char[] UTF32BE = { 0x0000, 0xFEFF };
-    private static char[] UTF32LE = { 0xFFFE, 0x0000 };
-    private static char[] UTF16BE = { 0xFEFF         };
-    private static char[] UTF16LE = { 0xFFFE         };
-    private static char[] UTF8    = { 0xEFBB, 0xBF   };
-
-    private static boolean removeBOM( Reader reader, char[] bom ) throws IOException {
-        int bomLength = bom.length;
-        reader.mark( bomLength );
-        char[] possibleBOM = new char[bomLength];
-        reader.read( possibleBOM );
-        for( int x = 0; x < bomLength; x++ ) {
-            if( ( int ) bom[x] != ( int ) possibleBOM[x] ) {
-                reader.reset();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static void removeBOM( Reader reader ) throws IOException {
-        if( removeBOM( reader, UTF32BE )) {
-            return;
-        }
-        if( removeBOM( reader, UTF32LE )) {
-            return;
-        }
-        if( removeBOM( reader, UTF16BE )) {
-            return;
-        }
-        if( removeBOM( reader, UTF16LE )) {
-            return;
-        }
-        if( removeBOM( reader, UTF8 )) {
-            return;
-        }
+    private ValidationError addNewValidationError() {
+        var validationError = new ValidationError();
+        errorList.add(validationError);
+        return validationError;
     }
 }

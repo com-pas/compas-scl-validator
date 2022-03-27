@@ -18,6 +18,7 @@ import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
+import org.lfenergy.compas.scl.validator.xsd.XSDValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +47,9 @@ public class SclRiseClipseValidator implements SclValidator {
         // List with Validation Error Results if there are any.
         var validationErrors = new ArrayList<ValidationError>();
 
-        XSDValidator.prepare(validationErrors, "/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b/target/xsd/SCL2007B/SCL.xsd");
-        XSDValidator.validate(sclData);
+        var xsdValidator = new XSDValidator(validationErrors);
+        xsdValidator.prepare("/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b/target/xsd/SCL2007B/SCL.xsd");
+        xsdValidator.validate(sclData);
 
         if (!validationErrors.isEmpty()) return validationErrors;
 
