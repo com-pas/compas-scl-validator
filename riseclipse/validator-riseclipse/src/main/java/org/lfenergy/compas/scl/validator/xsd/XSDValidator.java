@@ -38,59 +38,59 @@ public class XSDValidator {
     public void prepare(String xsdFile) {
         SchemaFactory factory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
 
-        Source schemaFile = new StreamSource(new File(xsdFile) );
+        Source schemaFile = new StreamSource(new File(xsdFile));
         Schema schema;
         try {
-            schema = factory.newSchema( schemaFile );
+            schema = factory.newSchema(schemaFile);
             xsdValidator = schema.newValidator();
         }
-        catch( SAXException e ) {
-            LOGGER.error( "[XSD validation] SAXException: " + e.getMessage() );
+        catch(SAXException exception) {
+            LOGGER.error("[XSD validation] SAXException: " + exception.getMessage());
             return;
         }
 
-        xsdValidator.setErrorHandler( new ErrorHandler() {
+        xsdValidator.setErrorHandler(new ErrorHandler() {
             @Override
-            public void warning( SAXParseException exception ) {
+            public void warning(SAXParseException exception) {
                 var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
-                LOGGER.warn( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
-                        + exception.getColumnNumber() + "): " + exception.getMessage() );
+                LOGGER.warn("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
+                        + exception.getColumnNumber() + "): " + exception.getMessage());
             }
 
             @Override
-            public void error( SAXParseException exception ) {
+            public void error(SAXParseException exception) {
                 var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
-                LOGGER.error( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
-                        + exception.getColumnNumber() + "): " + exception.getMessage() );
+                LOGGER.error("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
+                        + exception.getColumnNumber() + "): " + exception.getMessage());
             }
 
             @Override
-            public void fatalError( SAXParseException exception ) {
+            public void fatalError(SAXParseException exception) {
                 var validationError = addNewValidationError();
                 validationError.setMessage("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
                         + exception.getColumnNumber() + "): " + exception.getMessage());
-                LOGGER.error( "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
-                        + exception.getColumnNumber() + "): " + exception.getMessage() );
-                LOGGER.error( "[XSD validation] fatal error for schema validation, stopping" );
+                LOGGER.error("[XSD validation] (line: " + exception.getLineNumber() + ", column: "
+                        + exception.getColumnNumber() + "): " + exception.getMessage());
+                LOGGER.error("[XSD validation] fatal error for schema validation, stopping");
             }
         } );
 
     }
 
-    public void validate(String sclFile ) {
+    public void validate(String sclFile) {
         try {
             SAXSource source = new SAXSource(new InputSource(new StringReader(sclFile)));
-            xsdValidator.validate( source );
+            xsdValidator.validate(source);
         }
-        catch( IOException e ) {
-            LOGGER.error( "[XSD validation] IOException: " + e.getMessage() );
+        catch(IOException exception) {
+            LOGGER.error( "[XSD validation] IOException: " + exception.getMessage() );
         }
-        catch( SAXException e ) {
-            LOGGER.error( "[XSD validation] SAXException: " + e.getMessage() );
+        catch(SAXException exception) {
+            LOGGER.error( "[XSD validation] SAXException: " + exception.getMessage() );
         }
     }
 

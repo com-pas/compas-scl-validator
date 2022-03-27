@@ -16,16 +16,28 @@ import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
+import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.lfenergy.compas.scl.validator.xsd.XSDValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.CONVERTING_SCL_FILE_ERROR_CODE;
 import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
 
 public class SclRiseClipseValidator implements SclValidator {
@@ -48,7 +60,7 @@ public class SclRiseClipseValidator implements SclValidator {
         var validationErrors = new ArrayList<ValidationError>();
 
         var xsdValidator = new XSDValidator(validationErrors);
-        xsdValidator.prepare("/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b4/target/xsd/SCL2007B4/SCL.xsd");
+        xsdValidator.prepare(getXsdPath(sclData));
         xsdValidator.validate(sclData);
 
         if (!validationErrors.isEmpty()) return validationErrors;
@@ -94,6 +106,39 @@ public class SclRiseClipseValidator implements SclValidator {
             // Also process the children of the children.
             processDiagnostic(childDiagnostic, validationErrors);
         }
+    }
+
+    private String getXsdPath(String sclData) {
+        var sclElementAttributes = convertToDocument(sclData)
+                .getElementsByTagName("SCL").item(0).getAttributes();
+
+        var version = getAttributeValue(sclElementAttributes, "version");
+        var revision = getAttributeValue(sclElementAttributes, "revision");
+        var release = getAttributeValue(sclElementAttributes, "release");
+
+        var finalVersion = "";
+        if (version != null) finalVersion+=version;
+        if (revision != null) finalVersion+=revision;
+        if (release != null) finalVersion+=release;
+
+        return "/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b4/target/xsd/SCL2007B4/SCL.xsd";
+    }
+
+    private Document convertToDocument(String value) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            return builder.parse(new InputSource(new StringReader(value)));
+        } catch (Exception e) {
+            throw new SclValidatorException(CONVERTING_SCL_FILE_ERROR_CODE, "Unable to convert SCL file to document", e);
+        }
+    }
+
+    private String getAttributeValue(NamedNodeMap attributes, String attributeName) {
+        if (attributes.getNamedItem(attributeName) != null) {
+            return attributes.getNamedItem(attributeName).getNodeValue();
+        }
+        return null;
     }
 
     /**
