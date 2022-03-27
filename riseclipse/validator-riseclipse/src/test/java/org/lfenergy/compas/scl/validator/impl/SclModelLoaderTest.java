@@ -23,7 +23,7 @@ class SclModelLoaderTest {
 
     @Test
     void load_WhenCalledWithValidSCXML_ThenResourceLoaded() throws IOException {
-        var sclData = readSCL("example.scd");
+        var sclData = readSCL("example-with-ocl-validation-errors.scd");
 
         var result = loader.load(sclData);
 

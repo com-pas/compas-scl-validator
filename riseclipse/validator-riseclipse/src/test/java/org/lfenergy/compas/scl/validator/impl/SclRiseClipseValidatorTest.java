@@ -11,8 +11,7 @@ import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.lfenergy.compas.scl.validator.util.TestSupportUtil.readSCL;
 
 class SclRiseClipseValidatorTest {
@@ -25,13 +24,24 @@ class SclRiseClipseValidatorTest {
     }
 
     @Test
-    void validate_WhenCalled_ThenExpectedValidationErrorsReturned() throws IOException {
+    void validate_WhenCalled_ThenExpectedXSDValidationErrorsReturned() throws IOException {
         var type = SclFileType.CID;
-        var sclData = readSCL("example.scd");
+        var sclData = readSCL("example-with-xsd-validation-errors.scd");
 
         var result = sclValidator.validate(type, sclData);
 
         assertNotNull(result);
-//        assertEquals(15, result.size());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void validate_WhenCalled_ThenExpectedOCLValidationErrorsReturned() throws IOException {
+        var type = SclFileType.CID;
+        var sclData = readSCL("example-with-ocl-validation-errors.scd");
+
+        var result = sclValidator.validate(type, sclData);
+
+        assertNotNull(result);
+        assertEquals(15, result.size());
     }
 }

@@ -48,7 +48,7 @@ public class SclRiseClipseValidator implements SclValidator {
         var validationErrors = new ArrayList<ValidationError>();
 
         var xsdValidator = new XSDValidator(validationErrors);
-        xsdValidator.prepare("/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b/target/xsd/SCL2007B/SCL.xsd");
+        xsdValidator.prepare("/Users/rob/Code/CoMPAS/compas-scl-validator/scl2007b4/target/xsd/SCL2007B4/SCL.xsd");
         xsdValidator.validate(sclData);
 
         if (!validationErrors.isEmpty()) return validationErrors;
