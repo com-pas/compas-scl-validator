@@ -46,7 +46,7 @@ public class SclRiseClipseValidator implements SclValidator {
         // List with Validation Error Results if there are any.
         var validationErrors = new ArrayList<ValidationError>();
 
-        var xsdValidator = new XSDValidator(validationErrors);
+        var xsdValidator = new XSDValidator(validationErrors, sclData);
         xsdValidator.validate(sclData);
 
         if (!validationErrors.isEmpty()) return validationErrors;

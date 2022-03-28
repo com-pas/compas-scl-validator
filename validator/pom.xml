@@ -91,5 +91,10 @@ SPDX-License-Identifier: Apache-2.0
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>target/xsd</directory>
+            </resource>
+        </resources>
     </build>
 </project>
