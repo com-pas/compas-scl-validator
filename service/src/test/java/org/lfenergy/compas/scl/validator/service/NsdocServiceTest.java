@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,7 +45,7 @@ class NsdocServiceTest {
 
     @Test
     void get_WhenCalled_ThenContentReturned() {
-        String id = "IEC 61850-7-3";
+        UUID id = UUID.randomUUID();
         String content = "<some><content/></some>";
 
         when(nsdocFinder.getNsdocFile(id)).thenReturn(content);

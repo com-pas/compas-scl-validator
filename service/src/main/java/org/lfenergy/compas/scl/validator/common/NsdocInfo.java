@@ -5,7 +5,6 @@ package org.lfenergy.compas.scl.validator.common;
 
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
-import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -25,8 +24,8 @@ public class NsdocInfo {
 
     public NsdocInfo(File file) {
         try (var fis = new FileInputStream(file)) {
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(fis);
+            var xmlInputFactory = XMLInputFactory.newInstance();
+            var reader = xmlInputFactory.createXMLEventReader(fis);
 
             while (id == null && reader.hasNext()) {
                 processEvent(reader.nextEvent());

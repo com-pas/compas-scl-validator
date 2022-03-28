@@ -25,14 +25,14 @@ public class NsdocFinder {
     private static final Logger LOGGER = LoggerFactory.getLogger(NsdocFinder.class);
 
     private final String nsdocDirectory;
-    private final Map<String, NsdocFile> nsdocFiles;
+    private final Map<UUID, NsdocFile> nsdocFiles;
 
     public NsdocFinder(String nsdocDirectory) {
         this.nsdocDirectory = nsdocDirectory;
         this.nsdocFiles = getFilesFromDirectory(nsdocDirectory);
     }
 
-    private Map<String, NsdocFile> getFilesFromDirectory(String directoryName) {
+    private Map<UUID, NsdocFile> getFilesFromDirectory(String directoryName) {
         File directory = new File(directoryName);
         if (directory.exists() && directory.isDirectory()) {
             var files = directory.listFiles();
@@ -51,7 +51,8 @@ public class NsdocFinder {
         try {
             var nsdocInfo = new NsdocInfo(file);
             var nsdocFile = new NsdocFile();
-            nsdocFile.setId(nsdocInfo.getId());
+            nsdocFile.setId(UUID.randomUUID());
+            nsdocFile.setNsDocId(nsdocInfo.getId());
             nsdocFile.setFilename(file.getName());
             nsdocFile.setChecksum(calculateChecksum(file));
             return nsdocFile;
@@ -73,11 +74,11 @@ public class NsdocFinder {
     public Collection<NsdocFile> getNsdocFiles() {
         return nsdocFiles.values()
                 .stream()
-                .sorted(Comparator.comparing(NsdocFile::getId))
+                .sorted(Comparator.comparing(NsdocFile::getNsDocId))
                 .collect(Collectors.toList());
     }
 
-    public String getNsdocFile(String id) {
+    public String getNsdocFile(UUID id) {
         try {
             if (nsdocFiles.containsKey(id)) {
                 var nsdocFile = nsdocFiles.get(id);

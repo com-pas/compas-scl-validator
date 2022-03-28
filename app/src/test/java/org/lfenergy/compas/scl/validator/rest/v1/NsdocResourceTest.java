@@ -13,16 +13,17 @@ import org.lfenergy.compas.core.jaxrs.JaxrsConstants;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
-import org.lfenergy.compas.scl.validator.rest.v1.model.NsdocGetRequest;
 import org.lfenergy.compas.scl.validator.service.NsdocService;
 
 import java.util.List;
+import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.config.XmlPathConfig.xmlPathConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
+import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.ID_PARAM;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
@@ -40,7 +41,7 @@ class NsdocResourceTest {
         var response = given()
                 .contentType(ContentType.XML)
                 .when()
-                .get("/list")
+                .get()
                 .then()
                 .statusCode(200)
                 .extract()
@@ -56,20 +57,17 @@ class NsdocResourceTest {
 
     @Test
     void get_WhenCalled_ThenContentReturned() {
-        String id = "IEC 61850-7-3";
+        UUID id = UUID.randomUUID();
         String result = "<some><xml></xml></some>";
-
-        NsdocGetRequest request = new NsdocGetRequest();
-        request.setId(id);
 
         when(nsdocService.get(id))
                 .thenReturn(result);
 
         var response = given()
+                .pathParam(ID_PARAM, id)
                 .contentType(ContentType.XML)
-                .body(request)
                 .when()
-                .get("/get")
+                .get("/{" + ID_PARAM + "}")
                 .then()
                 .statusCode(200)
                 .extract()
@@ -83,19 +81,16 @@ class NsdocResourceTest {
 
     @Test
     void get_WhenCalledWithUnknownFile_Then404Returned() {
-        String id = "IEC 61850-7-3";
-
-        NsdocGetRequest request = new NsdocGetRequest();
-        request.setId(id);
+        UUID id = UUID.randomUUID();
 
         when(nsdocService.get(id))
                 .thenThrow(new NsdocFileNotFoundException("Some Message"));
 
         var response = given()
+                .pathParam(ID_PARAM, id)
                 .contentType(ContentType.XML)
-                .body(request)
                 .when()
-                .get("/get")
+                .get("/{" + ID_PARAM + "}")
                 .then()
                 .statusCode(404)
                 .extract()

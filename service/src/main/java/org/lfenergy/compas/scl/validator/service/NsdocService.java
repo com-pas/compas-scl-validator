@@ -9,6 +9,7 @@ import org.lfenergy.compas.scl.validator.model.NsdocFile;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.UUID;
 
 @ApplicationScoped
 public class NsdocService {
@@ -23,7 +24,7 @@ public class NsdocService {
         return nsdocFinder.getNsdocFiles();
     }
 
-    public String get(String id) {
+    public String get(UUID id) {
         return nsdocFinder.getNsdocFile(id);
     }
 }

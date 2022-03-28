@@ -5,7 +5,14 @@ package org.lfenergy.compas.scl.validator.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.lfenergy.compas.scl.validator.util.StaxUtil.getAttributeValue;
+import static org.lfenergy.compas.scl.validator.util.StaxUtil.isElement;
 
 class StaxUtilTest {
     @Test
@@ -13,4 +20,62 @@ class StaxUtilTest {
         assertThrows(UnsupportedOperationException.class, StaxUtil::new);
     }
 
+    @Test
+    void isElement_WhenCalledWithExpectedElementName_ThenFirstElementHasCorrectElementName() throws XMLStreamException, IOException {
+        var element = getFirstElement();
+        if (element != null) {
+            var result = isElement(element, "NSDoc");
+            assertTrue(result, "No NSDoc Element Found");
+        } else {
+            fail("XML File couldn't be read.");
+        }
+    }
+
+    @Test
+    void isElement_WhenCalledWithUnknownElementName_ThenFirstElementHasIncorrectElementName() throws XMLStreamException, IOException {
+        var element = getFirstElement();
+        if (element != null) {
+            var result = isElement(element, "Unknown");
+            assertFalse(result, "Unknown Element shouldn't be Found");
+        } else {
+            fail("XML File couldn't be read.");
+        }
+    }
+
+    @Test
+    void getAttributeValue_WhenCalledWithKnownAttribute_ThenAttributeValueReturned() throws XMLStreamException, IOException {
+        var element = getFirstElement();
+        if (element != null) {
+            var result = getAttributeValue(element, "version");
+            assertEquals("1010", result);
+        } else {
+            fail("XML File couldn't be read.");
+        }
+    }
+
+    @Test
+    void getAttributeValue_WhenCalledWithUnknownAttribute_ThenNullReturned() throws XMLStreamException, IOException {
+        var element = getFirstElement();
+        if (element != null) {
+            var result = getAttributeValue(element, "unknown");
+            assertNull(result);
+        } else {
+            fail("XML File couldn't be read.");
+        }
+    }
+
+    private StartElement getFirstElement() throws XMLStreamException, IOException {
+        try (var inputStream = getClass().getResourceAsStream("/testFile74.nsdoc")) {
+            var xmlInputFactory = XMLInputFactory.newInstance();
+            var reader = xmlInputFactory.createXMLEventReader(inputStream);
+
+            while (reader.hasNext()) {
+                var nextEvent = reader.nextEvent();
+                if (nextEvent.isStartElement()) {
+                    return nextEvent.asStartElement();
+                }
+            }
+            return null;
+        }
+    }
 }
