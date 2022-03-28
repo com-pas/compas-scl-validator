@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.common;
 
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -25,8 +26,16 @@ public class NsdocInfo {
 
     public NsdocInfo(File file) {
         try (var fis = new FileInputStream(file)) {
-            var xmlInputFactory = XMLInputFactory.newInstance();
-            var reader = xmlInputFactory.createXMLEventReader(fis);
+            var factory = XMLInputFactory.newInstance();
+            // to be compliant, completely disable DOCTYPE declaration:
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            // or completely disable external entities declarations:
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+            // or prohibit the use of all protocols by external entities:
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+            var reader = factory.createXMLEventReader(fis);
 
             while (id == null && reader.hasNext()) {
                 processEvent(reader.nextEvent());
