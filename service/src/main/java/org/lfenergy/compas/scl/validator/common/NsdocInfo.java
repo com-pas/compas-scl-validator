@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.DETERMINING_ID_FAILED;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_NSDOC_FILE_FAILED;
 import static org.lfenergy.compas.scl.validator.util.StaxUtil.getAttributeValue;
 import static org.lfenergy.compas.scl.validator.util.StaxUtil.isElement;
 
@@ -31,7 +32,7 @@ public class NsdocInfo {
                 processEvent(reader.nextEvent());
             }
         } catch (IOException | XMLStreamException exp) {
-            throw new SclValidatorException(DETERMINING_ID_FAILED, "Error loading NSDoc File " + file.getName() + "'.", exp);
+            throw new SclValidatorException(LOADING_NSDOC_FILE_FAILED, "Error loading NSDoc File " + file.getName() + "'.", exp);
         }
 
         if (id == null) {
