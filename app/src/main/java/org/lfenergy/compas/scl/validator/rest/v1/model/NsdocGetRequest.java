@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-
 package org.lfenergy.compas.scl.validator.rest.v1.model;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -14,20 +13,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 
-@Schema(description = "The Validation Request retrieved")
-@XmlRootElement(name = "SclValidateRequest", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+@Schema(description = "The request to retrieve a NSDoc File.")
+@XmlRootElement(name = "NsdocGetRequest", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SclValidateRequest {
-    @Schema(description = "The SCL Data to be validated")
+public class NsdocGetRequest {
+    @Schema(description = "The ID of the NSDoc Files")
     @NotBlank
-    @XmlElement(name = "SclData", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
-    protected String sclData;
+    @XmlElement(name = "Id", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private String id;
 
-    public String getSclData() {
-        return sclData;
+    public String getId() {
+        return id;
     }
 
-    public void setSclData(String sclData) {
-        this.sclData = sclData;
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -56,8 +56,8 @@ class SclValidatorResourceTest {
                 .response();
 
         var xmlPath = response.xmlPath()
-                .using(xmlPathConfig().declaredNamespace("saa", SCL_VALIDATOR_SERVICE_V1_NS_URI));
-        var errors = xmlPath.getList("saa:SclValidateResponse.ValidationErrors");
+                .using(xmlPathConfig().declaredNamespace("svs", SCL_VALIDATOR_SERVICE_V1_NS_URI));
+        var errors = xmlPath.getList("svs:SclValidateResponse.svs:ValidationErrors");
         assertNotNull(errors);
         assertEquals(1, errors.size());
         verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());

@@ -19,4 +19,9 @@ public class SclValidatorErrorCode {
     public static final String WRITE_TO_OCL_TEMP_FILES_FAILED = "SVS-2003";
     public static final String OCL_MODEL_PACKAGE_NOT_FOUND = "SVS-2005";
     public static final String NO_URI_PASSED = "SVS-2006";
+
+    public static final String CALCULATING_CHECKSUM_FAILED = "SVS-3001";
+    public static final String DETERMINING_ID_FAILED = "SVS-3002";
+    public static final String LOADING_NSDOC_FILE_FAILED = "SVS-3003";
+    public static final String NSDOC_FILE_NOT_FOUND = "SVS-3004";
 }
