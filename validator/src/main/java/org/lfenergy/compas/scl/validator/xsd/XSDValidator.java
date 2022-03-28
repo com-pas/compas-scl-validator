@@ -6,6 +6,8 @@ package org.lfenergy.compas.scl.validator.xsd;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.XMLConstants;
@@ -16,6 +18,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,8 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_XSD_FILE_ERROR_CODE;
 
 public class XSDValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
@@ -34,28 +39,24 @@ public class XSDValidator {
     public XSDValidator(ArrayList<ValidationError> errorList, String sclData) {
         this.errorList = errorList;
 
-        SchemaFactory factory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL url = classLoader.getResource(getCorrectXsd(sclData));
 
-        var sclInfo = new SclInfo(sclData);
-        var version = sclInfo.getVersion();
-        var revision = sclInfo.getRevision();
-        var release = sclInfo.getRelease();
+        if (url == null) throw new SclValidatorException(LOADING_XSD_FILE_ERROR_CODE, "XSD file not found");
 
-//        var resource = Resources.getResource("SCL2007B4/SCL.xsd");
-//        if (resource.isPresent()) {
-//            var url = resource.get();
-//            LOGGER.info(new File(url.toString()).toString());
-//        }
-
-        var file = new File("/Users/rob/Code/CoMPAS/compas-scl-validator/validator/target/xsd/SCL2007B4/SCL.xsd");
-        Source schemaFile = new StreamSource(file);
-        Schema schema;
         try {
-            schema = factory.newSchema(schemaFile);
+            var file = new File(url.toURI());
+            Source schemaFile = new StreamSource(file);
+            SchemaFactory factory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
+            Schema schema = factory.newSchema(schemaFile);
             xsdValidator = schema.newValidator();
         }
         catch(SAXException exception) {
             LOGGER.error("[XSD validation] SAXException: " + exception.getMessage());
+            return;
+        }
+        catch(URISyntaxException exception) {
+            LOGGER.error("[XSD validation] URISyntaxException: " + exception.getMessage());
             return;
         }
 
@@ -107,5 +108,20 @@ public class XSDValidator {
         var validationError = new ValidationError();
         errorList.add(validationError);
         return validationError;
+    }
+
+    private String getCorrectXsd(String sclData) {
+        var sclInfo = new SclInfo(sclData);
+
+        var version = sclInfo.getVersion();
+        var revision = sclInfo.getRevision();
+        var release = sclInfo.getRelease();
+
+        var sclVersion = "";
+        if (version != null) sclVersion += version;
+        if (revision != null) sclVersion += revision;
+        if (release != null) sclVersion += release;
+
+        return "SCL" + sclVersion + "/SCL.xsd";
     }
 }
