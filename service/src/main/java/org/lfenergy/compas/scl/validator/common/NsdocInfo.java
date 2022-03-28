@@ -5,11 +5,9 @@ package org.lfenergy.compas.scl.validator.common;
 
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.File;
@@ -17,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.DETERMINING_ID_FAILED;
+import static org.lfenergy.compas.scl.validator.util.StaxUtil.getAttributeValue;
+import static org.lfenergy.compas.scl.validator.util.StaxUtil.isElement;
 
 public class NsdocInfo {
     private static final String NSDOC_ELEMENT_NAME = "NSDoc";
@@ -29,16 +29,7 @@ public class NsdocInfo {
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(fis);
 
             while (id == null && reader.hasNext()) {
-                XMLEvent nextEvent = reader.nextEvent();
-                if (nextEvent.isStartElement()) {
-                    StartElement startElement = nextEvent.asStartElement();
-                    if (NSDOC_ELEMENT_NAME.equals(startElement.getName().getLocalPart())) {
-                        Attribute attribute = startElement.getAttributeByName(new QName("id"));
-                        if (attribute != null) {
-                            id = attribute.getValue();
-                        }
-                    }
-                }
+                processEvent(reader.nextEvent());
             }
         } catch (IOException | XMLStreamException exp) {
             throw new SclValidatorException(DETERMINING_ID_FAILED, "Error loading NSDoc File " + file.getName() + "'.", exp);
@@ -46,6 +37,18 @@ public class NsdocInfo {
 
         if (id == null) {
             throw new SclValidatorException(DETERMINING_ID_FAILED, "No ID found in NSDoc File '" + file.getName() + "'.");
+        }
+    }
+
+    private void processEvent(XMLEvent nextEvent) {
+        if (nextEvent.isStartElement()) {
+            processStartElement(nextEvent.asStartElement());
+        }
+    }
+
+    private void processStartElement(StartElement element) {
+        if (isElement(element, NSDOC_ELEMENT_NAME)) {
+            id = getAttributeValue(element, "id");
         }
     }
 
