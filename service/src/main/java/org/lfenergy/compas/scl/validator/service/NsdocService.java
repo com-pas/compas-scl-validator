@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.service;
 
+import org.lfenergy.compas.scl.validator.common.NsdocFinder;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
 
 import javax.enterprise.context.ApplicationScoped;

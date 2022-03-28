@@ -7,8 +7,8 @@ import io.quarkus.runtime.Startup;
 import org.lfenergy.compas.core.commons.ElementConverter;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
+import org.lfenergy.compas.scl.validator.common.NsdocFinder;
 import org.lfenergy.compas.scl.validator.impl.SclRiseClipseValidator;
-import org.lfenergy.compas.scl.validator.service.NsdocFinder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

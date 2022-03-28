@@ -22,11 +22,6 @@ SPDX-License-Identifier: Apache-2.0
         <quarkus.container-image.name>compas-scl-validator</quarkus.container-image.name>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.lfenergy.compas.scl.validator</groupId>

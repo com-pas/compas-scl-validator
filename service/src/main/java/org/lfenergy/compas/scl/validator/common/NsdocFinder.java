@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.service;
+package org.lfenergy.compas.scl.validator.common;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
@@ -10,13 +10,6 @@ import org.lfenergy.compas.scl.validator.model.NsdocFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,12 +18,11 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.*;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.CALCULATING_CHECKSUM_FAILED;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_NSDOC_FILE_FAILED;
 
 public class NsdocFinder {
     private static final Logger LOGGER = LoggerFactory.getLogger(NsdocFinder.class);
-
-    private static final String NSDOC_ELEMENT_NAME = "NSDoc";
 
     private final String nsdocDirectory;
     private final Map<String, NsdocFile> nsdocFiles;
@@ -46,6 +38,7 @@ public class NsdocFinder {
             var files = directory.listFiles();
             if (files != null) {
                 return Arrays.stream(files)
+                        .filter(File::isFile)
                         .map(this::convertToNsdocFile)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toMap(NsdocFile::getId, Function.identity()));
@@ -56,41 +49,15 @@ public class NsdocFinder {
 
     private NsdocFile convertToNsdocFile(File file) {
         try {
+            var nsdocInfo = new NsdocInfo(file);
             var nsdocFile = new NsdocFile();
-            nsdocFile.setId(getId(file));
+            nsdocFile.setId(nsdocInfo.getId());
             nsdocFile.setFilename(file.getName());
             nsdocFile.setChecksum(calculateChecksum(file));
             return nsdocFile;
         } catch (Exception exp) {
             LOGGER.warn("Error loading NSDoc File '" + file.getName() + "'. Skipping file.", exp);
             return null;
-        }
-    }
-
-    private String getId(File file) {
-        try (var fis = new FileInputStream(file)) {
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(fis);
-
-            String id = null;
-            while (id == null && reader.hasNext()) {
-                XMLEvent nextEvent = reader.nextEvent();
-                if (nextEvent.isStartElement()) {
-                    StartElement startElement = nextEvent.asStartElement();
-                    if (NSDOC_ELEMENT_NAME.equals(startElement.getName().getLocalPart())) {
-                        Attribute attribute = startElement.getAttributeByName(new QName("id"));
-                        if (attribute != null) {
-                            id = attribute.getValue();
-                        }
-                    }
-                }
-            }
-            if (id == null) {
-                throw new SclValidatorException(DETERMINING_ID_FAILED, "No ID found in NSDoc File '" + file.getName() + "'.");
-            }
-            return id;
-        } catch (IOException | XMLStreamException exp) {
-            throw new SclValidatorException(DETERMINING_ID_FAILED, "Error loading NSDoc File " + file.getName() + "'.", exp);
         }
     }
 

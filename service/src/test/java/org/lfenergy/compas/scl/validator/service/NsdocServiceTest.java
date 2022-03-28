@@ -6,6 +6,7 @@ package org.lfenergy.compas.scl.validator.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.lfenergy.compas.scl.validator.common.NsdocFinder;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
