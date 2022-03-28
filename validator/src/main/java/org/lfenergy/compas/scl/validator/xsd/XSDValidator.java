@@ -6,7 +6,6 @@ package org.lfenergy.compas.scl.validator.xsd;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -39,13 +38,14 @@ public class XSDValidator {
     public XSDValidator(ArrayList<ValidationError> errorList, String sclData) {
         this.errorList = errorList;
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL url = classLoader.getResource(getCorrectXsd(sclData));
+        var xsd = getCorrectXsd(sclData);
+        ClassLoader classLoader = XSDValidator.class.getClassLoader();
+        URL url = classLoader.getResource(xsd);
 
         if (url == null) throw new SclValidatorException(LOADING_XSD_FILE_ERROR_CODE, "XSD file not found");
 
         try {
-            var file = new File(url.toURI());
+            var file = new File(url.getFile());
             Source schemaFile = new StreamSource(file);
             SchemaFactory factory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI );
             Schema schema = factory.newSchema(schemaFile);
@@ -53,10 +53,6 @@ public class XSDValidator {
         }
         catch(SAXException exception) {
             LOGGER.error("[XSD validation] SAXException: " + exception.getMessage());
-            return;
-        }
-        catch(URISyntaxException exception) {
-            LOGGER.error("[XSD validation] URISyntaxException: " + exception.getMessage());
             return;
         }
 
