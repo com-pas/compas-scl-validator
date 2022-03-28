@@ -35,9 +35,6 @@ SPDX-License-Identifier: Apache-2.0
     </properties>
 
     <modules>
-        <module>scl2003</module>
-        <module>scl2007b</module>
-        <module>scl2007b4</module>
         <module>validator</module>
         <module>riseclipse</module>
         <module>service</module>
