@@ -52,7 +52,7 @@ public class NsdocFinder {
             var nsdocInfo = new NsdocInfo(file);
             var nsdocFile = new NsdocFile();
             nsdocFile.setId(UUID.randomUUID());
-            nsdocFile.setNsDocId(nsdocInfo.getId());
+            nsdocFile.setNsdocId(nsdocInfo.getId());
             nsdocFile.setFilename(file.getName());
             nsdocFile.setChecksum(calculateChecksum(file));
             return nsdocFile;
@@ -74,7 +74,7 @@ public class NsdocFinder {
     public Collection<NsdocFile> getNsdocFiles() {
         return nsdocFiles.values()
                 .stream()
-                .sorted(Comparator.comparing(NsdocFile::getNsDocId))
+                .sorted(Comparator.comparing(NsdocFile::getNsdocId))
                 .collect(Collectors.toList());
     }
 

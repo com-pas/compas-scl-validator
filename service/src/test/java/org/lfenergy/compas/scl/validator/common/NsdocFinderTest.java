@@ -29,8 +29,8 @@ class NsdocFinderTest {
         assertEquals(2, files.size());
 
         var fileList = new ArrayList<>(files);
-        assertEquals("IEC 61850-7-3", fileList.get(0).getNsDocId());
-        assertEquals("IEC 61850-7-4", fileList.get(1).getNsDocId());
+        assertEquals("IEC 61850-7-3", fileList.get(0).getNsdocId());
+        assertEquals("IEC 61850-7-4", fileList.get(1).getNsdocId());
     }
 
     @Test

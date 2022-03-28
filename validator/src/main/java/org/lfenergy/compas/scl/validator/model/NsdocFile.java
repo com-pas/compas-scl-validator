@@ -27,10 +27,10 @@ public class NsdocFile {
     @Schema(description = "The id of the NSDoc File.",
             example = "IEC 61850-7-3")
     @NotBlank
-    @XmlElement(name = "NsDocId",
+    @XmlElement(name = "NsdocId",
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI,
             required = true)
-    private String nsDocId;
+    private String nsdocId;
 
     @Schema(description = "The name of the NSDoc File.",
             example = "OfficialFile73.nsdoc")
@@ -55,12 +55,12 @@ public class NsdocFile {
         this.id = id;
     }
 
-    public String getNsDocId() {
-        return nsDocId;
+    public String getNsdocId() {
+        return nsdocId;
     }
 
-    public void setNsDocId(String nsDocId) {
-        this.nsDocId = nsDocId;
+    public void setNsdocId(String nsdocId) {
+        this.nsdocId = nsdocId;
     }
 
     public String getFilename() {
