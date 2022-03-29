@@ -5,7 +5,6 @@ package org.lfenergy.compas.scl.validator.xsd;
 
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
-import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;

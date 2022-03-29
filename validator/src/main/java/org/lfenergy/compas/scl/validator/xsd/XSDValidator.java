@@ -13,6 +13,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.lfenergy.compas.scl.validator.model.ValidationError;
+import org.lfenergy.compas.scl.validator.xsd.resourceresolver.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
@@ -34,7 +35,7 @@ public class XSDValidator {
 
         try {
             var factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            factory.setResourceResolver(new SclResourceResolver(sclVersion));
+            factory.setResourceResolver(new ResourceResolver(sclVersion));
             var schema = factory.newSchema(
                     new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd")));
             validator = schema.newValidator();
