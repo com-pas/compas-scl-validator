@@ -54,4 +54,16 @@ class XSDValidatorTest {
             assertEquals(LOADING_XSD_FILE_ERROR_CODE, exception.getErrorCode());
         }
     }
+
+    @Test
+    void validate_WhenCalledWithSclDataContainingMissingdVersion_ThenExceptionIsThrown() throws IOException {
+        var errorList = new ArrayList<ValidationError>();
+        try (var inputStream = getClass()
+                .getResourceAsStream("/scl/validation/example-with-missing-version.scd")) {
+            var data = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            var exception = assertThrows(SclValidatorException.class, () -> new XSDValidator(errorList, data));
+            assertEquals(LOADING_XSD_FILE_ERROR_CODE, exception.getErrorCode());
+        }
+    }
 }
