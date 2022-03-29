@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.lfenergy.compas.scl.validator.util.StaxUtil.getAttributeValue;
 import static org.lfenergy.compas.scl.validator.util.StaxUtil.isElement;
 
-public class StaxUtilTest {
+class StaxUtilTest {
     @Test
     void constructor_WhenConstructorCalled_ThenShouldThrowExceptionCauseForbidden() {
         assertThrows(UnsupportedOperationException.class, StaxUtil::new);
