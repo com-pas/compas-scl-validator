@@ -33,7 +33,7 @@ public class SclInfo {
                 processEvent(reader.nextEvent());
             }
         } catch (IOException | XMLStreamException exp) {
-            throw new SclValidatorException(LOADING_SCL_FILE_ERROR_CODE, "Error loading SCL File.", exp);
+            throw new SclValidatorException(LOADING_SCL_FILE_ERROR_CODE, "Error loading SCL File", exp);
         }
     }
 

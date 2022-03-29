@@ -4,6 +4,7 @@
 package org.lfenergy.compas.scl.validator.xsd;
 
 import org.junit.jupiter.api.Test;
+import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_XSD_FILE_ERROR_CODE;
 
 class XSDValidatorTest {
     @Test
@@ -38,6 +40,18 @@ class XSDValidatorTest {
             var error = errorList.get(2);
             assertEquals("[XSD validation] (line: 66, column: 45): cvc-complex-type.4: " +
                     "Attribute 'name' must appear on element 'BDA'.",error.getMessage());
+        }
+    }
+
+    @Test
+    void validate_WhenCalledWithSclDataContainingInvalidVersion_ThenExceptionIsThrown() throws IOException {
+        var errorList = new ArrayList<ValidationError>();
+        try (var inputStream = getClass()
+                .getResourceAsStream("/scl/validation/example-with-wrong-version.scd")) {
+            var data = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            var exception = assertThrows(SclValidatorException.class, () -> new XSDValidator(errorList, data));
+            assertEquals(LOADING_XSD_FILE_ERROR_CODE, exception.getErrorCode());
         }
     }
 }
