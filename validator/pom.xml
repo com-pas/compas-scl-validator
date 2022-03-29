@@ -19,6 +19,10 @@ SPDX-License-Identifier: Apache-2.0
 
     <dependencies>
         <dependency>
+            <groupId>org.lfenergy.compas.xsd</groupId>
+            <artifactId>compas-scl-xsd</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.lfenergy.compas.core</groupId>
             <artifactId>commons</artifactId>
         </dependency>
@@ -66,35 +70,6 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.jboss.jandex</groupId>
                 <artifactId>jandex-maven-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.lfenergy.compas.xsd</groupId>
-                                    <artifactId>compas-scl-xsd</artifactId>
-                                    <version>${compas.scl.xsd.version}</version>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>target/xsd</directory>
-            </resource>
-        </resources>
     </build>
 </project>

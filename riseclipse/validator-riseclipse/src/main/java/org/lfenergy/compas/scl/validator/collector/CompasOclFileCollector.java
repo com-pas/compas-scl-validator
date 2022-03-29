@@ -33,7 +33,7 @@ public class CompasOclFileCollector extends AbstractFileCollector {
             oclFiles.addAll(getFilesFromDirectory(oclCustomDirectory, path -> path.toString().endsWith(".ocl")));
         }
 
-        logListOfFiles(oclFiles);
+        // logListOfFiles(oclFiles);
         return oclFiles;
     }
 
