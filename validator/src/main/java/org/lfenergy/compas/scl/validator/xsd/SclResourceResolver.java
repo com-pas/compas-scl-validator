@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.xsd;
 
+import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.RESOURCE_RESOLVER_FAILED;
 
 public class SclResourceResolver implements LSResourceResolver {
     private final String sclVersion;
@@ -27,7 +30,6 @@ public class SclResourceResolver implements LSResourceResolver {
     }
 
     private static class ResourceInput implements LSInput {
-
         private String publicId;
         private String systemId;
         private final BufferedInputStream inputStream;
@@ -78,35 +80,40 @@ public class SclResourceResolver implements LSResourceResolver {
                 try {
                     return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("Exception " + e);
-                    return null;
+                    throw new SclValidatorException(RESOURCE_RESOLVER_FAILED,
+                            "StringData of ResourceResolver cannot be retrieved");
                 }
             }
         }
 
         @Override
         public void setBaseURI(String baseURI) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
         public void setByteStream(InputStream byteStream) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
         public void setCertifiedText(boolean certifiedText) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
         public void setCharacterStream(Reader characterStream) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
         public void setEncoding(String encoding) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
         public void setStringData(String stringData) {
+            // Needs override, but nothing to implement.
         }
 
         @Override
