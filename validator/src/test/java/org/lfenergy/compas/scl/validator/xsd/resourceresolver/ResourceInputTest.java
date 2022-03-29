@@ -38,6 +38,7 @@ class ResourceInputTest {
         var expectedStringData = new String(secondInputStream.readAllBytes(), StandardCharsets.UTF_8);
         assertEquals(expectedStringData.hashCode(), resourceInput.getStringData().hashCode());
     }
+
     @Test
     void getStringData_WhenCalledWithInvalidInputStream_ThenExceptionIsThrown() {
         var input = new ResourceInput("1", "2", null);
