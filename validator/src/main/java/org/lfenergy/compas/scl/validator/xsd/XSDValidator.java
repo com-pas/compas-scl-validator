@@ -27,9 +27,11 @@ public class XSDValidator {
     private Validator validator;
 
     private final List<ValidationError> errorList;
+    private final String sclData;
 
     public XSDValidator(List<ValidationError> errorList, String sclData) {
         this.errorList = errorList;
+        this.sclData = sclData;
 
         var sclVersion = getSclVersion(sclData);
 
@@ -76,7 +78,7 @@ public class XSDValidator {
         } );
     }
 
-    public void validate(String sclData) {
+    public void validate() {
         try {
             SAXSource source = new SAXSource(new InputSource(new StringReader(sclData)));
             validator.validate(source);
