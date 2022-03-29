@@ -30,13 +30,61 @@ described in the URL above that the URL can be overwritten locally with an HTTPS
 Check the [Development](DEVELOPMENT.md) page for more detail information how to work with this repository, because of
 the mixture with RiseClipse.
 
+## Custom OCL Files
+
+There is a way to add custom OCL Files to the validator, for instance to force company specific rules. In the Docker
+Image there is a volume `/data/ocl` which can be used to add these files, see our compas-deployment project for an
+example how to.
+
+In this directory, you can use subdirectories like `SemanticConstraints` as RiseClipse is doing. And there is a special
+filter that when you create a directory `FileSpecifics`. In this directory you can create for instance a directory `CID`
+to put constraints specific for an SCL File Type. Known types are `SSD`, `IID`, `ICD`, `SCD`, `CID`, `SED`, `ISD`,
+`STD`.
+
+For instance,
+
+```
+data
+└── ocl
+    ├── FileSpecifics
+    │         └── CID
+    │             └── Busbar.ocl
+    └── SemanticConstraints
+        └── Busbar.ocl
+```
+
+If you are using the validator are library (using JAR Files) there is a property to configure the directory, see
+[Common Environment variables](#common-environment-variables)
+
+## NSDoc Files
+
+Because NSDoc File can't be distributed in an OpenSource Project these need to be added during deployment. In the Docker
+Image there is a volume `/data/nsdoc` which can be used to add these files, see our compas-deployment project for an
+example how to.
+
+Only direct files found in this directory will be processed. Invalid NSDoc Files will be ignored. A directory can look
+like this for instance,
+
+```
+data
+└── nsdoc
+    ├── IEC_61850-7-2_2007B3-en.nsdoc
+    ├── IEC_61850-7-3_2007B3-en.nsdoc
+    └── IEC_61850-7-4_2007B3-en.nsdoc
+    
+```
+
+If you are using the validator are library (using JAR Files) there is a property to configure the directory, see
+[Common Environment variables](#common-environment-variables)
+
 ## Common Environment variables
 
 Below environment variable(s) can be used to configure the validator.
 
-| Environment variable                  | Java Property                         | Description                                       | Example   |
-|---------------------------------------|---------------------------------------|---------------------------------------------------|-----------|
-| COMPAS_VALIDATOR_OCL_CUSTOM_DIRECTORY | compas.validator.ocl.custom.directory | Reference to a directory to load custom OCL Files | /data/ocl |
+| Environment variable                  | Java Property                         | Description                                                 | Example     |
+|---------------------------------------|---------------------------------------|-------------------------------------------------------------|-------------|
+| COMPAS_VALIDATOR_OCL_CUSTOM_DIRECTORY | compas.validator.ocl.custom.directory | Reference to a directory to load custom OCL Files           | /data/ocl   |
+| COMPAS_VALIDATOR_NSDOC_DIRECTORY      | compas.validator.nsdoc.directory      | Reference to a directory where the NSDoc Files can be found | /data/nsdoc | 
 
 ## Security
 

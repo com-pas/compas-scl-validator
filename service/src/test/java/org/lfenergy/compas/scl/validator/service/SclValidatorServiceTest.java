@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
+import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,16 +32,16 @@ class SclValidatorServiceTest {
     }
 
     @Test
-    void validate_WhenCalled_ThenEmptyListReturned() {
+    void validate_WhenCalled_ThenExpectedListReturned() {
         var type = SclFileType.CID;
         var sclData = "Some String";
 
-        when(sclValidator.validate(type, sclData)).thenReturn(Collections.emptyList());
+        when(sclValidator.validate(type, sclData)).thenReturn(List.of(new ValidationError()));
 
         var result = sclValidatorService.validate(type, sclData);
 
         assertNotNull(result);
-        assertEquals(0, result.size());
+        assertEquals(1, result.size());
 
         verify(sclValidator, times(1)).validate(type, sclData);
     }
