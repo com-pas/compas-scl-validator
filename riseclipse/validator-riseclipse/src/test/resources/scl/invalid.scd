@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SPDX-FileCopyrightText: 2020 RTE FRANCE -->
+<!-- SPDX-FileCopyrightText: 2022 Alliander -->
 <!-- -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 

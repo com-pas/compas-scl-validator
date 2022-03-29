@@ -56,13 +56,35 @@ data
 If you are using the validator are library (using JAR Files) there is a property to configure the directory, see
 [Common Environment variables](#common-environment-variables)
 
+## NSDoc Files
+
+Because NSDoc File can't be distributed in an OpenSource Project these need to be added during deployment. In the Docker
+Image there is a volume `/data/nsdoc` which can be used to add these files, see our compas-deployment project for an
+example how to.
+
+Only direct files found in this directory will be processed. Invalid NSDoc Files will be ignored. A directory can look
+like this for instance,
+
+```
+data
+└── nsdoc
+    ├── IEC_61850-7-2_2007B3-en.nsdoc
+    ├── IEC_61850-7-3_2007B3-en.nsdoc
+    └── IEC_61850-7-4_2007B3-en.nsdoc
+    
+```
+
+If you are using the validator are library (using JAR Files) there is a property to configure the directory, see
+[Common Environment variables](#common-environment-variables)
+
 ## Common Environment variables
 
 Below environment variable(s) can be used to configure the validator.
 
-| Environment variable                  | Java Property                         | Description                                       | Example   |
-|---------------------------------------|---------------------------------------|---------------------------------------------------|-----------|
-| COMPAS_VALIDATOR_OCL_CUSTOM_DIRECTORY | compas.validator.ocl.custom.directory | Reference to a directory to load custom OCL Files | /data/ocl |
+| Environment variable                  | Java Property                         | Description                                                 | Example     |
+|---------------------------------------|---------------------------------------|-------------------------------------------------------------|-------------|
+| COMPAS_VALIDATOR_OCL_CUSTOM_DIRECTORY | compas.validator.ocl.custom.directory | Reference to a directory to load custom OCL Files           | /data/ocl   |
+| COMPAS_VALIDATOR_NSDOC_DIRECTORY      | compas.validator.nsdoc.directory      | Reference to a directory where the NSDoc Files can be found | /data/nsdoc | 
 
 ## Security
 

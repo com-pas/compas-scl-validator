@@ -13,6 +13,9 @@ public interface ValidatorProperties {
     @WithName("ocl.custom.directory")
     String oclCustomDirectory();
 
+    @WithName("nsdoc.directory")
+    String nsdocDirectory();
+
     @WithName("temp.directory")
     Path tempDirectory();
 }

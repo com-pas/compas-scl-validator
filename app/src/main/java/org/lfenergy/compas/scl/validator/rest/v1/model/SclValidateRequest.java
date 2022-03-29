@@ -14,11 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 
-@Schema(description = "")
+@Schema(description = "The Validation Request retrieved")
 @XmlRootElement(name = "SclValidateRequest", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SclValidateRequest {
-    @Schema(description = "")
+    @Schema(description = "The SCL Data to be validated")
     @NotBlank
     @XmlElement(name = "SclData", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
     protected String sclData;

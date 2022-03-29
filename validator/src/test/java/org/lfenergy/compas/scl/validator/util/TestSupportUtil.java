@@ -11,7 +11,11 @@ public final class TestSupportUtil {
     }
 
     public static String readSCL(String filename) throws IOException {
-        var inputStream = TestSupportUtil.class.getResourceAsStream("/scl/" + filename);
+        return readFile("/scl/" + filename);
+    }
+
+    public static String readFile(String filename) throws IOException {
+        var inputStream = TestSupportUtil.class.getResourceAsStream(filename);
         assert inputStream != null;
 
         return new String(inputStream.readAllBytes());

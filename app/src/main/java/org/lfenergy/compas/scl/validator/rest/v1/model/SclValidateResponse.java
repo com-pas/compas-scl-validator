@@ -14,11 +14,11 @@ import java.util.List;
 
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 
-@Schema(description = "")
+@Schema(description = "The Validation Response returned")
 @XmlRootElement(name = "SclValidateResponse", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SclValidateResponse {
-    @Schema(description = "")
+    @Schema(description = "The list with Validation Errors, if any.")
     @XmlElement(name = "ValidationErrors", namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
     protected List<ValidationError> validationErrorList;
 
