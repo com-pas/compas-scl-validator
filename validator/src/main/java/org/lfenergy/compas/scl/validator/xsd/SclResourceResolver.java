@@ -10,6 +10,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 public class SclResourceResolver implements LSResourceResolver {
     private final String sclVersion;
@@ -75,10 +76,7 @@ public class SclResourceResolver implements LSResourceResolver {
         public String getStringData() {
             synchronized (inputStream) {
                 try {
-                    byte[] input = new byte[inputStream.available()];
-                    inputStream.read(input);
-                    String contents = new String(input);
-                    return contents;
+                    return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Exception " + e);
