@@ -70,6 +70,7 @@ public class XSDValidator {
 
                 validationError.setMessage(validationMessage);
                 LOGGER.error(validationMessage);
+                LOGGER.error("[XSD validation] fatal error for schema validation, stopping");
             }
         } );
     }
