@@ -3,30 +3,58 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.xsd.resourceresolver;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.RESOURCE_RESOLVER_FAILED;
 
 class ResourceInputTest {
+
+    private ResourceInput resourceInput;
+
+    @BeforeEach
+    void beforeEach() {
+        var inputStream = this.getClass().getResourceAsStream("/scl/example.scd");
+        resourceInput = new ResourceInput("1", "2", inputStream);
+    }
+
     @Test
     void allGetters_WhenCalled_ThenCorrectValueIsReturned() throws IOException {
-        var firstInputStream = this.getClass().getResourceAsStream("/scl/example.scd");
         var secondInputStream = this.getClass().getResourceAsStream("/scl/example.scd");
 
-        var input = new ResourceInput("1", "2", firstInputStream);
-
-        assertEquals("1", input.getPublicId());
-        assertEquals("2", input.getSystemId());
-        assertNull(input.getBaseURI());
-        assertNull(input.getByteStream());
-        assertFalse(input.getCertifiedText());
-        assertNull(input.getCharacterStream());
-        assertNull(input.getEncoding());
+        assertEquals("1", resourceInput.getPublicId());
+        assertEquals("2", resourceInput.getSystemId());
+        assertNull(resourceInput.getBaseURI());
+        assertNull(resourceInput.getByteStream());
+        assertFalse(resourceInput.getCertifiedText());
+        assertNull(resourceInput.getCharacterStream());
+        assertNull(resourceInput.getEncoding());
 
         var expectedStringData = new String(secondInputStream.readAllBytes(), StandardCharsets.UTF_8);
-        assertEquals(expectedStringData.hashCode(), input.getStringData().hashCode());
+        assertEquals(expectedStringData.hashCode(), resourceInput.getStringData().hashCode());
+    }
+    @Test
+    void getStringData_WhenCalledWithInvalidInputStream_ThenExceptionIsThrown() {
+        var input = new ResourceInput("1", "2", null);
+
+        var exception = assertThrows(SclValidatorException.class, input::getStringData);
+        assertEquals(RESOURCE_RESOLVER_FAILED, exception.getErrorCode());
+    }
+
+    @Test
+    void setPublicId_WhenCalled_ThenCorrectValueIsSet() {
+        resourceInput.setPublicId("10");
+        assertEquals("10", resourceInput.getPublicId());
+    }
+
+    @Test
+    void setSystemId_WhenCalled_ThenCorrectValueIsSet() {
+        resourceInput.setSystemId("10");
+        assertEquals("10", resourceInput.getSystemId());
     }
 }

@@ -30,11 +30,11 @@ class SclInfoTest {
     @Test
     void getSclInfo_WhenCalledWithInvalidSclFile_ThenExceptionThrownDuringConstruction() throws IOException {
         var scdFile = new File(getClass().getResource("/scl/invalid.scd").getFile());
-        
+
         var path = scdFile.toPath();
         var content = Files.readString(path);
 
         var exception = assertThrows(SclValidatorException.class, () -> new SclInfo(content));
-        assertNotNull(LOADING_SCL_FILE_ERROR_CODE, exception.getErrorCode());
+        assertEquals(LOADING_SCL_FILE_ERROR_CODE, exception.getErrorCode());
     }
 }
