@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class ResourceResolver implements LSResourceResolver {
     private final String sclVersion;
 
-    ResourceResolver(String sclVersion) {
+    public ResourceResolver(String sclVersion) {
         this.sclVersion = sclVersion;
     }
 
