@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.xsd;
 
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -26,7 +27,7 @@ public class SclInfo {
 
     public SclInfo(String sclData) {
         try (var fis = new ByteArrayInputStream(sclData.getBytes(StandardCharsets.UTF_8))) {
-            var xmlInputFactory = XMLInputFactory.newInstance();
+            var xmlInputFactory = getXMLInputFactory();
             var reader = xmlInputFactory.createXMLEventReader(fis);
 
             while (reader.hasNext()) {
@@ -61,5 +62,14 @@ public class SclInfo {
 
     public String getRelease() {
         return release;
+    }
+
+    private XMLInputFactory getXMLInputFactory() {
+        var xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        return xmlInputFactory;
     }
 }
