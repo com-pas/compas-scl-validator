@@ -56,7 +56,7 @@ class XSDValidatorTest {
     }
 
     @Test
-    void validate_WhenCalledWithSclDataContainingMissingdVersion_ThenExceptionIsThrown() throws IOException {
+    void validate_WhenCalledWithSclDataContainingMissingVersion_ThenExceptionIsThrown() throws IOException {
         var errorList = new ArrayList<ValidationError>();
         try (var inputStream = getClass()
                 .getResourceAsStream("/scl/validation/example-with-missing-version.scd")) {

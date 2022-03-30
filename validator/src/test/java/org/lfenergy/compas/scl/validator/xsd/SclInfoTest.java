@@ -15,20 +15,7 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
 
 class SclInfoTest {
     @Test
-    void getSclInfo_WhenCalledWithValidSclFile_ThenSclInfoFromFileReturned() throws IOException {
-        var scdFile = new File(getClass().getResource("/scl/example.scd").getFile());
-        var sclInfo = new SclInfo(Files.readString(scdFile.toPath()));
-
-        assertNotNull(sclInfo.getVersion());
-        assertNotNull(sclInfo.getRelease());
-        assertNotNull(sclInfo.getRevision());
-        assertEquals("2007", sclInfo.getVersion());
-        assertEquals("4", sclInfo.getRelease());
-        assertEquals("B", sclInfo.getRevision());
-    }
-
-    @Test
-    void getSclInfo_WhenCalledWithInvalidSclFile_ThenExceptionThrownDuringConstruction() throws IOException {
+    void constructor_WhenCalledWithInvalidSclFile_ThenExceptionThrownDuringConstruction() throws IOException {
         var scdFile = new File(getClass().getResource("/scl/invalid.scd").getFile());
 
         var path = scdFile.toPath();
@@ -36,5 +23,23 @@ class SclInfoTest {
 
         var exception = assertThrows(SclValidatorException.class, () -> new SclInfo(content));
         assertEquals(LOADING_SCL_FILE_ERROR_CODE, exception.getErrorCode());
+    }
+
+    @Test
+    void getSclVersion_WhenCalledWithValidSclFile_ThenSclVersionFromFileReturned() throws IOException {
+        var scdFile = new File(getClass().getResource("/scl/example.scd").getFile());
+        var sclInfo = new SclInfo(Files.readString(scdFile.toPath()));
+
+        assertNotNull(sclInfo.getSclVersion());
+        assertEquals("2007B4", sclInfo.getSclVersion());
+    }
+
+    @Test
+    void getSclVersion_WhenCalledWithSclFileWithMissingVersion_ThenSclVersionFromFileReturned() throws IOException {
+        var scdFile = new File(getClass().getResource("/scl/validation/example-with-missing-version.scd").getFile());
+        var sclInfo = new SclInfo(Files.readString(scdFile.toPath()));
+
+        assertNotNull(sclInfo.getSclVersion());
+        assertEquals("", sclInfo.getSclVersion());
     }
 }

@@ -51,21 +51,18 @@ public class SclInfo {
         }
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public String getRevision() {
-        return revision;
-    }
-
-    public String getRelease() {
-        return release;
-    }
-
     private XMLInputFactory getXMLInputFactory() {
         var xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
         return xmlInputFactory;
+    }
+
+    public String getSclVersion() {
+        var sclVersion = "";
+        if (version != null) sclVersion += version;
+        if (revision != null) sclVersion += revision;
+        if (release != null) sclVersion += release;
+
+        return sclVersion;
     }
 }

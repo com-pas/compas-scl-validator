@@ -36,7 +36,8 @@ public class XSDValidator {
         this.errorList = errorList;
         this.sclData = sclData;
 
-        var sclVersion = getSclVersion(sclData);
+        var info = new SclInfo(sclData);
+        var sclVersion = info.getSclVersion();
 
         try {
             var factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -45,8 +46,7 @@ public class XSDValidator {
                     new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd")));
             validator = schema.newValidator();
         }
-        catch(SAXException exception) {
-            LOGGER.error("[XSD validation] SAXException: {}", exception.getMessage());
+        catch (SAXException exception) {
             throw new SclValidatorException(LOADING_XSD_FILE_ERROR_CODE, exception.getMessage());
         }
 
@@ -57,7 +57,7 @@ public class XSDValidator {
                 var validationMessage = getXsdValidationMessage(exception);
 
                 validationError.setMessage(validationMessage);
-                LOGGER.warn(validationMessage);
+                LOGGER.debug(validationMessage);
             }
 
             @Override
@@ -66,7 +66,7 @@ public class XSDValidator {
                 var validationMessage = getXsdValidationMessage(exception);
 
                 validationError.setMessage(validationMessage);
-                LOGGER.error(validationMessage);
+                LOGGER.debug(validationMessage);
             }
 
             @Override
@@ -75,8 +75,8 @@ public class XSDValidator {
                 var validationMessage = getXsdValidationMessage(exception);
 
                 validationError.setMessage(validationMessage);
-                LOGGER.error(validationMessage);
-                LOGGER.error("[XSD validation] fatal error for schema validation, stopping");
+                LOGGER.debug(validationMessage);
+                LOGGER.debug("[XSD validation] fatal error for schema validation, stopping");
             }
         } );
     }
@@ -98,21 +98,6 @@ public class XSDValidator {
         var validationError = new ValidationError();
         errorList.add(validationError);
         return validationError;
-    }
-
-    private String getSclVersion(String sclData) {
-        var sclInfo = new SclInfo(sclData);
-
-        var version = sclInfo.getVersion();
-        var revision = sclInfo.getRevision();
-        var release = sclInfo.getRelease();
-
-        var sclVersion = "";
-        if (version != null) sclVersion += version;
-        if (revision != null) sclVersion += revision;
-        if (release != null) sclVersion += release;
-
-        return sclVersion;
     }
 
     private String getXsdValidationMessage(SAXParseException exception) {
