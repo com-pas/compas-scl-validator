@@ -24,20 +24,9 @@ class SclRiseClipseValidatorTest {
     }
 
     @Test
-    void validate_WhenCalled_ThenExpectedXSDValidationErrorsReturned() throws IOException {
+    void validate_WhenCalled_ThenExpectedValidationErrorsReturned() throws IOException {
         var type = SclFileType.CID;
-        var sclData = readSCL("example-with-xsd-validation-errors.scd");
-
-        var result = sclValidator.validate(type, sclData);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    void validate_WhenCalled_ThenExpectedOCLValidationErrorsReturned() throws IOException {
-        var type = SclFileType.CID;
-        var sclData = readSCL("example-with-ocl-validation-errors.scd");
+        var sclData = readSCL("example.scd");
 
         var result = sclValidator.validate(type, sclData);
 

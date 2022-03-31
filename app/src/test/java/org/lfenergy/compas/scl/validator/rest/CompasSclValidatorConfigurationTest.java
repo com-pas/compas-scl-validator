@@ -45,4 +45,9 @@ class CompasSclValidatorConfigurationTest {
 
         verify(validatorProperties, times(1)).tempDirectory();
     }
+
+    @Test
+    void createSclXsdValidator_WhenCalled_ThenObjectReturned() {
+        assertNotNull(new CompasSclValidatorConfiguration().createSclXsdValidator());
+    }
 }

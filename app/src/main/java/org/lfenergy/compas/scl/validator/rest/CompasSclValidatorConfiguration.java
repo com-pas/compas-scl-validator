@@ -4,6 +4,7 @@
 package org.lfenergy.compas.scl.validator.rest;
 
 import org.lfenergy.compas.core.commons.ElementConverter;
+import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.impl.SclRiseClipseValidator;
@@ -32,5 +33,11 @@ public class CompasSclValidatorConfiguration {
     public SclRiseClipseValidator createSclRiseClipseValidator(OclFileCollector oclFileCollector,
                                                                ValidatorProperties properties) {
         return new SclRiseClipseValidator(oclFileCollector, properties.tempDirectory());
+    }
+
+    @Produces
+    @ApplicationScoped
+    public SclXsdValidator createSclXsdValidator() {
+        return new SclXsdValidator();
     }
 }

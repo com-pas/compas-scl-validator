@@ -18,7 +18,6 @@ import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
-import org.lfenergy.compas.scl.validator.xsd.XSDValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
@@ -45,11 +44,6 @@ public class SclRiseClipseValidator implements SclValidator {
     public List<ValidationError> validate(SclFileType type, String sclData) {
         // List with Validation Error Results if there are any.
         var validationErrors = new ArrayList<ValidationError>();
-
-        var xsdValidator = new XSDValidator(validationErrors, sclData);
-        xsdValidator.validate();
-
-        if (!validationErrors.isEmpty()) return validationErrors;
 
         // Create the validator and prepare it with the OCL Files.
         var validatorRegistry = new EValidatorRegistryImpl();
