@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,8 +25,8 @@ class StaxUtilTest {
     void isElement_WhenCalledWithExpectedElementName_ThenFirstElementHasCorrectElementName() throws XMLStreamException, IOException {
         var element = getFirstElement();
         if (element != null) {
-            var result = isElement(element, "NSDoc");
-            assertTrue(result, "No NSDoc Element Found");
+            var result = isElement(element, "SCL");
+            assertTrue(result, "No SCL Element Found");
         } else {
             fail("XML File couldn't be read.");
         }
@@ -46,8 +47,8 @@ class StaxUtilTest {
     void getAttributeValue_WhenCalledWithKnownAttribute_ThenAttributeValueReturned() throws XMLStreamException, IOException {
         var element = getFirstElement();
         if (element != null) {
-            var result = getAttributeValue(element, "version");
-            assertEquals("1010", result);
+            var result = getAttributeValue(element, "revision");
+            assertEquals("B", result);
         } else {
             fail("XML File couldn't be read.");
         }
@@ -65,7 +66,7 @@ class StaxUtilTest {
     }
 
     private StartElement getFirstElement() throws XMLStreamException, IOException {
-        try (var inputStream = getClass().getResourceAsStream("/testFile74.nsdoc")) {
+        try (var inputStream = getClass().getResourceAsStream("/scl/example.scd")) {
             var xmlInputFactory = XMLInputFactory.newInstance();
             var reader = xmlInputFactory.createXMLEventReader(inputStream);
 

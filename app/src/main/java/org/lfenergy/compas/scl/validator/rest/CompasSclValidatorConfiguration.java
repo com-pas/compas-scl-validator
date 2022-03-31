@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.rest;
 
 import io.quarkus.runtime.Startup;
 import org.lfenergy.compas.core.commons.ElementConverter;
+import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.common.NsdocFinder;
@@ -37,6 +38,11 @@ public class CompasSclValidatorConfiguration {
     }
 
     @Produces
+    @ApplicationScoped
+    public SclXsdValidator createSclXsdValidator() {
+        return new SclXsdValidator();
+    }
+
     @Startup
     @ApplicationScoped
     public NsdocFinder createNsdocFinder(ValidatorProperties properties) {
