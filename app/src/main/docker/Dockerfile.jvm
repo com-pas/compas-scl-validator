@@ -49,10 +49,12 @@ COPY --chown=1001 target/quarkus-app/app/ /deployments/app/
 COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
 
 RUN mkdir -p /data/ocl \
+    && mkdir -p /data/nsdoc \
     && mkdir -p /data/temp \
     && chown -R 1001 /data \
     && chmod -R "g+rwX" /data
 VOLUME /data/ocl
+VOLUME /data/nsdoc
 
 EXPOSE 8080
 USER 1001

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: 2022 Alliander -->
+<!-- -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<NSDoc id="IEC 61850-7-4"
+       version="2007"
+       revision="B"
+       release="3"
+       lang="en">
+   <Doc id="IEC61850_7_4.LNGroupL::LLN0.cl.title"><![CDATA[Some LN title]]></Doc>
+   <Doc id="IEC61850_7_4.LNGroupL::LLN0.Beh.desc"><![CDATA[Some DO description]]></Doc>
+   <Doc id="IEC61850_7_4.AbstractLNsCommon::DomainLN.Beh.desc"><![CDATA[Some DomainLN Descriptions]]></Doc>
+</NSDoc>

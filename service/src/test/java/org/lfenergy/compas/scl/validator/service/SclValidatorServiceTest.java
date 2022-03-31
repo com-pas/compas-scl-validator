@@ -33,7 +33,7 @@ class SclValidatorServiceTest {
     private SclXsdValidator xsdValidator;
 
     @Test
-    void validate_WhenCalled_ThenEmptyListReturned() {
+    void validate_WhenCalled_ThenExpectedListReturned() {
         var type = SclFileType.CID;
         var sclData = "Some String";
 

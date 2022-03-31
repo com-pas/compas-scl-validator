@@ -80,7 +80,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
      * Search (recursively) for all files in the directory passed. The filter can be used to filter files from the List.
      *
      * @param directoryName The directory in which top search for files (recursively).
-     * @param filter        The filter used to filter the list of file, use '(path) -> true' to return them all.
+     * @param filter        The filter used to filter the list of file, use '(path) -&gt; true' to return them all.
      * @return The list of Files as URI found.
      */
     protected List<URI> getFilesFromDirectory(String directoryName, Predicate<Path> filter) {

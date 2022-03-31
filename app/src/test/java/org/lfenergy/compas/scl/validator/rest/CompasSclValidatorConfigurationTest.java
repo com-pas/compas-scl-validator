@@ -50,4 +50,14 @@ class CompasSclValidatorConfigurationTest {
     void createSclXsdValidator_WhenCalled_ThenObjectReturned() {
         assertNotNull(new CompasSclValidatorConfiguration().createSclXsdValidator());
     }
+
+    @Test
+    void createNsdocFinder_WhenCalled_ThenObjectReturned() {
+        when(validatorProperties.nsdocDirectory()).thenReturn("./target/nsodcdir");
+
+        assertNotNull(new CompasSclValidatorConfiguration().createNsdocFinder(
+                validatorProperties));
+
+        verify(validatorProperties, times(1)).nsdocDirectory();
+    }
 }

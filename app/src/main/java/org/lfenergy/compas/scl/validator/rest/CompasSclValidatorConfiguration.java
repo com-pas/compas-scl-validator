@@ -3,10 +3,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.rest;
 
+import io.quarkus.runtime.Startup;
 import org.lfenergy.compas.core.commons.ElementConverter;
 import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
+import org.lfenergy.compas.scl.validator.common.NsdocFinder;
 import org.lfenergy.compas.scl.validator.impl.SclRiseClipseValidator;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -39,5 +41,11 @@ public class CompasSclValidatorConfiguration {
     @ApplicationScoped
     public SclXsdValidator createSclXsdValidator() {
         return new SclXsdValidator();
+    }
+
+    @Startup
+    @ApplicationScoped
+    public NsdocFinder createNsdocFinder(ValidatorProperties properties) {
+        return new NsdocFinder(properties.nsdocDirectory());
     }
 }

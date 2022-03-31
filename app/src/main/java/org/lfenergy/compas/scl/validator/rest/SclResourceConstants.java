@@ -9,4 +9,5 @@ public final class SclResourceConstants {
     }
 
     public static final String TYPE_PATH_PARAM = "type";
+    public static final String ID_PARAM = "id";
 }
