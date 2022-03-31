@@ -33,14 +33,20 @@ git submodule update
 Importing the project is a bit harder for the SCL Validator then normal. It's caused because of the submodules that are
 needed from RiseClipse. These projects are Eclipse projects using Eclipse Tycho to build and Eclipse project structure.
 
-A way to make everything work in IntelliJ is importing the project in the following way.
+The first step to make it work in IntelliJ is that an Eclipse version needs to be available on your local machine. The
+version we know that's working can be found [here](https://www.eclipse.org/downloads/packages/release/2019-06/r)
+Download (and install/unzip) Eclipse.
+
+Next a way to make everything work in IntelliJ is importing the project in the following way.
 
 - First step is to just import everything like it are Maven projects;
+- Next we need to add a Global Library in IntelliJ. Open the Module Settings and select "Global Libraries". And a new
+  libraries and name it "ECLIPSE". Point it to the directory "<ECLIPSE_INSTALL_DIR>/plugins";
 - Next step is to re-import the RiseClipse Submodule as Eclipse;
-    - In IntelliJ select "File" -> "New" -> "Module from Existing Sources...";
-    - Select one of the RiseClipse Submodules, for instance "riseclipse-metamodel-scl2003";
-    - Next select "Eclipse" by "Import module from External Model";
-    - Follow the rest of the wizard, only to remember to select all subprojects that are available in the directory;
+  - In IntelliJ select "File" -> "New" -> "Module from Existing Sources...";
+  - Select one of the RiseClipse Submodules, for instance "riseclipse-metamodel-scl2003";
+  - Next select "Eclipse" by "Import module from External Model";
+  - Follow the rest of the wizard, only to remember to select all subprojects that are available in the directory;
 
 Now the module should be correctly imported in IntelliJ to be used. Check the Module Settings of one of the subprojects
 to check if the directory "src" is a Java Source Directory, for instance the module
