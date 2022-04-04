@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.service;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
+import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,13 +15,21 @@ import java.util.List;
 @ApplicationScoped
 public class SclValidatorService {
     private final SclValidator validator;
+    private final SclXsdValidator xsdValidator;
 
     @Inject
-    public SclValidatorService(SclValidator validator) {
+    public SclValidatorService(SclValidator validator, SclXsdValidator xsdValidator) {
         this.validator = validator;
+        this.xsdValidator = xsdValidator;
     }
 
     public List<ValidationError> validate(SclFileType type, String sclData) {
-        return validator.validate(type, sclData);
+        var errors = xsdValidator.validate(sclData);
+
+        if (errors.isEmpty()) {
+            errors = validator.validate(type, sclData);
+        }
+
+        return errors;
     }
 }
