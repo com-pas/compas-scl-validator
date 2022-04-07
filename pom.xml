@@ -21,7 +21,7 @@ SPDX-License-Identifier: Apache-2.0
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+        <surefire-plugin.version>3.0.0-M6</surefire-plugin.version>
         <sonarqube-plugin.version>3.2.0</sonarqube-plugin.version>
 
         <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
@@ -198,7 +198,7 @@ SPDX-License-Identifier: Apache-2.0
                 <sonar.language>java</sonar.language>
 
                 <!-- JaCoCo Properties -->
-                <jacoco.version>0.8.7</jacoco.version>
+                <jacoco.version>0.8.8</jacoco.version>
                 <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
                 <sonar.coverage.jacoco.xmlReportPaths>
                     target/site/jacoco/jacoco.xml,
