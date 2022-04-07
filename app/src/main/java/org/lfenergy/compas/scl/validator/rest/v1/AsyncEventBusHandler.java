@@ -20,7 +20,7 @@ public class AsyncEventBusHandler {
         this.sclValidatorService = sclValidatorService;
     }
 
-    @ConsumeEvent("validate")
+    @ConsumeEvent(value = "validate", blocking = true)
     public SclValidateResponse validateEvent(ValidateEventRequest request) {
         var response = new SclValidateResponse();
         response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
