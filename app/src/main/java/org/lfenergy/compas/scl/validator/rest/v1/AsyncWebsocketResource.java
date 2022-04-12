@@ -26,7 +26,7 @@ import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_P
 
 @Authenticated
 @ApplicationScoped
-@ServerEndpoint(value = "/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
+@ServerEndpoint(value = "/compas-scl-validator/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
         decoders = AsyncWebsocketRequestDecoder.class,
         encoders = AsyncWebsocketResponseEncoder.class)
 public class AsyncWebsocketResource {
