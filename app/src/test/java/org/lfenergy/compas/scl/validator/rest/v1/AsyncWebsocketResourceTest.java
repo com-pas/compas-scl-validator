@@ -29,18 +29,19 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.requireNonNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
 @TestSecurity(user = "test-user")
 class AsyncWebsocketResourceTest {
-    private static final LinkedBlockingDeque<ValidationError> errors = new LinkedBlockingDeque<>();
+    private static final LinkedBlockingDeque<ValidationError> validationErrors = new LinkedBlockingDeque<>();
 
     @InjectMock
     private SclValidatorService sclValidatorService;
 
-    @TestHTTPResource("/validate-ws/v1/SCD")
+    @TestHTTPResource("/compas-scl-validator/validate-ws/v1/SCD")
     private URI uri;
 
     @Test
@@ -56,7 +57,8 @@ class AsyncWebsocketResourceTest {
         try (Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)) {
             session.getAsyncRemote().sendText(encoder.encode(request));
 
-            assertNotNull(errors.poll(10, TimeUnit.SECONDS));
+            assertNotNull(validationErrors.poll(10, TimeUnit.SECONDS));
+            assertEquals(0, validationErrors.size());
             verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());
         }
     }
@@ -65,7 +67,7 @@ class AsyncWebsocketResourceTest {
     public static class Client {
         @OnMessage
         public void onMessage(SclValidateResponse response) {
-            errors.addAll(response.getValidationErrorList());
+            validationErrors.addAll(response.getValidationErrorList());
         }
     }
 
