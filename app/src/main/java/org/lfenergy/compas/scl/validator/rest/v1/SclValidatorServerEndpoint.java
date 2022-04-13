@@ -9,6 +9,8 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.rest.v1.event.SclValidatorEventRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestDecoder;
+import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestEncoder;
+import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseDecoder;
 import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +27,8 @@ import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_P
 @Authenticated
 @ApplicationScoped
 @ServerEndpoint(value = "/compas-scl-validator/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
-        decoders = SclValidateRequestDecoder.class,
-        encoders = SclValidateResponseEncoder.class)
+        decoders = {SclValidateRequestDecoder.class, SclValidateResponseDecoder.class},
+        encoders = {SclValidateRequestEncoder.class, SclValidateResponseEncoder.class})
 public class SclValidatorServerEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclValidatorServerEndpoint.class);
 

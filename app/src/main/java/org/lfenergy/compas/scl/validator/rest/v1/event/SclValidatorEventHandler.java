@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 
 /**
- * Event Handler used by the Websockets implementation to execute the validation asynchronized.
+ * Event Handler used to execute the validation asynchronized.
  */
 @ApplicationScoped
 public class SclValidatorEventHandler {
