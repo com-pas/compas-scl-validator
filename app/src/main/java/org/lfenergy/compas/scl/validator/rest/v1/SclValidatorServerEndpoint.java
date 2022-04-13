@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_PATH_PARAM;
 
@@ -52,7 +51,7 @@ public class SclValidatorServerEndpoint {
     }
 
     @OnError
-    public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) throws IOException {
+    public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) {
         LOGGER.warn("Error with session {} for type {}.", session.getId(), type, throwable);
     }
 

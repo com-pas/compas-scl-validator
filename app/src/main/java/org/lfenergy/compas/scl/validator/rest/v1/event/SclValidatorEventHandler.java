@@ -10,7 +10,6 @@ import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
 
 /**
  * Event Handler used to execute the validation asynchronized.
@@ -25,7 +24,7 @@ public class SclValidatorEventHandler {
     }
 
     @ConsumeEvent(value = "validate-ws", blocking = true)
-    public void validateWebsocketsEvent(SclValidatorEventRequest request) throws IOException {
+    public void validateWebsocketsEvent(SclValidatorEventRequest request) {
         var response = new SclValidateResponse();
         response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
 
