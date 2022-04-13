@@ -15,10 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -45,16 +42,21 @@ public class SclValidatorServerEndpoint {
         LOGGER.debug("Starting session {} for type {}.", session.getId(), type);
     }
 
-    @OnError
-    public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) throws IOException {
-        LOGGER.info("Error with session {} for type {}.", session.getId(), type, throwable);
-        session.close();
-    }
-
     @OnMessage
-    public void validateSCL(Session session, SclValidateRequest request, @PathParam(TYPE_PATH_PARAM) String type) {
+    public void onMessage(Session session, SclValidateRequest request, @PathParam(TYPE_PATH_PARAM) String type) {
         LOGGER.info("Message from session {} for type {}.", session.getId(), type);
         eventBus.send("validate-ws", new SclValidatorEventRequest(
                 session, SclFileType.valueOf(type), request.getSclData()));
+    }
+
+    @OnError
+    public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) throws IOException {
+        LOGGER.warn("Error with session {} for type {}.", session.getId(), type, throwable);
+        session.close();
+    }
+
+    @OnClose
+    public void onClose(Session session, @PathParam(TYPE_PATH_PARAM) String type) {
+        LOGGER.debug("Closing session {} for type {}.", session.getId(), type);
     }
 }
