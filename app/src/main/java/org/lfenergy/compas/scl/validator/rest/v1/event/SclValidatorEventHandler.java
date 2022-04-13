@@ -4,6 +4,7 @@
 package org.lfenergy.compas.scl.validator.rest.v1.event;
 
 import io.quarkus.vertx.ConsumeEvent;
+import io.smallrye.mutiny.Uni;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 
@@ -11,22 +12,32 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.IOException;
 
+/**
+ * Event Handler used by the Websockets implementation to execute the validation asynchronized.
+ */
 @ApplicationScoped
-public class AsyncWebsocketEventHandler {
+public class SclValidatorEventHandler {
     private final SclValidatorService sclValidatorService;
 
     @Inject
-    public AsyncWebsocketEventHandler(SclValidatorService sclValidatorService) {
+    public SclValidatorEventHandler(SclValidatorService sclValidatorService) {
         this.sclValidatorService = sclValidatorService;
     }
 
     @ConsumeEvent(value = "validate-ws", blocking = true)
-    public void validateEvent(AsyncWebsocketEventRequest request) throws IOException {
+    public void validateWebsocketsEvent(SclValidatorEventRequest request) throws IOException {
         var response = new SclValidateResponse();
         response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
 
         var session = request.getSession();
         session.getAsyncRemote().sendObject(response);
         session.close();
+    }
+
+    @ConsumeEvent(value = "validate-rest", blocking = true)
+    public Uni<SclValidateResponse> validateRestEvent(SclValidatorEventRequest request) {
+        var response = new SclValidateResponse();
+        response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
+        return Uni.createFrom().item(response);
     }
 }

@@ -13,15 +13,13 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
+import org.lfenergy.compas.scl.validator.util.TestSupportUtil;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.config.XmlPathConfig.xmlPathConfig;
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
@@ -39,7 +37,7 @@ class SclValidatorResourceTest {
     void updateSCL_WhenCalled_ThenExpectedResponseIsRetrieved() throws IOException {
         var sclFileTye = SclFileType.CID;
         var request = new SclValidateRequest();
-        request.setSclData(readFile());
+        request.setSclData(TestSupportUtil.readSCL("scl-1.scd"));
 
         when(sclValidatorService.validate(sclFileTye, request.getSclData()))
                 .thenReturn(List.of(new ValidationError()));
@@ -61,11 +59,5 @@ class SclValidatorResourceTest {
         assertNotNull(errors);
         assertEquals(1, errors.size());
         verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());
-    }
-
-    private String readFile() throws IOException {
-        var resource = requireNonNull(getClass().getResource("/scl/scl-1.scd"));
-        var path = Paths.get(resource.getPath());
-        return String.join("\n", Files.readAllLines(path));
     }
 }

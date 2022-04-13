@@ -7,12 +7,16 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 
 import javax.websocket.Session;
 
-public class AsyncWebsocketEventRequest {
-    private final Session session;
+public class SclValidatorEventRequest {
+    private Session session;
     private final SclFileType type;
     private final String sclData;
 
-    public AsyncWebsocketEventRequest(Session session, SclFileType type, String sclData) {
+    public SclValidatorEventRequest(SclFileType type, String sclData) {
+        this(null, type, sclData);
+    }
+
+    public SclValidatorEventRequest(Session session, SclFileType type, String sclData) {
         this.session = session;
         this.type = type;
         this.sclData = sclData;

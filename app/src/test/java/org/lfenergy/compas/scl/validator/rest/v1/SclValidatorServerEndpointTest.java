@@ -12,30 +12,27 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.AsyncWebsocketRequestEncoder;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.AsyncWebsocketResponseDecoder;
+import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestEncoder;
+import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseDecoder;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
+import org.lfenergy.compas.scl.validator.util.TestSupportUtil;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
 @TestSecurity(user = "test-user")
-class AsyncWebsocketResourceTest {
+class SclValidatorServerEndpointTest {
     private static final LinkedBlockingDeque<ValidationError> validationErrors = new LinkedBlockingDeque<>();
 
     @InjectMock
@@ -46,10 +43,10 @@ class AsyncWebsocketResourceTest {
 
     @Test
     public void updateSCL_WhenCalled_ThenExpectedResponseIsRetrieved() throws Exception {
-        var encoder = new AsyncWebsocketRequestEncoder();
+        var encoder = new SclValidateRequestEncoder();
         var sclFileTye = SclFileType.SCD;
         var request = new SclValidateRequest();
-        request.setSclData(readFile());
+        request.setSclData(TestSupportUtil.readSCL("scl-1.scd"));
 
         when(sclValidatorService.validate(sclFileTye, request.getSclData()))
                 .thenReturn(List.of(new ValidationError()));
@@ -63,17 +60,11 @@ class AsyncWebsocketResourceTest {
         }
     }
 
-    @ClientEndpoint(decoders = AsyncWebsocketResponseDecoder.class)
-    public static class Client {
+    @ClientEndpoint(decoders = SclValidateResponseDecoder.class)
+    private static class Client {
         @OnMessage
         public void onMessage(SclValidateResponse response) {
             validationErrors.addAll(response.getValidationErrorList());
         }
-    }
-
-    private String readFile() throws IOException {
-        var resource = requireNonNull(getClass().getResource("/scl/scl-1.scd"));
-        var path = Paths.get(resource.getPath());
-        return String.join("\n", Files.readAllLines(path));
     }
 }
