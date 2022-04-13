@@ -31,7 +31,6 @@ public class SclValidatorEventHandler {
 
         var session = request.getSession();
         session.getAsyncRemote().sendObject(response);
-        session.close();
     }
 
     @ConsumeEvent(value = "validate-rest", blocking = true)

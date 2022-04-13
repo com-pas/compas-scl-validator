@@ -54,7 +54,6 @@ public class SclValidatorServerEndpoint {
     @OnError
     public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) throws IOException {
         LOGGER.warn("Error with session {} for type {}.", session.getId(), type, throwable);
-        session.close();
     }
 
     @OnClose
