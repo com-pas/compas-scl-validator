@@ -39,6 +39,7 @@ public class NsdocFinder {
             if (files != null) {
                 return Arrays.stream(files)
                         .filter(File::isFile)
+                        .filter(file -> file.getName().endsWith(".nsdoc"))
                         .map(this::convertToNsdocFile)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toMap(NsdocFile::getId, Function.identity()));

@@ -14,6 +14,18 @@ SPDX-License-Identifier: Apache-2.0
 
 Service to validate SCL Files.
 
+## Rest and Websockets versions
+
+The validation can be done using both Rest and Websockets as transportation technic.
+
+| Method    | URL                                                                   |
+|-----------|-----------------------------------------------------------------------|
+| Rest      | http(s)://**server-address**/compas-scl-validator/validate/v1/{type}  |
+| Websocket | ws(s)://**server-address**/compas-scl-validator/validate-ws/v1/{type} |
+
+In CoMPAS OpenSCD there is a switch in the setting to indicate if websockets needs to be used. The logic will
+automatically determine the URL to be used.
+
 ## Development
 
 For the RiseClipse implementation of the validator parts of the RiseClipse project are being used. Currently, these
