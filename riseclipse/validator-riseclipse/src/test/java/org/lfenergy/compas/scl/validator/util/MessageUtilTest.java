@@ -34,7 +34,7 @@ class MessageUtilTest {
     void cleanupMessage_WhenCalledWithMessageThatStartWithError_ThenCleanedMessageIsReturned() {
         var expectedMessage = "Some validation message";
 
-        var result = cleanupMessage("ERROR:" + expectedMessage);
+        var result = cleanupMessage("ERROR;" + expectedMessage);
 
         assertEquals(expectedMessage, result);
     }
