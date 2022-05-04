@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.lfenergy.compas.scl.validator</groupId>
+    <artifactId>riseclipse</artifactId>
+    <version>local-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>riseclipse-p2-to-m2</artifactId>
+  <packaging>pom</packaging>
+
+  <description>
+    This project generates a maven repository for needed Eclipse plug-ins not available on
+    maven-central (EMF, OCL…). It enables maven build of fat jars which use such Eclipse plug-ins.
+  </description>
+
+  <build>
+    <plugins>
+      <!-- Create aggregated maven repository -->
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-eclipserun-plugin</artifactId>
+        <version>2.7.0</version>
+        <configuration>
+          <work>${project.build.directory}/maven/tmp/cbi</work>
+
+          <repositories>
+            <repository>
+              <!-- This is the platform used to run the aggregator, not the one where artifacts are fetched -->
+              <id>Eclipse platform</id>
+              <layout>p2</layout>
+              <url>http://download.eclipse.org/releases/2020-06/</url>
+            </repository>
+            <repository>
+              <id>CBI aggregator</id>
+              <layout>p2</layout>
+              <url>https://download.eclipse.org/cbi/updates/aggregator/headless/4.13/I20200825-1209</url>
+            </repository>
+          </repositories>
+
+          <jvmArgs>
+            <args>-Declipse.p2.mirrors=false</args>
+          </jvmArgs>
+          <applicationsArgs>
+            <args>-data</args>
+            <args>${project.build.directory}/maven/tmp/workspace</args>
+            <args>-application</args>
+            <args>org.eclipse.cbi.p2repo.cli.headless</args>
+            <args>aggregate</args>
+            <args>--buildRoot</args>
+            <args>target/maven/repository</args>
+            <args>--buildModel</args>
+            <args>src/main/resources/riseclipse.aggr</args>
+            <args>--action</args>
+            <args>BUILD</args>
+          </applicationsArgs>
+
+          <dependencies>
+            <dependency>
+              <artifactId>org.eclipse.equinox.p2.sdk</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.cbi.p2repo.aggregator.engine.feature</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.cbi.p2repo.p2.maven.indexer.feature</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+          </dependencies>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>aggregate-maven-repository</id>
+            <goals>
+              <goal>eclipse-run</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
