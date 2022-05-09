@@ -66,6 +66,6 @@ jobs:
           ./mvnw -B -s custom_maven_settings.xml \
                  -DaltDeploymentRepository=github-packages-compas::default::https://maven.pkg.github.com/com-pas/compas-scl-validator \
                  -Dmaven.deploy.skip=snapshots \
-                 -Prelease clean deploy
+                 -Pbuild-image,release clean deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
