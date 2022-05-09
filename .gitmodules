@@ -6,18 +6,6 @@
 # Remark: the option to ignore 'untracked' files is needed, because the submodules don't contain a file '.gitignore'.
 # This cause the target directories to be untracked.
 #
-[submodule "riseclipse/riseclipse-developer"]
-	path = riseclipse/riseclipse-developer
-	url = git@github.com:riseclipse/riseclipse-developer.git
-	ignore = dirty
-[submodule "riseclipse/riseclipse-main"]
-	path = riseclipse/riseclipse-main
-	url = git@github.com:riseclipse/riseclipse-main.git
-	ignore = dirty
-[submodule "riseclipse/riseclipse-metamodel-scl2003"]
-	path = riseclipse/riseclipse-metamodel-scl2003
-	url = git@github.com:riseclipse/riseclipse-metamodel-scl2003.git
-	ignore = dirty
 [submodule "riseclipse/riseclipse-ocl-constraints-scl2003"]
 	path = riseclipse/riseclipse-ocl-constraints-scl2003
 	url = git@github.com:riseclipse/riseclipse-ocl-constraints-scl2003.git

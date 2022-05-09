@@ -11,7 +11,7 @@ public class MessageUtil {
     public static String cleanupMessage(String message) {
         String cleanedMessage = message;
         if (cleanedMessage != null
-                && cleanedMessage.toUpperCase().startsWith("ERROR:")) {
+                && cleanedMessage.toUpperCase().startsWith("ERROR;")) {
             cleanedMessage = cleanedMessage.substring(6);
         }
         return cleanedMessage;

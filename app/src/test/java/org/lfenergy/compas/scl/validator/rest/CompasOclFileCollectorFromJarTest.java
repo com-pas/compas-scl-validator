@@ -14,11 +14,11 @@ import org.lfenergy.compas.scl.validator.collector.CompasOclFileCollector;
 class CompasOclFileCollectorFromJarTest extends AbstractCompasOclFileCollectorTest {
     @Test
     void getDefaultOclFiles_WhenCalledWithoutCustomDirectory_ThenListReturned() {
-        assertValidateOclFileCollector(new CompasOclFileCollector(null), 226);
+        assertValidateOclFileCollector(new CompasOclFileCollector(null), 230);
     }
 
     @Test
     void getDefaultOclFiles_WhenCalledWithCustomDirectory_ThenListReturned() {
-        assertValidateOclFileCollector(new CompasOclFileCollector("./src/test/data/ocl"), 227);
+        assertValidateOclFileCollector(new CompasOclFileCollector("./src/test/data/ocl"), 231);
     }
 }
