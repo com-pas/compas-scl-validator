@@ -9,7 +9,10 @@ SPDX-License-Identifier: Apache-2.0
 ## Git
 
 If the project is already cloned and a submodule is added use the following commands to retrieve the files from the
-RiseClipse Repository, first `git submodule init` and next `git submodule update`.
+RiseClipse Repository:
+
+- `git submodule init`
+- `git submodule update`
 
 More about Git Submodules can be found [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
@@ -21,9 +24,6 @@ Because of the subdirectory where the submodules are in, this doesn't work exact
 to update the URLs locally to HTTPS.
 
 ```
-git config submodule.riseclipse/riseclipse-developer.url https://github.com/riseclipse/riseclipse-developer.git
-git config submodule.riseclipse/riseclipse-main.url https://github.com/riseclipse/riseclipse-main.git
-git config submodule.riseclipse/riseclipse-metamodel-scl2003.url https://github.com/riseclipse/riseclipse-metamodel-scl2003.git
 git config submodule.riseclipse/riseclipse-ocl-constraints-scl2003.url https://github.com/riseclipse/riseclipse-ocl-constraints-scl2003.git
 
 git submodule init
@@ -39,8 +39,8 @@ in the remote repository execute the following command from the root directory o
 git submodule update --remote
 ```
 
-Next add the changes and commit/push these to the Git Repository of CoMPAS. The build now uses the latest commit of the
-main branch.
+Next commit and push the changes to the Git Repository of CoMPAS. The build now uses the latest commit of the main
+branch.
 
 ## Eclipse
 

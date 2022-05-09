@@ -4,12 +4,12 @@ SPDX-FileCopyrightText: 2022 Alliander N.V.
 SPDX-License-Identifier: Apache-2.0
 -->
 
-This project is used to create maven artifacts from Eclipse plugins. This is needed for building the executable jar to
-run in a Docker Container.
+This project is used to create a maven repository from Eclipse Dependencies. This is needed for building the executable
+jar to run in a Docker Container.
 
 The project is a copy of the p2_to_m2 project
-from [RiseClipse Developer](https://github.com/riseclipse/riseclipse-developer)
-of the directory 'fr.centralesupelec.edf.riseclipse.developer.p2_to_m2'.
+from [RiseClipse Developer](https://github.com/riseclipse/riseclipse-developer) of the
+directory `fr.centralesupelec.edf.riseclipse.developer.p2_to_m2`.
 
 The file `src/main/resources/riseclipse.aggr` is also a copy of the file from RiseClipse and can be found
 [here](https://github.com/riseclipse/riseclipse-developer/blob/master/fr.centralesupelec.edf.riseclipse.developer.p2_to_m2/src/main/resources/riseclipse.aggr)
