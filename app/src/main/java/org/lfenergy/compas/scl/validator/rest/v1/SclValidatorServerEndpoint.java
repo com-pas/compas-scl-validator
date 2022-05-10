@@ -25,7 +25,7 @@ import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_P
 
 @Authenticated
 @ApplicationScoped
-@ServerEndpoint(value = "/compas-scl-validator/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
+@ServerEndpoint(value = "/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
         decoders = {SclValidateRequestDecoder.class, SclValidateResponseDecoder.class},
         encoders = {SclValidateRequestEncoder.class, SclValidateResponseEncoder.class})
 public class SclValidatorServerEndpoint {
