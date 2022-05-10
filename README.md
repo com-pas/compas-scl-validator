@@ -28,19 +28,19 @@ automatically determine the URL to be used.
 
 ## Development
 
-For the RiseClipse implementation of the validator parts of the RiseClipse project are being used. Currently, these
-parts aren't distributed to any Maven Repository, so the Git Repositories need to be included. This is done using Git
-Submodules.
+Since version 1.2.x the JAR Files of RiseClipse are distributed through Maven Central Repository. The JAR Files can be
+retrieved from there and don't need to be build locally anymore. Only the OCL Files for the SCL validation still need to
+be downloaded from RiseClipse GIT Repository. This is still done using Git Submodules.
 
 To clone the project or update the project this means that the Git commands are sometimes a little different. To clone
 the project use the following command `git clone --recurse-submodules git@github.com:com-pas/compas-scl-validator.git`.
 This will also clone the submodules.
 
 Tip: The URL to the submodules are configured in the file `.gitmodules`, but these are using the SSH URL. There is a way
-described in the URL above that the URL can be overwritten locally with an HTTPS URL of the GIT Repository.
+described [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to overwrite the URL locally with an HTTPS URL of
+the GIT Repository.
 
-Check the [Development](DEVELOPMENT.md) page for more detail information how to work with this repository, because of
-the mixture with RiseClipse.
+Check the [Development](DEVELOPMENT.md) page for more detail information how to develop in this GIT repository.
 
 ## Custom OCL Files
 
