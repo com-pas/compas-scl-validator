@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.rest.v1.event;
 
-import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
@@ -31,30 +30,6 @@ class SclValidatorEventHandlerTest {
 
     @InjectMocks
     private SclValidatorEventHandler eventHandler;
-
-    @Test
-    void validateRestEvent_WhenCalled_ThenExpectedCallsAreMade() {
-        var veList = new ArrayList<ValidationError>();
-        var type = SclFileType.CID;
-        var sclData = "Some SCL Data";
-
-        var request = Mockito.mock(SclValidatorEventRequest.class);
-        when(request.getType()).thenReturn(type);
-        when(request.getSclData()).thenReturn(sclData);
-
-        when(service.validate(type, sclData)).thenReturn(veList);
-
-        var result = eventHandler.validateRestEvent(request);
-
-        var subscriber = result.subscribe().withSubscriber(UniAssertSubscriber.create());
-        var response = subscriber.assertCompleted().getItem();
-        assertEquals(veList, response.getValidationErrorList());
-
-        verify(service, times(1)).validate(type, sclData);
-        verify(request, never()).getSession();
-        verify(request, times(1)).getType();
-        verify(request, times(1)).getSclData();
-    }
 
     @Test
     void validateWebsocketsEvent_WhenCalled_ThenExpectedCallsAreMade() throws IOException {

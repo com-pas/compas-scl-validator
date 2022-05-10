@@ -73,7 +73,9 @@ class NsdocResourceTest {
                 .extract()
                 .response();
 
-        var nsdocFile = response.asString();
+        var xmlPath = response.xmlPath()
+                .using(xmlPathConfig().declaredNamespace("svs", SCL_VALIDATOR_SERVICE_V1_NS_URI));
+        var nsdocFile = xmlPath.getString("svs:NsdocResponse.svs:NsdocFile");
         assertNotNull(nsdocFile);
         assertEquals(result, nsdocFile);
         verify(nsdocService, times(1)).get(id);
