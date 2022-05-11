@@ -4,7 +4,9 @@
 package org.lfenergy.compas.scl.validator.rest.v1;
 
 import io.quarkus.security.Authenticated;
+import io.smallrye.mutiny.Uni;
 import org.lfenergy.compas.scl.validator.rest.v1.model.NsdocListResponse;
+import org.lfenergy.compas.scl.validator.rest.v1.model.NsdocResponse;
 import org.lfenergy.compas.scl.validator.service.NsdocService;
 
 import javax.enterprise.context.RequestScoped;
@@ -27,17 +29,19 @@ public class NsdocResource {
     @GET
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public NsdocListResponse list() {
-        NsdocListResponse response = new NsdocListResponse();
+    public Uni<NsdocListResponse> list() {
+        var response = new NsdocListResponse();
         response.setNsdocFiles(nsdocService.list());
-        return response;
+        return Uni.createFrom().item(response);
     }
 
     @GET
     @Path("{" + ID_PARAM + "}")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public String get(@PathParam(ID_PARAM) UUID id) {
-        return nsdocService.get(id);
+    public Uni<NsdocResponse> get(@PathParam(ID_PARAM) UUID id) {
+        var response = new NsdocResponse();
+        response.setNsdocFile(nsdocService.get(id));
+        return Uni.createFrom().item(response);
     }
 }
