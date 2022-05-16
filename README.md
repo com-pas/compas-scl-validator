@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 [![Maven Build Github Action Status](<https://img.shields.io/github/workflow/status/com-pas/compas-scl-validator/Build%20Project?logo=GitHub>)](https://github.com/com-pas/compas-scl-validator/actions?query=workflow%3A%22Build+Project%22)
 [![REUSE status](https://api.reuse.software/badge/github.com/com-pas/compas-scl-validator)](https://api.reuse.software/info/github.com/com-pas/compas-scl-validator)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com-pas_compas-scl-validator&metric=alert_status)](https://sonarcloud.io/dashboard?id=com-pas_compas-scl-validator)
-[![LFX Security Status](https://img.shields.io/badge/dynamic/json?color=orange&label=LFX%20Security%20Tool&query=issues%5B%3F%28%40%5B%27repository-name%27%5D%20%3D%3D%20%27compas-scl-validator%27%29%5D%5B%27high-open-issues%27%5D&suffix=%20High%20open%20issues&url=https%3A%2F%2Fapi.security.lfx.linuxfoundation.org%2Fv1%2Fproject%2Fe8b6fdf9-2686-44c5-bbaa-6965d04ad3e1%2Fissues)](https://security.lfx.linuxfoundation.org/#/e8b6fdf9-2686-44c5-bbaa-6965d04ad3e1/issues)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5925/badge)](https://bestpractices.coreinfrastructure.org/projects/5925)
 [![Slack](https://raw.githubusercontent.com/com-pas/compas-architecture/master/public/LFEnergy-slack.svg)](http://lfenergy.slack.com/)
 
 # compas-scl-validator
@@ -28,19 +28,19 @@ automatically determine the URL to be used.
 
 ## Development
 
-For the RiseClipse implementation of the validator parts of the RiseClipse project are being used. Currently, these
-parts aren't distributed to any Maven Repository, so the Git Repositories need to be included. This is done using Git
-Submodules.
+Since version 1.2.x the JAR Files of RiseClipse are distributed through Maven Central Repository. The JAR Files can be
+retrieved from there and don't need to be build locally anymore. Only the OCL Files for the SCL validation still need to
+be downloaded from RiseClipse GIT Repository. This is still done using Git Submodules.
 
 To clone the project or update the project this means that the Git commands are sometimes a little different. To clone
 the project use the following command `git clone --recurse-submodules git@github.com:com-pas/compas-scl-validator.git`.
 This will also clone the submodules.
 
 Tip: The URL to the submodules are configured in the file `.gitmodules`, but these are using the SSH URL. There is a way
-described in the URL above that the URL can be overwritten locally with an HTTPS URL of the GIT Repository.
+described [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to overwrite the URL locally with an HTTPS URL of
+the GIT Repository.
 
-Check the [Development](DEVELOPMENT.md) page for more detail information how to work with this repository, because of
-the mixture with RiseClipse.
+Check the [Development](DEVELOPMENT.md) page for more detail information how to develop in this GIT repository.
 
 ## Custom OCL Files
 

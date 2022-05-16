@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache-2.0
     <packaging>jar</packaging>
 
     <properties>
-        <riseclipse.developer.root>${project.basedir}/../riseclipse-developer</riseclipse.developer.root>
+        <riseclipse.p2.root>${project.basedir}/../riseclipse-p2-to-m2</riseclipse.p2.root>
     </properties>
 
     <dependencies>
@@ -28,8 +28,12 @@ SPDX-License-Identifier: Apache-2.0
         </dependency>
 
         <dependency>
-            <groupId>fr.centralesupelec.edf.riseclipse</groupId>
+            <groupId>io.github.riseclipse</groupId>
             <artifactId>fr.centralesupelec.edf.riseclipse.iec61850.scl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.riseclipse</groupId>
+            <artifactId>fr.centralesupelec.edf.riseclipse.main</artifactId>
         </dependency>
 
         <dependency>
