@@ -21,7 +21,6 @@
         <bundles name="javax.inject" versionRange="1.0.0.v20220405-0441"/>
         <bundles name="org.antlr.runtime" versionRange="3.2.0.v20220404-1927"/>
         <bundles name="org.aopalliance" versionRange="1.0.0.v20220404-1927"/>
-        <bundles name="org.osgi.service.prefs" versionRange="1.0.0.v20220404-1927"/>
       </repositories>
     </contributions>
     <contributions label="EMF 2.30">
