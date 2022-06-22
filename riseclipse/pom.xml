@@ -23,7 +23,7 @@ SPDX-License-Identifier: Apache-2.0
     </modules>
 
     <properties>
-        <eclipse.core.resources.version>3.16.0</eclipse.core.resources.version>
+        <eclipse.core.resources.version>3.17.0</eclipse.core.resources.version>
         <eclipse.emf.ecore.version>2.27.0</eclipse.emf.ecore.version>
         <eclipse.emf.common.version>2.25.0</eclipse.emf.common.version>
         <eclipse.ocl.version>1.17.0</eclipse.ocl.version>
