@@ -6,8 +6,8 @@
         <bundles name="org.eclipse.core.commands" versionRange="3.10.100"/>
         <bundles name="org.eclipse.core.contenttype" versionRange="3.8.100"/>
         <bundles name="org.eclipse.core.jobs" versionRange="3.12.0"/>
-        <bundles name="org.eclipse.core.resources" versionRange="3.16.0"/>
-        <bundles name="org.eclipse.core.runtime" versionRange="3.24.0"/>
+        <bundles name="org.eclipse.core.resources" versionRange="3.17.0"/>
+        <bundles name="org.eclipse.core.runtime" versionRange="3.25.0"/>
         <bundles name="org.eclipse.equinox.app" versionRange="1.6.100"/>
         <bundles name="org.eclipse.equinox.common" versionRange="3.15.100"/>
         <bundles name="org.eclipse.equinox.preferences" versionRange="3.9.100"/>
