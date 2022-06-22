@@ -36,6 +36,8 @@ updates:
       - dependency-name: org.eclipse.ocl:org.eclipse.ocl.xtext.completeocl
       - dependency-name: org.eclipse.ocl:org.eclipse.ocl.xtext.oclstdlib
       - dependency-name: org.antlr.runtime:org.antlr.runtime
+      - dependency-name: org.apache.log4j:org.apache.log4j
+      - dependency-name: javax.inject:javax.inject
 
   - package-ecosystem: "docker"
     directory: "/app/src/main/docker/"
