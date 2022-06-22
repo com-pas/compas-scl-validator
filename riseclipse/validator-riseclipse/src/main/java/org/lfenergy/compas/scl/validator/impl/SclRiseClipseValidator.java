@@ -20,6 +20,7 @@ import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,14 +54,14 @@ public class SclRiseClipseValidator implements SclValidator {
         OclFileLoader oclFileLoader = new OclFileLoader(tempDirectory, oclFiles);
         try {
             // Load all the OCL Files, adding them to the OCL Instance.
-            LOGGER.info("Loading OCL Files for type '{}'.", type);
-            oclFileLoader.loadOCLDocuments(type);
+            LOGGER.info("Loading OCL Files.");
+            oclFileLoader.loadOCLDocuments();
             oclFileLoader.prepareValidator(validator);
 
             // Load the SCL File as Resource ready to be processed.
             LOGGER.info("Loading SCL Data for type '{}'.", type);
             var sclLoader = new SclModelLoader();
-            var resource = sclLoader.load(sclData);
+            var resource = sclLoader.load(sclData, type);
 
             LOGGER.info("Validating SCL Data for type '{}'.", type);
             var diagnostician = new CompasDiagnostician(validatorRegistry);

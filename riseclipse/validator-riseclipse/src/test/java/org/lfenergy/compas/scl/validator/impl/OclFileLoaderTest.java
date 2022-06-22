@@ -10,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -49,7 +48,7 @@ class OclFileLoaderTest {
 
     @Test
     void loadOCLDocuments_WhenCalled_ThenFilesFromListAreLoaded() throws IOException {
-        loader.loadOCLDocuments(SclFileType.CID);
+        loader.loadOCLDocuments();
 
         assertEquals(1, Files.lines(tempFile).count());
     }

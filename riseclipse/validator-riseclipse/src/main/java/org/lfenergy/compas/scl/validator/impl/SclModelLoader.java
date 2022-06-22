@@ -8,6 +8,7 @@ import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceSetImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +34,12 @@ public class SclModelLoader {
                 .put(Resource.Factory.Registry.DEFAULT_EXTENSION, new SclResourceFactoryImpl());
     }
 
-    public Resource load(String sclData) {
+    public Resource load(String sclData, SclFileType type) {
         LOGGER.debug("Loading SCL Data in RiseClipse.");
         try {
-            UUID uuid = UUID.randomUUID();
-            Resource resource = resourceSet.createResource(URI.createURI(uuid.toString()));
+            // Make a fake filename, but the extension is used by the OCL Rules to determine the Type of SCL File.
+            var filename = UUID.randomUUID().toString() + "." + type.name();
+            var resource = resourceSet.createResource(URI.createURI(filename));
             resource.load(new ByteArrayInputStream(sclData.getBytes(StandardCharsets.UTF_8)), new HashMap<>());
             return resource;
         } catch (Exception exp) {
