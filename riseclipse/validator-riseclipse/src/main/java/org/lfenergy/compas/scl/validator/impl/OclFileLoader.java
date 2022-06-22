@@ -11,9 +11,7 @@ import org.eclipse.ocl.pivot.resource.CSResource;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.eclipse.ocl.xtext.completeocl.validation.CompleteOCLEObjectValidator;
-import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
-import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,9 +53,8 @@ public class OclFileLoader {
         }
     }
 
-    public void loadOCLDocuments(SclFileType type) {
+    public void loadOCLDocuments() {
         oclFiles.stream()
-                .filter(uri -> OclUtil.includeOnType(uri, type))
                 .forEach(this::addOCLDocument);
     }
 

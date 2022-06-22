@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 class CompasOclFileCollectorTest extends AbstractCompasOclFileCollectorTest {
     @Test
     void getDefaultOclFiles_WhenCalledWithoutCustomDirectory_ThenListReturned() {
-        assertValidateOclFileCollector(new CompasOclFileCollector(null), 230);
+        assertValidateOclFileCollector(new CompasOclFileCollector(null), 212);
     }
 
     @Test
     void getDefaultOclFiles_WhenCalledWithCustomDirectory_ThenListReturned() {
-        assertValidateOclFileCollector(new CompasOclFileCollector("./src/test/data/ocl"), 231);
+        assertValidateOclFileCollector(new CompasOclFileCollector("./src/test/data/ocl"), 213);
     }
 }
