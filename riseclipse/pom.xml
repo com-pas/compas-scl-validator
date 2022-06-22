@@ -30,7 +30,7 @@ SPDX-License-Identifier: Apache-2.0
         <antlr.runtime.version>3.2.0</antlr.runtime.version>
 
         <riseclipse.scl.version>1.2.4</riseclipse.scl.version>
-        <riseclipse.main.version>1.2.5</riseclipse.main.version>
+        <riseclipse.main.version>1.2.6</riseclipse.main.version>
 
         <riseclipse.p2.root>${project.basedir}/riseclipse-p2-to-m2</riseclipse.p2.root>
     </properties>
