@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.util.OclUtil;
 
@@ -29,7 +30,7 @@ class SclModelLoaderTest {
     void load_WhenCalledWithValidSCXML_ThenResourceLoaded() throws IOException {
         var sclData = readSCL("example.scd");
 
-        var result = loader.load(sclData);
+        var result = loader.load(sclData, SclFileType.SCD);
 
         assertNotNull(result);
     }
@@ -39,7 +40,7 @@ class SclModelLoaderTest {
         var sclData = readSCL("invalid.scd");
 
         var exception = assertThrows(SclValidatorException.class,
-                () -> loader.load(sclData));
+                () -> loader.load(sclData, SclFileType.SCD));
 
         assertEquals(LOADING_SCL_FILE_ERROR_CODE, exception.getErrorCode());
     }
