@@ -27,6 +27,17 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5
+    ignore:
+      # Next dependencies will be ignored, because they should stay in sync with the 'eclipse.aggr' versions.
+      - dependency-name: org.eclipse.core:org.eclipse.core.resources
+      - dependency-name: org.eclipse.emf:org.eclipse.emf.ecore
+      - dependency-name: org.eclipse.emf:org.eclipse.emf.common
+      - dependency-name: org.eclipse.ocl:org.eclipse.ocl.pivot
+      - dependency-name: org.eclipse.ocl:org.eclipse.ocl.xtext.completeocl
+      - dependency-name: org.eclipse.ocl:org.eclipse.ocl.xtext.oclstdlib
+      - dependency-name: org.antlr.runtime:org.antlr.runtime
+      - dependency-name: org.apache.log4j:org.apache.log4j
+      - dependency-name: javax.inject:javax.inject
 
   - package-ecosystem: "docker"
     directory: "/app/src/main/docker/"
