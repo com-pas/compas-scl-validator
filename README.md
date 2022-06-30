@@ -49,9 +49,8 @@ Image there is a volume `/data/ocl` which can be used to add these files, see ou
 example how to.
 
 In this directory, you can use subdirectories like `SemanticConstraints` as RiseClipse is doing. And there is a special
-filter that when you create a directory `FileSpecifics`. In this directory you can create for instance a directory `CID`
-to put constraints specific for an SCL File Type. Known types are `SSD`, `IID`, `ICD`, `SCD`, `CID`, `SED`, `ISD`,
-`STD`.
+directory `FileSpecifics`. In this directory mostly file specific rules are added. There are functions that can be used
+in the OCL Rules to determine the type of file, like `isInICDFile()`.
 
 For instance,
 
@@ -59,8 +58,7 @@ For instance,
 data
 └── ocl
     ├── FileSpecifics
-    │         └── CID
-    │             └── Busbar.ocl
+    │   └── DOType.ocl
     └── SemanticConstraints
         └── Busbar.ocl
 ```
