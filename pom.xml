@@ -27,7 +27,7 @@ SPDX-License-Identifier: Apache-2.0
         <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
         <compas.core.version>0.9.1</compas.core.version>
 
-        <quarkus.platform.version>2.10.1.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.10.2.Final</quarkus.platform.version>
         <slf4j.version>1.7.36</slf4j.version>
         <openpojo.version>0.9.1</openpojo.version>
     </properties>
