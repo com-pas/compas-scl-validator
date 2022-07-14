@@ -66,6 +66,28 @@ You can run your application in dev mode that enables live coding using:
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
+### Application depends on a running KeyCloak instance for dev mode
+
+There is a KeyCloak instance need to be running on port 8089 by default in dev mode.
+See [Security](README.md#security) for default values, if custom keycloak is used.
+
+There is a preconfigured keycloak instance available in
+the [CoMPAS Deployment Repository](https://github.com/com-pas/compas-deployment). This repository can be cloned and
+when going to this directory the following command can be executed to create a local Docker Image with configuration.
+
+```shell
+cd <CoMPAS Deployment Repository Directory>/compas/keycloak
+docker build -t compas_keycloak . 
+```
+
+There is now a Docker Image `compas_keycloak` created that can be started using the following command
+
+```shell
+docker run --rm --name compas_keycloak \
+   -p 8089:8080 
+   -d compas_keycloak:latest
+```
+
 ## Packaging and running the application
 
 The application can be packaged using:
