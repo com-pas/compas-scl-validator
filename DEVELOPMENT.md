@@ -4,7 +4,21 @@ SPDX-FileCopyrightText: 2022 Alliander N.V.
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# Development
+# Development for CoMPAS SCL Validator
+
+Since version 1.2.x the JAR Files of RiseClipse are distributed through Maven Central Repository. The JAR Files can be
+retrieved from there and don't need to be build locally anymore. Only the OCL Files for the SCL validation still need to
+be downloaded from RiseClipse GIT Repository. This is still done using Git Submodules.
+
+To clone the project or update the project this means that the Git commands are sometimes a little different. To clone
+the project use the following command `git clone --recurse-submodules git@github.com:com-pas/compas-scl-validator.git`.
+This will also clone the submodules.
+
+Tip: The URL to the submodules are configured in the file `.gitmodules`, but these are using the SSH URL. There is a way
+described [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to overwrite the URL locally with an HTTPS URL of
+the GIT Repository.
+
+Check the [Development](DEVELOPMENT.md) page for more detail information how to develop in this GIT repository.
 
 ## Git
 
@@ -56,6 +70,22 @@ maven module is created here, see [README.md](riseclipse/riseclipse-p2-to-m2/REA
 Example about how to use Eclipse OCL was found
 [here](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.ocl.doc%2Fhelp%2FPivotStandalone.html).
 
+## Building the application
+
+You can use Maven to build the application and see if all tests are working using:
+
+```shell script
+./mvnw clean verify
+```
+
+This should normally be enough to also run the application, but there were cases that we need to build using:
+
+```shell script
+./mvnw clean install
+```
+
+This to make the local modules available for the app module to run the application.
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -88,22 +118,44 @@ docker run --rm --name compas_keycloak \
    -d compas_keycloak:latest
 ```
 
-## Packaging and running the application
+## Testing the application
 
-The application can be packaged using:
+The application is tested with unit and integration tests, but you can also manually test the application using for
+instance Postman. And there is also a way to test this service with the CoMPAS OpenSCD Frontend application.
+
+### Postman
+
+To manually test the application there is a Postman collection in the directory `postman` that can be imported
+and used to execute REST XML Calls.
+
+To make the call work we also need to import an environment and authorisation collection. These files can be found
+in [CoMPAS Deployment Repository](https://github.com/com-pas/compas-deployment) in the directory `postman`
+(`auth.collection.json` and `local.environment.json`).
+
+In the authorisation collection there are called for the 3 users known within the Demo KeyCloak instance.
+If one of these calls are executed there is a variable `bearer` filled.
+
+Now one of the SCL Auto Alignment calls can be executed, the variable `bearer` is added to the header of the request.
+After the call is executed the result should be shown in Postman.
+
+### CoMPAS OpenSCD Frontend application
+
+To test the SCL Validator with the CoMPAS OpenSCD application just run the application in dev mode, including the
+KeyCloak instance. For further instruction how to start the CoMPAS OpenSCD application and use this locally see
+the file `DEVELOPMENT.md` in [CoMPAS OpenSCD application](https://github.com/com-pas/compas-open-scd).
+
+## Docker Images
+
+### Creating a Docker image with native executable
+
+The CoMPAS SCL Validator currently isn't build as Native executable, GraalVM has a lot of problems to strip the
+Eclipse libraries and make them work as Native executable.
+
+### Creating a Docker image with JVM executable
+
+The release action is creating a Docker Image which runs the application using a JVM. You can create a Docker Image
+with JVM executable using:
 
 ```shell script
-./mvnw package
+./mvnw package -Pjvm-image
 ```
-
-It produces the `quarkus-run.jar` file in the `app/target/quarkus-app/` directory. Be aware that it’s not an _über-jar_
-as the dependencies are copied into the `app/target/quarkus-app/lib/` directory.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application is now runnable using `java -jar app/target/quarkus-app/quarkus-run.jar`.
-
