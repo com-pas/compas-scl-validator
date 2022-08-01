@@ -6,6 +6,14 @@ SPDX-License-Identifier: Apache-2.0
 
 # Development for CoMPAS SCL Validator
 
+
+---
+**Note**
+Mac M1 chip users, see [below](#mac-m1)
+
+---
+
+
 Since version 1.2.x the JAR Files of RiseClipse are distributed through Maven Central Repository. The JAR Files can be
 retrieved from there and don't need to be build locally anymore. Only the OCL Files for the SCL validation still need to
 be downloaded from RiseClipse GIT Repository. This is still done using Git Submodules.
@@ -158,4 +166,15 @@ with JVM executable using:
 
 ```shell script
 ./mvnw package -Pjvm-image
+```
+
+## Mac M1
+
+The Mac M1 chip is ARM based. In order to make this project work, you need to install the x86 version of your IDE.
+You also need Rosetta2 to virtualize your os. In the x86 version of your IDE, you also need to install the x86 Java version.
+You can use SDK-Man to easily switch between java versions.
+
+While calling maven scripts, you need to add the os.arch flag.
+```shell script
+./mvnw clean compile -Dos.arch=x86_64
 ```
