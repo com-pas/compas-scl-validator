@@ -29,7 +29,7 @@ SPDX-License-Identifier: Apache-2.0
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-eclipserun-plugin</artifactId>
-        <version>2.7.3</version>
+        <version>2.7.4</version>
         <configuration>
           <work>${project.build.directory}/maven/tmp/cbi</work>
 

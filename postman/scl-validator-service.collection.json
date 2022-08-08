@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "1178d23f-996d-44ed-a377-8254ed61481c",
+		"name": "Compas SCL Validator Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1434829"
+	},
+	"item": [
+		{
+			"name": "validate",
+			"item": [
+				{
+					"name": "/validate/v1/:type (CID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson2 = xml2Json(responseBody);",
+									"var errors = responseJson2['svs:SclValidateResponse']['svs:ValidationErrors'];",
+									"if (errors) {",
+									"    console.log(errors.length)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svs:SclValidateRequest xmlns:svs=\"https://www.lfenergy.org/compas/SclValidatorService/v1\">\n\t<svs:SclData><![CDATA[\n<SCL xmlns=\"http://www.iec.ch/61850/2003/SCL\" version=\"2007\" revision=\"B\" release=\"4\">\n    <Header id=\"f9283708-bf4f-412c-a1d6-f947b9ac3000\" version=\"1.0.0\" revision=\"Revision\" toolID=\"toolID\" nameStructure=\"IEDName\"/>\n    <IED name=\"IED_NAME\">\n        <AccessPoint name=\"AP_NAME\">\n            <Server>\n                <Authentication/>\n                <LDevice inst=\"LDPO\">\n                    <LN0 lnType=\"LN2\" lnClass=\"LLN0\" inst=\"\">\n                        <Inputs>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO1\" desc=\"DESC1\"/>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO2\" desc=\"DESC2\"/>\n                        </Inputs>\n                    </LN0>\n                    <LN lnType=\"LN1\" lnClass=\"PIOC\" inst=\"1\">\n                        <Inputs>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO1\" desc=\"DESC1\"/>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO2\" desc=\"DESC2\"/>\n                        </Inputs>\n                    </LN>\n                    <LN lnType=\"LN1\" lnClass=\"PIOC\" inst=\"2\">\n                        <Inputs>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO1\" desc=\"DESC1\"/>\n                            <ExtRef intAddr=\"INTADDR\" pDO=\"DO2\" desc=\"DESC2\"/>\n                        </Inputs>\n                    </LN>\n                </LDevice>\n            </Server>\n        </AccessPoint>\n    </IED>\n    <DataTypeTemplates>\n        <LNodeType lnClass=\"LLN0\" id=\"LN2\">\n            <DO name=\"Beh\" type=\"DO1\" transient=\"false\"/>\n            <DO name=\"FACntRs\" type=\"DO2\" transient=\"true\"/>\n            <DO name=\"StrVal\" type=\"DO3\" transient=\"false\"/>\n        </LNodeType>\n        <LNodeType lnClass=\"PIOC\" id=\"LN1\">\n            <DO name=\"Beh\" type=\"DO1\" transient=\"false\"/>\n            <DO name=\"FACntRs\" type=\"DO2\" transient=\"true\"/>\n            <DO name=\"StrVal\" type=\"DO3\" transient=\"false\"/>\n        </LNodeType>\n        <DOType cdc=\"WYE\" id=\"DO1\">\n            <DA fc=\"DC\" dchg=\"false\" qchg=\"false\" dupd=\"false\" name=\"dataNs\" bType=\"VisString255\">\n                <Val>IEC 61850-7-3:2007B</Val>\n            </DA>\n            <DA fc=\"CF\" dchg=\"true\" qchg=\"false\" dupd=\"false\" name=\"smpRate\" bType=\"INT32U\"/>\n        </DOType>\n        <DOType cdc=\"WYE\" id=\"DO2\">\n            <SDO name=\"phsBHar\" type=\"DO4\"/>\n            <DA fc=\"CF\" dchg=\"true\" qchg=\"false\" dupd=\"true\" name=\"angRef\" bType=\"Enum\" type=\"PhaseAngleReferenceKind\"/>\n        </DOType>\n        <DOType cdc=\"WYE\" id=\"DO3\">\n            <SDO name=\"neutHar\" type=\"DO4\"/>\n            <DA fc=\"CF\" dchg=\"true\" qchg=\"false\" dupd=\"false\" name=\"smpRate\" bType=\"INT32U\"/>\n            <DA fc=\"ST\" dchg=\"false\" qchg=\"false\" dupd=\"false\" name=\"origin\" bType=\"Struct\" type=\"DA3\"/>\n        </DOType>\n        <DOType cdc=\"WYE\" id=\"DO4\">\n            <DA fc=\"DC\" dchg=\"false\" qchg=\"false\" dupd=\"false\" name=\"configRev\" bType=\"VisString255\" valKind=\"RO\" valImport=\"false\"/>\n        </DOType>\n        <DAType id=\"DA1\">\n            <BDA name=\"operTm\" bType=\"Timestamp\"/>\n            <BDA name=\"origin\" bType=\"Struct\" type=\"DA3\"/>\n            <ProtNs type=\"8-MMS\">IEC 61850-8-1:2003</ProtNs>\n        </DAType>\n        <DAType id=\"DA2\">\n            <BDA name=\"T\" bType=\"Timestamp\"/>\n            <BDA name=\"ctlVal\" bType=\"Enum\" type=\"RecCycModKind\"/>\n            <ProtNs type=\"8-MMS\">IEC 61850-8-1:2003</ProtNs>\n        </DAType>\n        <DAType id=\"DA3\">\n            <BDA name=\"Check\" bType=\"Check\"/>\n            <BDA name=\"Test\" bType=\"BOOLEAN\"/>\n            <ProtNs type=\"8-MMS\">IEC 61850-8-1:2003</ProtNs>\n        </DAType>\n        <EnumType id=\"RecCycModKind\">\n            <EnumVal ord=\"1\">Completed</EnumVal>\n            <EnumVal ord=\"2\">Cancelled</EnumVal>\n            <EnumVal ord=\"3\">New adjustments</EnumVal>\n            <EnumVal ord=\"4\">AnotherValue</EnumVal>\n        </EnumType>\n        <EnumType id=\"PhaseAngleReferenceKind\">\n            <EnumVal ord=\"0\">Va</EnumVal>\n            <EnumVal ord=\"1\">Vb</EnumVal>\n            <EnumVal ord=\"2\">Vc</EnumVal>\n            <EnumVal ord=\"3\">Aa</EnumVal>\n            <EnumVal ord=\"4\">Ab</EnumVal>\n            <EnumVal ord=\"5\">Ac</EnumVal>\n            <EnumVal ord=\"6\">Vab</EnumVal>\n            <EnumVal ord=\"7\">Vbc</EnumVal>\n            <EnumVal ord=\"8\">Vca</EnumVal>\n            <EnumVal ord=\"9\">AnotherValue</EnumVal>\n        </EnumType>\n    </DataTypeTemplates>\n</SCL>\n    ]]></svs:SclData>\n</svs:SclValidateRequest>\n\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/validate/v1/:type",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"validate",
+								"v1",
+								":type"
+							],
+							"variable": [
+								{
+									"key": "type",
+									"value": "CID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<element>\\n <SCL>(string)</SCL>\\n</element>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/compas-scl-auto-alignment/auto/alignment/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compas-scl-auto-alignment",
+										"auto",
+										"alignment",
+										"v1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>\n <SCL>(string)</SCL>\n</element>"
+						}
+					]
+				},
+				{
+					"name": "/validate/v1/:type (SCD)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson2 = xml2Json(responseBody);",
+									"var errors = responseJson2['svs:SclValidateResponse']['svs:ValidationErrors'];",
+									"if (errors) {",
+									"    console.log(errors.length)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svs:SclValidateRequest xmlns:svs=\"https://www.lfenergy.org/compas/SclValidatorService/v1\">\n\t<svs:SclData><![CDATA[\n<SCL xmlns:sxy=\"http://www.iec.ch/61850/2003/SCLcoordinates\" xmlns=\"http://www.iec.ch/61850/2003/SCL\" xmlns:txy=\"http://www.iec.ch/61850/2003/Terminal\" version=\"2007\" revision=\"B\">\n    <Header id=\"TrainingIEC61850\" version=\"1\" revision=\"54\" toolID=\"IEC 61850 System Configurator, Version: V5.80 \" nameStructure=\"IEDName\">\n        <Text>TrainingIEC61850</Text>\n    </Header>\n    <Substation name=\"AA1\" desc=\"Substation\">\n        <Private type=\"ABBPCMInternalObjRef\">0f6c4a8e-0904-4f41-9b01-03444ba9efc7</Private>\n        <VoltageLevel sxy:x=\"1\" sxy:y=\"3\" name=\"J1\" desc=\"Voltage Level\">\n            <Private type=\"ABBPCMInternalObjRef\">b80686f1-a514-477b-a83b-78f1cbe8a582</Private>\n            <Voltage unit=\"V\" multiplier=\"k\">20</Voltage>\n            <Bay sxy:x=\"1\" sxy:y=\"1\" name=\"BusBar A\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar A/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"2\" name=\"BusBar B\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar B/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"6\" name=\"Bay A\" desc=\"Feld A\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T11\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"6\" sxy:y=\"6\" name=\"Bay B\" desc=\"Feld B\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"12\" sxy:y=\"6\" name=\"CoupField\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" sxy:dir=\"west\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"XSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CILO\" lnInst=\"1\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"4\" sxy:y=\"1\" name=\"QC11\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"5\" sxy:y=\"1\" name=\"QC12\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L2\" name=\"L2\"/>\n            </Bay>\n            <Bay sxy:x=\"19\" sxy:y=\"6\" name=\"Bay C\" desc=\"Feld C\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"25\" sxy:y=\"6\" name=\"Bay D\" desc=\"Feld D\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L3\" name=\"L3\"/>\n            </Bay>\n        </VoltageLevel>\n    </Substation>\n</SCL>\n    ]]></svs:SclData>\n</svs:SclValidateRequest>\n\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/validate/v1/:type",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"validate",
+								"v1",
+								":type"
+							],
+							"variable": [
+								{
+									"key": "type",
+									"value": "SCD"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<element>\\n <SCL>(string)</SCL>\\n</element>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/compas-scl-auto-alignment/auto/alignment/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compas-scl-auto-alignment",
+										"auto",
+										"alignment",
+										"v1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>\n <SCL>(string)</SCL>\n</element>"
+						}
+					]
+				},
+				{
+					"name": "/validate/v1/:type (IID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson2 = xml2Json(responseBody);",
+									"var errors = responseJson2['svs:SclValidateResponse']['svs:ValidationErrors'];",
+									"if (errors) {",
+									"    console.log(errors.length)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svs:SclValidateRequest xmlns:svs=\"https://www.lfenergy.org/compas/SclValidatorService/v1\">\n\t<svs:SclData><![CDATA[\n<SCL xmlns:sxy=\"http://www.iec.ch/61850/2003/SCLcoordinates\" xmlns=\"http://www.iec.ch/61850/2003/SCL\" xmlns:txy=\"http://www.iec.ch/61850/2003/Terminal\" version=\"2007\" revision=\"B\">\n    <Header id=\"TrainingIEC61850\" version=\"1\" revision=\"54\" toolID=\"IEC 61850 System Configurator, Version: V5.80 \" nameStructure=\"IEDName\">\n        <Text>TrainingIEC61850</Text>\n    </Header>\n    <Substation name=\"AA1\" desc=\"Substation\">\n        <Private type=\"ABBPCMInternalObjRef\">0f6c4a8e-0904-4f41-9b01-03444ba9efc7</Private>\n        <VoltageLevel sxy:x=\"1\" sxy:y=\"3\" name=\"J1\" desc=\"Voltage Level\">\n            <Private type=\"ABBPCMInternalObjRef\">b80686f1-a514-477b-a83b-78f1cbe8a582</Private>\n            <Voltage unit=\"V\" multiplier=\"k\">20</Voltage>\n            <Bay sxy:x=\"1\" sxy:y=\"1\" name=\"BusBar A\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar A/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"2\" name=\"BusBar B\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar B/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"6\" name=\"Bay A\" desc=\"Feld A\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T11\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"6\" sxy:y=\"6\" name=\"Bay B\" desc=\"Feld B\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"12\" sxy:y=\"6\" name=\"CoupField\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" sxy:dir=\"west\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"XSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CILO\" lnInst=\"1\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"4\" sxy:y=\"1\" name=\"QC11\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"5\" sxy:y=\"1\" name=\"QC12\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L2\" name=\"L2\"/>\n            </Bay>\n            <Bay sxy:x=\"19\" sxy:y=\"6\" name=\"Bay C\" desc=\"Feld C\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"25\" sxy:y=\"6\" name=\"Bay D\" desc=\"Feld D\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L3\" name=\"L3\"/>\n            </Bay>\n        </VoltageLevel>\n    </Substation>\n</SCL>\n    ]]></svs:SclData>\n</svs:SclValidateRequest>\n\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/validate/v1/:type",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"validate",
+								"v1",
+								":type"
+							],
+							"variable": [
+								{
+									"key": "type",
+									"value": "IID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<element>\\n <SCL>(string)</SCL>\\n</element>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/compas-scl-auto-alignment/auto/alignment/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compas-scl-auto-alignment",
+										"auto",
+										"alignment",
+										"v1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>\n <SCL>(string)</SCL>\n</element>"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "nsdoc",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/nsdoc/v1",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"nsdoc",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/nsdoc/v1/:id",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"nsdoc",
+								"v1",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "75f69108-4f76-449b-823d-6328bd0d5b48"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/:id (Not Found)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/nsdoc/v1/:id",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"nsdoc",
+								"v1",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "123e4567-e89b-12d3-a456-426614174000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "q",
+			"item": [
+				{
+					"name": "/q/health/live",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson2 = xml2Json(responseBody);",
+									"var errors = responseJson2['svs:SclValidateResponse']['svs:ValidationErrors'];",
+									"if (errors) {",
+									"    console.log(errors.length)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svs:SclValidateRequest xmlns:svs=\"https://www.lfenergy.org/compas/SclValidatorService/v1\">\n\t<svs:SclData><![CDATA[\n<SCL xmlns:sxy=\"http://www.iec.ch/61850/2003/SCLcoordinates\" xmlns=\"http://www.iec.ch/61850/2003/SCL\" xmlns:txy=\"http://www.iec.ch/61850/2003/Terminal\" version=\"2007\" revision=\"B\">\n    <Header id=\"TrainingIEC61850\" version=\"1\" revision=\"54\" toolID=\"IEC 61850 System Configurator, Version: V5.80 \" nameStructure=\"IEDName\">\n        <Text>TrainingIEC61850</Text>\n    </Header>\n    <Substation name=\"AA1\" desc=\"Substation\">\n        <Private type=\"ABBPCMInternalObjRef\">0f6c4a8e-0904-4f41-9b01-03444ba9efc7</Private>\n        <VoltageLevel sxy:x=\"1\" sxy:y=\"3\" name=\"J1\" desc=\"Voltage Level\">\n            <Private type=\"ABBPCMInternalObjRef\">b80686f1-a514-477b-a83b-78f1cbe8a582</Private>\n            <Voltage unit=\"V\" multiplier=\"k\">20</Voltage>\n            <Bay sxy:x=\"1\" sxy:y=\"1\" name=\"BusBar A\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar A/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"2\" name=\"BusBar B\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar B/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"6\" name=\"Bay A\" desc=\"Feld A\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T11\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"6\" sxy:y=\"6\" name=\"Bay B\" desc=\"Feld B\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"12\" sxy:y=\"6\" name=\"CoupField\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" sxy:dir=\"west\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"XSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CILO\" lnInst=\"1\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"4\" sxy:y=\"1\" name=\"QC11\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"5\" sxy:y=\"1\" name=\"QC12\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L2\" name=\"L2\"/>\n            </Bay>\n            <Bay sxy:x=\"19\" sxy:y=\"6\" name=\"Bay C\" desc=\"Feld C\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"25\" sxy:y=\"6\" name=\"Bay D\" desc=\"Feld D\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L3\" name=\"L3\"/>\n            </Bay>\n        </VoltageLevel>\n    </Substation>\n</SCL>\n    ]]></svs:SclData>\n</svs:SclValidateRequest>\n\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/q/health/live",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"q",
+								"health",
+								"live"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<element>\\n <SCL>(string)</SCL>\\n</element>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/compas-scl-auto-alignment/auto/alignment/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compas-scl-auto-alignment",
+										"auto",
+										"alignment",
+										"v1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>\n <SCL>(string)</SCL>\n</element>"
+						}
+					]
+				},
+				{
+					"name": "/q/health/ready",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson2 = xml2Json(responseBody);",
+									"var errors = responseJson2['svs:SclValidateResponse']['svs:ValidationErrors'];",
+									"if (errors) {",
+									"    console.log(errors.length)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svs:SclValidateRequest xmlns:svs=\"https://www.lfenergy.org/compas/SclValidatorService/v1\">\n\t<svs:SclData><![CDATA[\n<SCL xmlns:sxy=\"http://www.iec.ch/61850/2003/SCLcoordinates\" xmlns=\"http://www.iec.ch/61850/2003/SCL\" xmlns:txy=\"http://www.iec.ch/61850/2003/Terminal\" version=\"2007\" revision=\"B\">\n    <Header id=\"TrainingIEC61850\" version=\"1\" revision=\"54\" toolID=\"IEC 61850 System Configurator, Version: V5.80 \" nameStructure=\"IEDName\">\n        <Text>TrainingIEC61850</Text>\n    </Header>\n    <Substation name=\"AA1\" desc=\"Substation\">\n        <Private type=\"ABBPCMInternalObjRef\">0f6c4a8e-0904-4f41-9b01-03444ba9efc7</Private>\n        <VoltageLevel sxy:x=\"1\" sxy:y=\"3\" name=\"J1\" desc=\"Voltage Level\">\n            <Private type=\"ABBPCMInternalObjRef\">b80686f1-a514-477b-a83b-78f1cbe8a582</Private>\n            <Voltage unit=\"V\" multiplier=\"k\">20</Voltage>\n            <Bay sxy:x=\"1\" sxy:y=\"1\" name=\"BusBar A\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar A/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"2\" name=\"BusBar B\">\n                <ConnectivityNode pathName=\"AA1/J1/BusBar B/L1\" name=\"L1\"/>\n            </Bay>\n            <Bay sxy:x=\"1\" sxy:y=\"6\" name=\"Bay A\" desc=\"Feld A\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T3\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T11\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay A/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay A\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay A/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"6\" sxy:y=\"6\" name=\"Bay B\" desc=\"Feld B\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay B/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay B\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay B/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"12\" sxy:y=\"6\" name=\"CoupField\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" sxy:dir=\"west\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/CoupField/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"XSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CSWI\" lnInst=\"1\"/>\n                    <LNode iedName=\"Relay_FIELDC\" ldInst=\"Disc_QB1\" prefix=\"\" lnClass=\"CILO\" lnInst=\"1\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/CoupField/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"CoupField\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"4\" sxy:y=\"1\" name=\"QC11\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"5\" sxy:y=\"1\" name=\"QC12\">\n                    <Terminal name=\"T2\" cNodeName=\"grounded\"/>\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/CoupField/L2\" name=\"L2\"/>\n            </Bay>\n            <Bay sxy:x=\"19\" sxy:y=\"6\" name=\"Bay C\" desc=\"Feld C\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay C/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay C\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay C/L3\" name=\"L3\"/>\n            </Bay>\n            <Bay sxy:x=\"25\" sxy:y=\"6\" name=\"Bay D\" desc=\"Feld D\">\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"1\" name=\"QB1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar B/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar B\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"3\" sxy:y=\"1\" name=\"QB2\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/BusBar A/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"BusBar A\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CBR\" sxy:x=\"2\" sxy:y=\"3\" name=\"QA1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L1\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L1\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"CTR\" sxy:x=\"2\" sxy:y=\"5\" name=\"T1\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L2\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L2\" txy:actTerm=\"1\"/>\n                    <Terminal name=\"T2\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"2\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"DIS\" sxy:x=\"1\" sxy:y=\"7\" name=\"QB9\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConductingEquipment type=\"VTR\" sxy:x=\"3\" sxy:y=\"7\" name=\"T5\">\n                    <Terminal name=\"T1\" connectivityNode=\"AA1/J1/Bay D/L3\" substationName=\"AA1\" voltageLevelName=\"J1\" bayName=\"Bay D\" cNodeName=\"L3\" txy:actTerm=\"1\"/>\n                </ConductingEquipment>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L1\" name=\"L1\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L2\" name=\"L2\"/>\n                <ConnectivityNode pathName=\"AA1/J1/Bay D/L3\" name=\"L3\"/>\n            </Bay>\n        </VoltageLevel>\n    </Substation>\n</SCL>\n    ]]></svs:SclData>\n</svs:SclValidateRequest>\n\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sclValidatorBaseUrl}}/q/health/ready",
+							"host": [
+								"{{sclValidatorBaseUrl}}"
+							],
+							"path": [
+								"q",
+								"health",
+								"ready"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<element>\\n <SCL>(string)</SCL>\\n</element>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/compas-scl-auto-alignment/auto/alignment/v1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"compas-scl-auto-alignment",
+										"auto",
+										"alignment",
+										"v1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>\n <SCL>(string)</SCL>\n</element>"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearer}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}
