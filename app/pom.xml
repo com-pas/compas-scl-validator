@@ -20,6 +20,8 @@ SPDX-License-Identifier: Apache-2.0
     <properties>
         <quarkus.container-image.group>lfenergy</quarkus.container-image.group>
         <quarkus.container-image.name>compas-scl-validator</quarkus.container-image.name>
+
+        <riseclipse.p2.root>${project.basedir}/../riseclipse/riseclipse-p2-to-m2</riseclipse.p2.root>
     </properties>
 
     <dependencies>

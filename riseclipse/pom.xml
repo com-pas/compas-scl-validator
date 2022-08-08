@@ -42,13 +42,6 @@ SPDX-License-Identifier: Apache-2.0
         <riseclipse.p2.root>${project.basedir}/riseclipse-p2-to-m2</riseclipse.p2.root>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>local-eclipse-p2-mirror</id>
-            <url>file:///${riseclipse.p2.root}/target/maven/repository/final</url>
-        </repository>
-    </repositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
