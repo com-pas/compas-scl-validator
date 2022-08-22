@@ -27,7 +27,7 @@ SPDX-License-Identifier: Apache-2.0
         <compas.core.version>0.9.1</compas.core.version>
 
         <quarkus.platform.version>2.11.2.Final</quarkus.platform.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.0</slf4j.version>
         <openpojo.version>0.9.1</openpojo.version>
 
         <riseclipse.p2.root>${project.basedir}/riseclipse/riseclipse-p2-to-m2</riseclipse.p2.root>
@@ -57,7 +57,7 @@ SPDX-License-Identifier: Apache-2.0
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        
+
         <repository>
             <id>local-eclipse-p2-mirror</id>
             <url>file:///${riseclipse.p2.root}/target/maven/repository/final</url>
