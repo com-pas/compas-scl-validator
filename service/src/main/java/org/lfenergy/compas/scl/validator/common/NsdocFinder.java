@@ -76,7 +76,7 @@ public class NsdocFinder {
         return nsdocFiles.values()
                 .stream()
                 .sorted(Comparator.comparing(NsdocFile::getNsdocId))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public String getNsdocFile(UUID id) {

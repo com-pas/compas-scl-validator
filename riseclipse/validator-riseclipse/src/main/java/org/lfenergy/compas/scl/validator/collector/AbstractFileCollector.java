@@ -15,7 +15,6 @@ import java.nio.file.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_CUSTOM_OCL_FILES_FAILED;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_OCL_FILES_FAILED;
@@ -54,7 +53,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                         try (var walk = Files.walk(oclDirectoryPath)) {
                             return walk.filter(filter)
                                     .map(path -> URI.createURI(path.toUri().toString()))
-                                    .collect(Collectors.toList());
+                                    .toList();
                         }
                     }
                 } else {
@@ -64,7 +63,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                                 .map(Path::toFile)
                                 .filter(File::isFile)
                                 .map(file -> URI.createFileURI(file.getAbsolutePath()))
-                                .collect(Collectors.toList());
+                                .toList();
                     }
                 }
             } else {
@@ -93,7 +92,7 @@ public abstract class AbstractFileCollector implements OclFileCollector {
                             .map(Path::toFile)
                             .filter(File::isFile)
                             .map(file -> URI.createFileURI(file.getAbsolutePath()))
-                            .collect(Collectors.toList());
+                            .toList();
                 }
             }
             return Collections.emptyList();
