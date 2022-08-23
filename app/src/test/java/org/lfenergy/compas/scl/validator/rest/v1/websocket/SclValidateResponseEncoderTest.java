@@ -28,17 +28,26 @@ class SclValidateResponseEncoderTest {
     @Test
     void encode_WhenCalledWithRequest_ThenRequestConvertedToString() {
         var validationMessage = "Some Validation Message";
+        var ruleName = "Rule Name 1";
+        var linenumber = 15;
+
         var request = new SclValidateResponse();
         request.setValidationErrorList(new ArrayList<>());
         var validationError = new ValidationError();
         validationError.setMessage(validationMessage);
+        validationError.setRuleName(ruleName);
+        validationError.setLinenumber(linenumber);
         request.getValidationErrorList().add(validationError);
 
         var result = encoder.encode(request);
 
         var expectedResult = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<svs:SclValidateResponse xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">" +
-                "<svs:ValidationErrors><svs:Message>" + validationMessage + "</svs:Message></svs:ValidationErrors>" +
+                "<svs:ValidationErrors>" +
+                "<svs:Message>" + validationMessage + "</svs:Message>" +
+                "<svs:RuleName>" + ruleName + "</svs:RuleName>" +
+                "<svs:Linenumber>" + linenumber + "</svs:Linenumber>" +
+                "</svs:ValidationErrors>" +
                 "</svs:SclValidateResponse>";
         assertNotNull(result);
         assertEquals(expectedResult, result);
