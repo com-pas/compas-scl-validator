@@ -49,35 +49,17 @@ public class XSDValidator {
         validator.setErrorHandler(new ErrorHandler() {
             @Override
             public void warning(SAXParseException exception) {
-                var validationError = createValidationError(exception);
-                errorList.add(validationError);
-
-                LOGGER.debug("XSD Validation - warning: '{}' (Linenumber {}, Columnnumber {})",
-                        validationError.getMessage(),
-                        validationError.getLinenumber(),
-                        validationError.getColumnNumber());
+                errorList.add(createValidationError(exception, "warning"));
             }
 
             @Override
             public void error(SAXParseException exception) {
-                var validationError = createValidationError(exception);
-                errorList.add(validationError);
-
-                LOGGER.debug("XSD Validation - error: '{}' (Linenumber {}, Columnnumber {})",
-                        validationError.getMessage(),
-                        validationError.getLinenumber(),
-                        validationError.getColumnNumber());
+                errorList.add(createValidationError(exception, "error"));
             }
 
             @Override
             public void fatalError(SAXParseException exception) {
-                var validationError = createValidationError(exception);
-                errorList.add(validationError);
-
-                LOGGER.debug("XSD Validation - fatal error, stopping: '{}' (Linenumber {}, Columnnumber {})",
-                        validationError.getMessage(),
-                        validationError.getLinenumber(),
-                        validationError.getColumnNumber());
+                errorList.add(createValidationError(exception, "fatal"));
             }
         });
     }
@@ -93,12 +75,19 @@ public class XSDValidator {
         }
     }
 
-    private ValidationError createValidationError(SAXParseException exception) {
+    private ValidationError createValidationError(SAXParseException exception, String type) {
         var validationError = new ValidationError();
         validationError.setMessage(exception.getMessage());
         validationError.setRuleName("XSD validation");
         validationError.setLinenumber(exception.getLineNumber());
         validationError.setColumnNumber(exception.getColumnNumber());
+
+        LOGGER.debug("XSD Validation - {}: '{}' (Linenumber {}, Columnnumber {})",
+                type,
+                validationError.getMessage(),
+                validationError.getLinenumber(),
+                validationError.getColumnNumber());
+
         return validationError;
     }
 }
