@@ -8,10 +8,8 @@ import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.xsd.resourceresolver.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.sax.SAXSource;
@@ -42,26 +40,10 @@ public class XSDValidator {
             var schema = factory.newSchema(
                     new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd")));
             validator = schema.newValidator();
+            validator.setErrorHandler(new XSDErrorHandler(errorList));
         } catch (SAXException exception) {
             throw new SclValidatorException(LOADING_XSD_FILE_ERROR_CODE, exception.getMessage());
         }
-
-        validator.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void warning(SAXParseException exception) {
-                errorList.add(createValidationError(exception, "warning"));
-            }
-
-            @Override
-            public void error(SAXParseException exception) {
-                errorList.add(createValidationError(exception, "error"));
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) {
-                errorList.add(createValidationError(exception, "fatal"));
-            }
-        });
     }
 
     public void validate() {
@@ -71,21 +53,5 @@ public class XSDValidator {
         } catch (IOException | SAXException exception) {
             LOGGER.error("[XSD validation] Exception: {}", exception.getMessage());
         }
-    }
-
-    private ValidationError createValidationError(SAXParseException exception, String type) {
-        var validationError = new ValidationError();
-        validationError.setMessage(exception.getMessage());
-        validationError.setRuleName("XSD validation");
-        validationError.setLinenumber(exception.getLineNumber());
-        validationError.setColumnNumber(exception.getColumnNumber());
-
-        LOGGER.debug("XSD Validation - {}: '{}' (Linenumber {}, Column number {})",
-                type,
-                validationError.getMessage(),
-                validationError.getLinenumber(),
-                validationError.getColumnNumber());
-
-        return validationError;
     }
 }
