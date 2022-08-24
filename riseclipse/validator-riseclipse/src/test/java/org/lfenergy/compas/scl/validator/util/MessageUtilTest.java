@@ -41,7 +41,8 @@ class MessageUtilTest {
 
         var validationError = result.get();
         assertNull(validationError.getRuleName());
-        assertEquals(0, validationError.getLinenumber());
+        assertNull(validationError.getLinenumber());
+        assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
 
@@ -56,7 +57,8 @@ class MessageUtilTest {
 
         var validationError = result.get();
         assertNull(validationError.getRuleName());
-        assertEquals(0, validationError.getLinenumber());
+        assertNull(validationError.getLinenumber());
+        assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
 
@@ -74,6 +76,7 @@ class MessageUtilTest {
         var validationError = result.get();
         assertEquals(ruleName, validationError.getRuleName());
         assertEquals(linenumber, validationError.getLinenumber());
+        assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
 
@@ -90,6 +93,7 @@ class MessageUtilTest {
         var validationError = result.get();
         assertEquals(ruleName, validationError.getRuleName());
         assertEquals(-1, validationError.getLinenumber());
+        assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
 }
