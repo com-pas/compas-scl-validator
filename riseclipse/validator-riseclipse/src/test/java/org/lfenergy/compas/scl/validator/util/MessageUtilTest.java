@@ -64,7 +64,7 @@ class MessageUtilTest {
     void createValidationError_WhenCalledWithCorrectMessage_ThenConvertValidationErrorReturned() {
         var message = "AnyLN (lnType=LN2) does not refer an existing LNodeType in DataTypeTemplates section";
         var ruleName = "OCL/SemanticConstraints/AnyLN_RefersToLNodeType";
-        var linenumber = (long) 9;
+        var linenumber = 9;
 
         var result = createValidationError("ERROR;" + ruleName + ";scl-file.scd;" + linenumber + ";" + message);
 

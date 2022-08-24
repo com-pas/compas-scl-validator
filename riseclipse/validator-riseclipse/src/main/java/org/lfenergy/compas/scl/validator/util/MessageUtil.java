@@ -30,7 +30,7 @@ public class MessageUtil {
             validationError.setMessage(messageParts[4]);
 
             try {
-                validationError.setLinenumber(Long.parseLong(messageParts[3]));
+                validationError.setLinenumber(Integer.parseInt(messageParts[3]));
             } catch (NumberFormatException exp) {
                 validationError.setLinenumber(-1);
                 LOGGER.debug("Invalid linenumber '{}' found", messageParts[3], exp);
