@@ -68,10 +68,8 @@ public class XSDValidator {
         try {
             SAXSource source = new SAXSource(new InputSource(new StringReader(sclData)));
             validator.validate(source);
-        } catch (IOException exception) {
-            LOGGER.error("[XSD validation] IOException: {}", exception.getMessage());
-        } catch (SAXException exception) {
-            LOGGER.error("[XSD validation] SAXException: {}", exception.getMessage());
+        } catch (IOException | SAXException exception) {
+            LOGGER.error("[XSD validation] Exception: {}", exception.getMessage());
         }
     }
 
