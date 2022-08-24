@@ -14,6 +14,9 @@ import java.util.List;
 public class XSDErrorHandler implements ErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(XSDErrorHandler.class);
 
+    public static final String DEFAULT_PREFIX = "XSD/";
+    public static final String DEFAULT_RULE_NAME = DEFAULT_PREFIX + "general";
+
     private List<ValidationError> errorList;
 
     public XSDErrorHandler(List<ValidationError> errorList) {
@@ -55,10 +58,39 @@ public class XSDErrorHandler implements ErrorHandler {
 
     private ValidationError createValidationError(SAXParseException exception) {
         var validationError = new ValidationError();
-        validationError.setMessage(exception.getMessage());
-        validationError.setRuleName("XSD validation");
+        var xsdMessage = exception.getMessage();
+        validationError.setMessage(getMessage(xsdMessage));
+        validationError.setRuleName(getRuleName(xsdMessage));
         validationError.setLinenumber(exception.getLineNumber());
         validationError.setColumnNumber(exception.getColumnNumber());
         return validationError;
+    }
+
+    String getRuleName(String xsdMessage) {
+        var ruleName = DEFAULT_RULE_NAME;
+        if (xsdMessage != null && !xsdMessage.isBlank()) {
+            int endIndex = xsdMessage.indexOf(':');
+            if (endIndex > 0) {
+                var tmpRuleName = xsdMessage.substring(0, endIndex);
+                if (!tmpRuleName.contains(" ")) {
+                    ruleName = "XSD/" + tmpRuleName;
+                }
+            }
+        }
+        return ruleName;
+    }
+
+    String getMessage(String xsdMessage) {
+        var message = xsdMessage;
+        if (message != null && !message.isBlank()) {
+            int endIndex = message.indexOf(':');
+            if (endIndex > 0) {
+                var tmpRuleName = xsdMessage.substring(0, endIndex);
+                if (!tmpRuleName.contains(" ")) {
+                    message = message.substring(endIndex + 1).trim();
+                }
+            }
+        }
+        return message;
     }
 }

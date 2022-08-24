@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_PREFIX;
+import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_RULE_NAME;
 
 class XSDErrorHandlerTest {
     private List<ValidationError> errorList = new ArrayList<>();
@@ -56,5 +58,63 @@ class XSDErrorHandlerTest {
         assertEquals(message, validationError.getMessage());
         assertEquals(linenumber, validationError.getLinenumber());
         assertEquals(columnNumber, validationError.getColumnNumber());
+    }
+
+    @Test
+    void getRuleName_WhenXSDMessageContainsNoRule_ThenDefaultXSDRuleNameReturned() {
+        var xsdMessage = "Duplicate match in scope for field \"depth\"";
+
+        var ruleName = handler.getRuleName(xsdMessage);
+
+        assertEquals(DEFAULT_RULE_NAME, ruleName);
+    }
+
+    @Test
+    void getRuleName_WhenXSDMessageContainsRuleWithSpaces_ThenDefaultXSDRuleNameReturned() {
+        var xsdMessage = "SOME SPACES RULE: Duplicate match in scope for field \"depth\"";
+
+        var ruleName = handler.getRuleName(xsdMessage);
+
+        assertEquals(DEFAULT_RULE_NAME, ruleName);
+    }
+
+    @Test
+    void getRuleName_WhenXSDMessageContainsRule_ThenRuleNameReturned() {
+        var expectedRuleName = "cvc-complex-type.2.1";
+        var xsdMessage = expectedRuleName + ": Element 'depth' must have no character or element information " +
+                "item [children], because the type's content type is empty.";
+
+        var ruleName = handler.getRuleName(xsdMessage);
+
+        assertEquals(DEFAULT_PREFIX + expectedRuleName, ruleName);
+    }
+
+    @Test
+    void getMessage_WhenXSDMessageContainsNoRule_ThenOriginalMessageReturned() {
+        var xsdMessage = "Duplicate match in scope for field \"depth\"";
+
+        var message = handler.getMessage(xsdMessage);
+
+        assertEquals(xsdMessage, message);
+    }
+
+    @Test
+    void getMessage_WhenXSDMessageContainsRuleWithSpaces_ThenOriginalMessageReturned() {
+        var xsdMessage = "SOME SPACES RULE: Duplicate match in scope for field \"depth\"";
+
+        var message = handler.getMessage(xsdMessage);
+
+        assertEquals(xsdMessage, message);
+    }
+
+    @Test
+    void getMessage_WhenXSDMessageContainsRule_ThenRuleNameIsStrippedFromMessage() {
+        var ruleName = "cvc-complex-type.2.1";
+        var expectedMessage = "Element 'depth' must have no character or element information item [children], " +
+                "because the type's content type is empty.";
+
+        var message = handler.getMessage(ruleName + ": " + expectedMessage);
+
+        assertEquals(expectedMessage, message);
     }
 }
