@@ -80,7 +80,7 @@ public class XSDValidator {
         validationError.setLinenumber(exception.getLineNumber());
         validationError.setColumnNumber(exception.getColumnNumber());
 
-        LOGGER.debug("XSD Validation - {}: '{}' (Linenumber {}, Columnnumber {})",
+        LOGGER.debug("XSD Validation - {}: '{}' (Linenumber {}, Column number {})",
                 type,
                 validationError.getMessage(),
                 validationError.getLinenumber(),
