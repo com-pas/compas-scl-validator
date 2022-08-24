@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_XSD_FILE_ERROR_CODE;
 
 class XSDValidatorTest {
@@ -38,8 +39,10 @@ class XSDValidatorTest {
             assertEquals(4, errorList.size());
 
             var error = errorList.get(2);
-            assertEquals("[XSD validation] (line: 66, column: 45): cvc-complex-type.4: " +
-                    "Attribute 'name' must appear on element 'BDA'.",error.getMessage());
+            assertEquals("cvc-complex-type.4: Attribute 'name' must appear on element 'BDA'.", error.getMessage());
+            assertEquals("XSD validation", error.getRuleName());
+            assertEquals(66, error.getLinenumber());
+            assertEquals(45, error.getColumnNumber());
         }
     }
 

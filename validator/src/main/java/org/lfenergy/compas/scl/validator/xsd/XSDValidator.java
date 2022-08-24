@@ -3,15 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.xsd;
 
-import java.io.*;
-import java.util.List;
-
-import javax.xml.XMLConstants;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.xsd.resourceresolver.ResourceResolver;
@@ -22,18 +13,24 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_XSD_FILE_ERROR_CODE;
 
 public class XSDValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
 
     private final Validator validator;
-
-    private final List<ValidationError> errorList;
     private final String sclData;
 
     public XSDValidator(List<ValidationError> errorList, String sclData) {
-        this.errorList = errorList;
         this.sclData = sclData;
 
         var info = new SclInfo(sclData);
@@ -45,63 +42,63 @@ public class XSDValidator {
             var schema = factory.newSchema(
                     new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd")));
             validator = schema.newValidator();
-        }
-        catch (SAXException exception) {
+        } catch (SAXException exception) {
             throw new SclValidatorException(LOADING_XSD_FILE_ERROR_CODE, exception.getMessage());
         }
 
         validator.setErrorHandler(new ErrorHandler() {
             @Override
             public void warning(SAXParseException exception) {
-                var validationError = addNewValidationError();
-                var validationMessage = getXsdValidationMessage(exception);
+                var validationError = createValidationError(exception);
+                errorList.add(validationError);
 
-                validationError.setMessage(validationMessage);
-                LOGGER.debug(validationMessage);
+                LOGGER.debug("XSD Validation - warning: '{}' (Linenumber {}, Columnnumber {})",
+                        validationError.getMessage(),
+                        validationError.getLinenumber(),
+                        validationError.getColumnNumber());
             }
 
             @Override
             public void error(SAXParseException exception) {
-                var validationError = addNewValidationError();
-                var validationMessage = getXsdValidationMessage(exception);
+                var validationError = createValidationError(exception);
+                errorList.add(validationError);
 
-                validationError.setMessage(validationMessage);
-                LOGGER.debug(validationMessage);
+                LOGGER.debug("XSD Validation - error: '{}' (Linenumber {}, Columnnumber {})",
+                        validationError.getMessage(),
+                        validationError.getLinenumber(),
+                        validationError.getColumnNumber());
             }
 
             @Override
             public void fatalError(SAXParseException exception) {
-                var validationError = addNewValidationError();
-                var validationMessage = getXsdValidationMessage(exception);
+                var validationError = createValidationError(exception);
+                errorList.add(validationError);
 
-                validationError.setMessage(validationMessage);
-                LOGGER.debug(validationMessage);
-                LOGGER.debug("[XSD validation] fatal error for schema validation, stopping");
+                LOGGER.debug("XSD Validation - fatal error, stopping: '{}' (Linenumber {}, Columnnumber {})",
+                        validationError.getMessage(),
+                        validationError.getLinenumber(),
+                        validationError.getColumnNumber());
             }
-        } );
+        });
     }
 
     public void validate() {
         try {
             SAXSource source = new SAXSource(new InputSource(new StringReader(sclData)));
             validator.validate(source);
-        }
-        catch(IOException exception) {
+        } catch (IOException exception) {
             LOGGER.error("[XSD validation] IOException: {}", exception.getMessage());
-        }
-        catch(SAXException exception) {
+        } catch (SAXException exception) {
             LOGGER.error("[XSD validation] SAXException: {}", exception.getMessage());
         }
     }
 
-    private ValidationError addNewValidationError() {
+    private ValidationError createValidationError(SAXParseException exception) {
         var validationError = new ValidationError();
-        errorList.add(validationError);
+        validationError.setMessage(exception.getMessage());
+        validationError.setRuleName("XSD validation");
+        validationError.setLinenumber(exception.getLineNumber());
+        validationError.setColumnNumber(exception.getColumnNumber());
         return validationError;
-    }
-
-    private String getXsdValidationMessage(SAXParseException exception) {
-        return "[XSD validation] (line: " + exception.getLineNumber() + ", column: "
-                + exception.getColumnNumber() + "): " + exception.getMessage();
     }
 }

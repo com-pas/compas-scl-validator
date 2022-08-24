@@ -37,16 +37,30 @@ class SclValidateResponseDecoderTest {
     @Test
     void decode_WhenCalledWithCorrectRequestXML_ThenStringConvertedToObject() {
         var validationMessage = "Some validation error";
+        var ruleName = "Rule Name 1";
+        var linenumber = 15;
+        var columnNumber = 34;
+
         var message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<svs:SclValidateResponse xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">"
-                + "<svs:ValidationErrors><svs:Message>" + validationMessage + "</svs:Message></svs:ValidationErrors>"
+                + "<svs:ValidationErrors>"
+                + "<svs:Message>" + validationMessage + "</svs:Message>"
+                + "<svs:RuleName>" + ruleName + "</svs:RuleName>"
+                + "<svs:Linenumber>" + linenumber + "</svs:Linenumber>"
+                + "<svs:ColumnNumber>" + columnNumber + "</svs:ColumnNumber>"
+                + "</svs:ValidationErrors>"
                 + "</svs:SclValidateResponse>";
 
         var result = decoder.decode(message);
 
         assertNotNull(result);
         assertEquals(1, result.getValidationErrorList().size());
-        assertEquals(validationMessage, result.getValidationErrorList().get(0).getMessage());
+
+        var validationError = result.getValidationErrorList().get(0);
+        assertEquals(validationMessage, validationError.getMessage());
+        assertEquals(ruleName, validationError.getRuleName());
+        assertEquals(linenumber, validationError.getLinenumber());
+        assertEquals(columnNumber, validationError.getColumnNumber());
     }
 
     @Test
