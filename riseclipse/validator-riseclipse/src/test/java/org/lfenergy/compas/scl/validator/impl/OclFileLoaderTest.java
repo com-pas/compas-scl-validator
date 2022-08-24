@@ -53,9 +53,9 @@ class OclFileLoaderTest {
             unCreatablePath = Path.of("C:/Windows/some-directory");
         }
 
+        List<URI> fileList = List.of();
         var directoryPath = unCreatablePath;
-        var exception = assertThrows(SclValidatorException.class,
-                () -> new OclFileLoader(directoryPath, List.of()));
+        var exception = assertThrows(SclValidatorException.class, () -> new OclFileLoader(directoryPath, fileList));
 
         assertEquals(CREATE_OCL_TEMP_DIR_FAILED, exception.getErrorCode());
     }
@@ -67,9 +67,9 @@ class OclFileLoaderTest {
             unWritablePath = Path.of("C:/Windows");
         }
 
+        List<URI> fileList = List.of();
         var directoryPath = unWritablePath;
-        var exception = assertThrows(SclValidatorException.class,
-                () -> new OclFileLoader(directoryPath, List.of()));
+        var exception = assertThrows(SclValidatorException.class, () -> new OclFileLoader(directoryPath, fileList));
 
         assertEquals(CREATE_OCL_TEMP_FILES_FAILED, exception.getErrorCode());
     }
