@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_PREFIX;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_RULE_NAME;
 
@@ -63,31 +62,27 @@ class XSDErrorHandlerTest {
 
     @Test
     void getRuleName_WhenXSDMessageIsNull_ThenDefaultXSDRuleNameReturned() {
-        var ruleName = handler.getRuleName(null);
-
-        assertEquals(DEFAULT_RULE_NAME, ruleName);
+        executeTest_getRuleName_WhereResultIsDefaultRuleName(null);
     }
 
     @Test
     void getRuleName_WhenXSDMessageIsBlank_ThenDefaultXSDRuleNameReturned() {
-        var ruleName = handler.getRuleName("");
-
-        assertEquals(DEFAULT_RULE_NAME, ruleName);
+        executeTest_getRuleName_WhereResultIsDefaultRuleName("");
     }
 
     @Test
     void getRuleName_WhenXSDMessageContainsNoRule_ThenDefaultXSDRuleNameReturned() {
-        var xsdMessage = "Duplicate match in scope for field \"depth\"";
-
-        var ruleName = handler.getRuleName(xsdMessage);
-
-        assertEquals(DEFAULT_RULE_NAME, ruleName);
+        executeTest_getRuleName_WhereResultIsDefaultRuleName(
+                "Duplicate match in scope for field \"depth\"");
     }
 
     @Test
     void getRuleName_WhenXSDMessageContainsRuleWithSpaces_ThenDefaultXSDRuleNameReturned() {
-        var xsdMessage = "SOME SPACES RULE: Duplicate match in scope for field \"depth\"";
+        executeTest_getRuleName_WhereResultIsDefaultRuleName(
+                "SOME SPACES RULE: Duplicate match in scope for field \"depth\"");
+    }
 
+    private void executeTest_getRuleName_WhereResultIsDefaultRuleName(String xsdMessage) {
         var ruleName = handler.getRuleName(xsdMessage);
 
         assertEquals(DEFAULT_RULE_NAME, ruleName);
@@ -106,33 +101,25 @@ class XSDErrorHandlerTest {
 
     @Test
     void getMessage_WhenXSDMessageIsNull_ThenNullReturned() {
-        var message = handler.getMessage(null);
-
-        assertNull(message);
+        executeTest_GetMessage_WhereInputIsResult(null);
     }
 
     @Test
     void getMessage_WhenXSDMessageIsBlank_ThenBlankMessageReturned() {
-        var xsdMessage = " ";
-
-        var message = handler.getMessage(xsdMessage);
-
-        assertEquals(xsdMessage, message);
+        executeTest_GetMessage_WhereInputIsResult(" ");
     }
 
     @Test
     void getMessage_WhenXSDMessageContainsNoRule_ThenOriginalMessageReturned() {
-        var xsdMessage = "Duplicate match in scope for field \"depth\"";
-
-        var message = handler.getMessage(xsdMessage);
-
-        assertEquals(xsdMessage, message);
+        executeTest_GetMessage_WhereInputIsResult("Duplicate match in scope for field \"depth\"");
     }
 
     @Test
     void getMessage_WhenXSDMessageContainsRuleWithSpaces_ThenOriginalMessageReturned() {
-        var xsdMessage = "SOME SPACES RULE: Duplicate match in scope for field \"depth\"";
+        executeTest_GetMessage_WhereInputIsResult("SOME SPACES RULE: Duplicate match in scope for field \"depth\"");
+    }
 
+    private void executeTest_GetMessage_WhereInputIsResult(String xsdMessage) {
         var message = handler.getMessage(xsdMessage);
 
         assertEquals(xsdMessage, message);
