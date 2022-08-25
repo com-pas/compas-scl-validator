@@ -24,16 +24,16 @@ public class MessageUtil {
         var validationError = new ValidationError();
         var messageParts = message.split(";");
         if (messageParts.length == 5) {
-            // The expected number of parts is found, the message and rule are set as-is, the linenumber is converted
-            // to a Long value,
+            // The expected number of parts is found, the message and rule are set as-is, the line number
+            // is converted to a Integer value,
             validationError.setRuleName(messageParts[1]);
             validationError.setMessage(messageParts[4]);
 
             try {
-                validationError.setLinenumber(Integer.parseInt(messageParts[3]));
+                validationError.setLineNumber(Integer.parseInt(messageParts[3]));
             } catch (NumberFormatException exp) {
-                validationError.setLinenumber(-1);
-                LOGGER.debug("Invalid linenumber '{}' found", messageParts[3], exp);
+                validationError.setLineNumber(-1);
+                LOGGER.debug("Invalid line number '{}' found", messageParts[3], exp);
             }
         } else if (messageParts.length == 2) {
             // It seems like an old message that starts with 'ERROR;', so only set the second part as Message

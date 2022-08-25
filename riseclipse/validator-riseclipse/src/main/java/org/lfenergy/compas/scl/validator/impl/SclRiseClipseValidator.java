@@ -81,10 +81,10 @@ public class SclRiseClipseValidator implements SclValidator {
             if (validationError.isPresent()) {
                 validationErrors.add(validationError.get());
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("SCL Validation Error '{}' from Rule '{}' (Linenumber {})",
+                    LOGGER.debug("SCL Validation Error '{}' from Rule '{}' (Line number {})",
                             validationError.get().getMessage(),
                             validationError.get().getRuleName(),
-                            validationError.get().getLinenumber());
+                            validationError.get().getLineNumber());
                 }
             }
 

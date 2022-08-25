@@ -41,7 +41,7 @@ class MessageUtilTest {
 
         var validationError = result.get();
         assertNull(validationError.getRuleName());
-        assertNull(validationError.getLinenumber());
+        assertNull(validationError.getLineNumber());
         assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
@@ -57,7 +57,7 @@ class MessageUtilTest {
 
         var validationError = result.get();
         assertNull(validationError.getRuleName());
-        assertNull(validationError.getLinenumber());
+        assertNull(validationError.getLineNumber());
         assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
@@ -66,22 +66,22 @@ class MessageUtilTest {
     void createValidationError_WhenCalledWithCorrectMessage_ThenConvertValidationErrorReturned() {
         var message = "AnyLN (lnType=LN2) does not refer an existing LNodeType in DataTypeTemplates section";
         var ruleName = "OCL/SemanticConstraints/AnyLN_RefersToLNodeType";
-        var linenumber = 9;
+        var lineNumber = 9;
 
-        var result = createValidationError("ERROR;" + ruleName + ";scl-file.scd;" + linenumber + ";" + message);
+        var result = createValidationError("ERROR;" + ruleName + ";scl-file.scd;" + lineNumber + ";" + message);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
         var validationError = result.get();
         assertEquals(ruleName, validationError.getRuleName());
-        assertEquals(linenumber, validationError.getLinenumber());
+        assertEquals(lineNumber, validationError.getLineNumber());
         assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }
 
     @Test
-    void createValidationError_WhenCalledWithInvalidLinenumber_ThenNegativeLinenumberReturned() {
+    void createValidationError_WhenCalledWithInvalidLineNumber_ThenNegativeLineNumberReturned() {
         var message = "AnyLN (lnType=LN2) does not refer an existing LNodeType in DataTypeTemplates section";
         var ruleName = "OCL/SemanticConstraints/AnyLN_RefersToLNodeType";
 
@@ -92,7 +92,7 @@ class MessageUtilTest {
 
         var validationError = result.get();
         assertEquals(ruleName, validationError.getRuleName());
-        assertEquals(-1, validationError.getLinenumber());
+        assertEquals(-1, validationError.getLineNumber());
         assertNull(validationError.getColumnNumber());
         assertEquals(message, validationError.getMessage());
     }

@@ -28,9 +28,9 @@ public class XSDErrorHandler implements ErrorHandler {
         var validationError = createValidationError(exception);
         errorList.add(validationError);
 
-        LOGGER.debug("XSD Validation - warning: '{}' (Linenumber {}, Column number {})",
+        LOGGER.debug("XSD Validation - warning: '{}' (Line number {}, Column number {})",
                 validationError.getMessage(),
-                validationError.getLinenumber(),
+                validationError.getLineNumber(),
                 validationError.getColumnNumber());
     }
 
@@ -39,9 +39,9 @@ public class XSDErrorHandler implements ErrorHandler {
         var validationError = createValidationError(exception);
         errorList.add(validationError);
 
-        LOGGER.debug("XSD Validation - error: '{}' (Linenumber {}, Column number {})",
+        LOGGER.debug("XSD Validation - error: '{}' (Line number {}, Column number {})",
                 validationError.getMessage(),
-                validationError.getLinenumber(),
+                validationError.getLineNumber(),
                 validationError.getColumnNumber());
     }
 
@@ -50,9 +50,9 @@ public class XSDErrorHandler implements ErrorHandler {
         var validationError = createValidationError(exception);
         errorList.add(validationError);
 
-        LOGGER.debug("XSD Validation - fatal error, stopping: '{}' (Linenumber {}, Column number {})",
+        LOGGER.debug("XSD Validation - fatal error, stopping: '{}' (Line number {}, Column number {})",
                 validationError.getMessage(),
-                validationError.getLinenumber(),
+                validationError.getLineNumber(),
                 validationError.getColumnNumber());
     }
 
@@ -61,7 +61,7 @@ public class XSDErrorHandler implements ErrorHandler {
         var xsdMessage = exception.getMessage();
         validationError.setMessage(getMessage(xsdMessage));
         validationError.setRuleName(getRuleName(xsdMessage));
-        validationError.setLinenumber(exception.getLineNumber());
+        validationError.setLineNumber(exception.getLineNumber());
         validationError.setColumnNumber(exception.getColumnNumber());
         return validationError;
     }

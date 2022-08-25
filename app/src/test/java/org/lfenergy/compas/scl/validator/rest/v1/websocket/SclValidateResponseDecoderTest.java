@@ -38,7 +38,7 @@ class SclValidateResponseDecoderTest {
     void decode_WhenCalledWithCorrectRequestXML_ThenStringConvertedToObject() {
         var validationMessage = "Some validation error";
         var ruleName = "Rule Name 1";
-        var linenumber = 15;
+        var lineNumber = 15;
         var columnNumber = 34;
 
         var message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -46,7 +46,7 @@ class SclValidateResponseDecoderTest {
                 + "<svs:ValidationErrors>"
                 + "<svs:Message>" + validationMessage + "</svs:Message>"
                 + "<svs:RuleName>" + ruleName + "</svs:RuleName>"
-                + "<svs:Linenumber>" + linenumber + "</svs:Linenumber>"
+                + "<svs:LineNumber>" + lineNumber + "</svs:LineNumber>"
                 + "<svs:ColumnNumber>" + columnNumber + "</svs:ColumnNumber>"
                 + "</svs:ValidationErrors>"
                 + "</svs:SclValidateResponse>";
@@ -59,7 +59,7 @@ class SclValidateResponseDecoderTest {
         var validationError = result.getValidationErrorList().get(0);
         assertEquals(validationMessage, validationError.getMessage());
         assertEquals(ruleName, validationError.getRuleName());
-        assertEquals(linenumber, validationError.getLinenumber());
+        assertEquals(lineNumber, validationError.getLineNumber());
         assertEquals(columnNumber, validationError.getColumnNumber());
     }
 

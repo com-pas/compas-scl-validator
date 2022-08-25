@@ -41,7 +41,7 @@ class XSDValidatorTest {
             var error = errorList.get(2);
             assertEquals("Attribute 'name' must appear on element 'BDA'.", error.getMessage());
             assertEquals("XSD/cvc-complex-type.4", error.getRuleName());
-            assertEquals(66, error.getLinenumber());
+            assertEquals(66, error.getLineNumber());
             assertEquals(45, error.getColumnNumber());
         }
     }
