@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_PREFIX;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_RULE_NAME;
 
@@ -61,6 +62,20 @@ class XSDErrorHandlerTest {
     }
 
     @Test
+    void getRuleName_WhenXSDMessageIsNull_ThenDefaultXSDRuleNameReturned() {
+        var ruleName = handler.getRuleName(null);
+
+        assertEquals(DEFAULT_RULE_NAME, ruleName);
+    }
+
+    @Test
+    void getRuleName_WhenXSDMessageIsBlank_ThenDefaultXSDRuleNameReturned() {
+        var ruleName = handler.getRuleName("");
+
+        assertEquals(DEFAULT_RULE_NAME, ruleName);
+    }
+
+    @Test
     void getRuleName_WhenXSDMessageContainsNoRule_ThenDefaultXSDRuleNameReturned() {
         var xsdMessage = "Duplicate match in scope for field \"depth\"";
 
@@ -87,6 +102,22 @@ class XSDErrorHandlerTest {
         var ruleName = handler.getRuleName(xsdMessage);
 
         assertEquals(DEFAULT_PREFIX + expectedRuleName, ruleName);
+    }
+
+    @Test
+    void getMessage_WhenXSDMessageIsNull_ThenNullReturned() {
+        var message = handler.getMessage(null);
+
+        assertNull(message);
+    }
+
+    @Test
+    void getMessage_WhenXSDMessageIsBlank_ThenBlankMessageReturned() {
+        var xsdMessage = " ";
+
+        var message = handler.getMessage(xsdMessage);
+
+        assertEquals(xsdMessage, message);
     }
 
     @Test
