@@ -27,11 +27,17 @@ public class ValidationError {
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
     private String ruleName;
 
-    @Schema(description = "The linenumber in the SCL file where the validation error occurred",
+    @Schema(description = "The line number in the SCL file where the validation error occurred",
             example = "9")
-    @XmlElement(name = "Linenumber",
+    @XmlElement(name = "LineNumber",
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
-    private long linenumber;
+    private Integer lineNumber;
+
+    @Schema(description = "The column number on the line number in the SCL file where the validation error occurred",
+            example = "14")
+    @XmlElement(name = "ColumnNumber",
+            namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private Integer columnNumber;
 
     public String getMessage() {
         return message;
@@ -49,11 +55,19 @@ public class ValidationError {
         this.ruleName = ruleName;
     }
 
-    public long getLinenumber() {
-        return linenumber;
+    public Integer getLineNumber() {
+        return lineNumber;
     }
 
-    public void setLinenumber(long linenumber) {
-        this.linenumber = linenumber;
+    public void setLineNumber(Integer lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public Integer getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(Integer columnNumber) {
+        this.columnNumber = columnNumber;
     }
 }

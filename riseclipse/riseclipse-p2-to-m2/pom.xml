@@ -32,6 +32,7 @@ SPDX-License-Identifier: Apache-2.0
         <version>2.7.4</version>
         <configuration>
           <work>${project.build.directory}/maven/tmp/cbi</work>
+          <executionEnvironment>JavaSE-17</executionEnvironment>
 
           <repositories>
             <repository>

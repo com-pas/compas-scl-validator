@@ -37,6 +37,6 @@ class SclRiseClipseValidatorTest {
         var firstMessage = result.get(0);
         assertNotNull(firstMessage.getRuleName());
         assertNotNull(firstMessage.getMessage());
-        assertTrue(firstMessage.getLinenumber() > 0);
+        assertTrue(firstMessage.getLineNumber() > 0);
     }
 }

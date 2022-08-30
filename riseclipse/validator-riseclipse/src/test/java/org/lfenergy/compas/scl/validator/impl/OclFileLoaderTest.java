@@ -22,7 +22,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.NO_URI_PASSED;
+import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +44,38 @@ class OclFileLoaderTest {
                 .filter(path -> path.toString().contains(File.separator + "allConstraints"))
                 .findFirst()
                 .orElseThrow();
+    }
+
+    @Test
+    void constructor_WhenCalledWithUnCreatableDirectory_ThenExceptionThrown() {
+        var unCreatablePath = Path.of("/some-directory");
+        if (isWindows()) {
+            unCreatablePath = Path.of("C:/Windows/some-directory");
+        }
+
+        List<URI> fileList = List.of();
+        var directoryPath = unCreatablePath;
+        var exception = assertThrows(SclValidatorException.class, () -> new OclFileLoader(directoryPath, fileList));
+
+        assertEquals(CREATE_OCL_TEMP_DIR_FAILED, exception.getErrorCode());
+    }
+
+    @Test
+    void constructor_WhenCalledWithUnCreatableTempFile_ThenExceptionThrown() {
+        var unWritablePath = Path.of("/");
+        if (isWindows()) {
+            unWritablePath = Path.of("C:/Windows");
+        }
+
+        List<URI> fileList = List.of();
+        var directoryPath = unWritablePath;
+        var exception = assertThrows(SclValidatorException.class, () -> new OclFileLoader(directoryPath, fileList));
+
+        assertEquals(CREATE_OCL_TEMP_FILES_FAILED, exception.getErrorCode());
+    }
+
+    private boolean isWindows() {
+        return System.getProperty("os.name").contains("win");
     }
 
     @Test

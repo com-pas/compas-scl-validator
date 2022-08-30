@@ -29,14 +29,16 @@ class SclValidateResponseEncoderTest {
     void encode_WhenCalledWithRequest_ThenRequestConvertedToString() {
         var validationMessage = "Some Validation Message";
         var ruleName = "Rule Name 1";
-        var linenumber = 15;
+        var lineNumber = 15;
+        var columnNumber = 34;
 
         var request = new SclValidateResponse();
         request.setValidationErrorList(new ArrayList<>());
         var validationError = new ValidationError();
         validationError.setMessage(validationMessage);
         validationError.setRuleName(ruleName);
-        validationError.setLinenumber(linenumber);
+        validationError.setLineNumber(lineNumber);
+        validationError.setColumnNumber(columnNumber);
         request.getValidationErrorList().add(validationError);
 
         var result = encoder.encode(request);
@@ -46,7 +48,8 @@ class SclValidateResponseEncoderTest {
                 "<svs:ValidationErrors>" +
                 "<svs:Message>" + validationMessage + "</svs:Message>" +
                 "<svs:RuleName>" + ruleName + "</svs:RuleName>" +
-                "<svs:Linenumber>" + linenumber + "</svs:Linenumber>" +
+                "<svs:LineNumber>" + lineNumber + "</svs:LineNumber>" +
+                "<svs:ColumnNumber>" + columnNumber + "</svs:ColumnNumber>" +
                 "</svs:ValidationErrors>" +
                 "</svs:SclValidateResponse>";
         assertNotNull(result);
