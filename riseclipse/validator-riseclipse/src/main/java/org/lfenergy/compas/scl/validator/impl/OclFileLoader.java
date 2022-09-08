@@ -40,7 +40,7 @@ public class OclFileLoader {
         // Create an OCL that creates a ResourceSet using the minimal EPackage.Registry
         this.ocl = OCL.newInstance(registry);
 
-        // First make sure the directory for temporary file exists.
+        // First make sure the directory for temporary file exists and if not will be created.
         var tempDirectory = tempDirectoryPath.toFile();
         if (!tempDirectory.exists() && !tempDirectory.mkdirs()) {
             throw new SclValidatorException(CREATE_OCL_TEMP_DIR_FAILED, "Unable to create temporary directory");
@@ -54,8 +54,7 @@ public class OclFileLoader {
     }
 
     public void loadOCLDocuments() {
-        oclFiles.stream()
-                .forEach(this::addOCLDocument);
+        oclFiles.forEach(this::addOCLDocument);
     }
 
     public void addOCLDocument(URI oclUri) {

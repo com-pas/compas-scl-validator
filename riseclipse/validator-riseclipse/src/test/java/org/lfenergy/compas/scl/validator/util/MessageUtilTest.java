@@ -6,7 +6,7 @@ package org.lfenergy.compas.scl.validator.util;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
+import static org.lfenergy.compas.scl.validator.util.MessageUtil.createValidationError;
 
 class MessageUtilTest {
     @Test
@@ -15,27 +15,85 @@ class MessageUtilTest {
     }
 
     @Test
-    void cleanupMessage_WhenCalledWithNullMessage_ThenNullIsReturned() {
-        var result = cleanupMessage(null);
+    void createValidationError_WhenCalledNullPassed_ThenEmptyOptionalReturned() {
+        var result = createValidationError(null);
 
-        assertNull(result);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    void cleanupMessage_WhenCalledWithAlreadyCleanMessage_ThenSameMessageIsReturned() {
-        var expectedMessage = "Some validation message";
+    void createValidationError_WhenCalledBlankStringPassed_ThenEmptyOptionalReturned() {
+        var result = createValidationError("");
 
-        var result = cleanupMessage(expectedMessage);
-
-        assertEquals(expectedMessage, result);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    void cleanupMessage_WhenCalledWithMessageThatStartWithError_ThenCleanedMessageIsReturned() {
-        var expectedMessage = "Some validation message";
+    void createValidationError_WhenCalledWithoutParts_ThenSameMessageReturned() {
+        var message = "Just some message";
 
-        var result = cleanupMessage("ERROR;" + expectedMessage);
+        var result = createValidationError(message);
 
-        assertEquals(expectedMessage, result);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        var validationError = result.get();
+        assertNull(validationError.getRuleName());
+        assertNull(validationError.getLineNumber());
+        assertNull(validationError.getColumnNumber());
+        assertEquals(message, validationError.getMessage());
+    }
+
+    @Test
+    void createValidationError_WhenCalledWithTooManyParts_ThenSameMessageReturned() {
+        var message = "ERROR;Part1;Part2;Part3;Part4;Just some message";
+
+        var result = createValidationError(message);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        var validationError = result.get();
+        assertNull(validationError.getRuleName());
+        assertNull(validationError.getLineNumber());
+        assertNull(validationError.getColumnNumber());
+        assertEquals(message, validationError.getMessage());
+    }
+
+    @Test
+    void createValidationError_WhenCalledWithCorrectMessage_ThenConvertValidationErrorReturned() {
+        var message = "AnyLN (lnType=LN2) does not refer an existing LNodeType in DataTypeTemplates section";
+        var ruleName = "OCL/SemanticConstraints/AnyLN_RefersToLNodeType";
+        var lineNumber = 9;
+
+        var result = createValidationError("ERROR;" + ruleName + ";scl-file.scd;" + lineNumber + ";" + message);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        var validationError = result.get();
+        assertEquals(ruleName, validationError.getRuleName());
+        assertEquals(lineNumber, validationError.getLineNumber());
+        assertNull(validationError.getColumnNumber());
+        assertEquals(message, validationError.getMessage());
+    }
+
+    @Test
+    void createValidationError_WhenCalledWithInvalidLineNumber_ThenNegativeLineNumberReturned() {
+        var message = "AnyLN (lnType=LN2) does not refer an existing LNodeType in DataTypeTemplates section";
+        var ruleName = "OCL/SemanticConstraints/AnyLN_RefersToLNodeType";
+
+        var result = createValidationError("ERROR;" + ruleName + ";scl-file.scd;INVALID_LINENUMBER;" + message);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        var validationError = result.get();
+        assertEquals(ruleName, validationError.getRuleName());
+        assertEquals(-1, validationError.getLineNumber());
+        assertNull(validationError.getColumnNumber());
+        assertEquals(message, validationError.getMessage());
     }
 }
