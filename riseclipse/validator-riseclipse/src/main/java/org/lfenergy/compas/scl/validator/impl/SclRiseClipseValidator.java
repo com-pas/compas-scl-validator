@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lfenergy.compas.scl.validator.util.MessageUtil.cleanupMessage;
+import static org.lfenergy.compas.scl.validator.util.MessageUtil.createValidationError;
 
 public class SclRiseClipseValidator implements SclValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclRiseClipseValidator.class);
@@ -77,12 +77,16 @@ public class SclRiseClipseValidator implements SclValidator {
     private void processDiagnostic(Diagnostic diagnostic, List<ValidationError> validationErrors) {
         // If there are children in the diagnostic there are validation errors to be processed.
         for (Diagnostic childDiagnostic : diagnostic.getChildren()) {
-            var validationError = new ValidationError();
-            validationErrors.add(validationError);
-
-            String message = cleanupMessage(childDiagnostic.getMessage());
-            validationError.setMessage(message);
-            LOGGER.debug("SCL Validation Error '{}'", message);
+            var validationError = createValidationError(childDiagnostic.getMessage());
+            if (validationError.isPresent()) {
+                validationErrors.add(validationError.get());
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("SCL Validation Error '{}' from Rule '{}' (Line number {})",
+                            validationError.get().getMessage(),
+                            validationError.get().getRuleName(),
+                            validationError.get().getLineNumber());
+                }
+            }
 
             // Also process the children of the children.
             processDiagnostic(childDiagnostic, validationErrors);

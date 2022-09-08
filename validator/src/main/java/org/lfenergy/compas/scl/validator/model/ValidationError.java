@@ -15,11 +15,29 @@ import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDA
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ValidationError {
     @Schema(description = "The message of the validation error that occurred.",
-            example = "ERROR:[SemanticConstraints] Terminal (name=T1) (line 27) does not refer an existing ConnectivityNode")
+            example = "Terminal (name=T1) (line 27) does not refer an existing ConnectivityNode")
     @XmlElement(name = "Message",
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI,
             required = true)
     private String message;
+
+    @Schema(description = "The name of the rule in RiseClipse that created the validation error",
+            example = "SemanticConstraints")
+    @XmlElement(name = "RuleName",
+            namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private String ruleName;
+
+    @Schema(description = "The line number in the SCL file where the validation error occurred",
+            example = "9")
+    @XmlElement(name = "LineNumber",
+            namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private Integer lineNumber;
+
+    @Schema(description = "The column number on the line number in the SCL file where the validation error occurred",
+            example = "14")
+    @XmlElement(name = "ColumnNumber",
+            namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private Integer columnNumber;
 
     public String getMessage() {
         return message;
@@ -27,5 +45,29 @@ public class ValidationError {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public Integer getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(Integer lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public Integer getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(Integer columnNumber) {
+        this.columnNumber = columnNumber;
     }
 }

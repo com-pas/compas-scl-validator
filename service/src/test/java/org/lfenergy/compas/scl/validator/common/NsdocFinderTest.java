@@ -35,7 +35,16 @@ class NsdocFinderTest {
 
     @Test
     void getNsdocFiles_WhenCalledWithNonExistingDirectory_ThenNoEntriesReturned() {
-        finder = new NsdocFinder("./src/text/data/non-existing");
+        finder = new NsdocFinder("./src/test/data/non-existing");
+        var files = finder.getNsdocFiles();
+
+        assertNotNull(files);
+        assertEquals(0, files.size());
+    }
+
+    @Test
+    void getNsdocFiles_WhenCalledWithFileAndNotDirectory_ThenNoEntriesReturned() {
+        finder = new NsdocFinder("./src/test/data/nsdoc/invalid.doc");
         var files = finder.getNsdocFiles();
 
         assertNotNull(files);

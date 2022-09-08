@@ -32,5 +32,11 @@ class SclRiseClipseValidatorTest {
 
         assertNotNull(result);
         assertEquals(15, result.size());
+
+        // Check if parsing of the message is still working.
+        var firstMessage = result.get(0);
+        assertNotNull(firstMessage.getRuleName());
+        assertNotNull(firstMessage.getMessage());
+        assertTrue(firstMessage.getLineNumber() > 0);
     }
 }
