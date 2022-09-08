@@ -147,9 +147,6 @@ SPDX-License-Identifier: Apache-2.0
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <skipSourceGeneration>true</skipSourceGeneration>
-                </configuration>
             </plugin>
 
             <plugin>
