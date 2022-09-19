@@ -24,7 +24,7 @@ SPDX-License-Identifier: Apache-2.0
         <sonarqube-plugin.version>3.2.0</sonarqube-plugin.version>
 
         <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
-        <compas.core.version>0.9.2</compas.core.version>
+        <compas.core.version>0.9.3</compas.core.version>
 
         <quarkus.platform.version>2.12.2.Final</quarkus.platform.version>
         <slf4j.version>2.0.1</slf4j.version>
