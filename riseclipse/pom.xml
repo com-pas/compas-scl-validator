@@ -45,7 +45,11 @@ SPDX-License-Identifier: Apache-2.0
     <repositories>
         <repository>
             <id>local-eclipse-p2-mirror</id>
+            <name>Local Eclipse P2 Mirror</name>
             <url>file:///${riseclipse.p2.root}/target/maven/repository/final</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -119,6 +123,11 @@ SPDX-License-Identifier: Apache-2.0
                         <!-- Wrong groupid in org.eclipse.xtext/2.25.0.M1, leading to wrong version -->
                         <groupId>org.eclipse.platform</groupId>
                         <artifactId>org.eclipse.equinox.common</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- optional dependency, not needed -->
+                        <groupId>org.eclipse.ocl</groupId>
+                        <artifactId>org.eclipse.ocl.examples.xtext.serializer</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
