@@ -38,7 +38,7 @@ class SclValidatorServerEndpointTest {
     @InjectMock
     private SclValidatorService sclValidatorService;
 
-    @TestHTTPResource("/compas-scl-validator/validate-ws/v1/SCD")
+    @TestHTTPResource("/validate-ws/v1/SCD")
     private URI uri;
 
     @Test
