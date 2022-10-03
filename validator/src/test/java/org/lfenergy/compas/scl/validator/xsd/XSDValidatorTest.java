@@ -47,6 +47,32 @@ class XSDValidatorTest {
     }
 
     @Test
+    void validate_WhenCalledWithSclDataWithCompasXsdValidationErrors_ThenErrorsAreRetrieved() throws IOException {
+        var errorList = new ArrayList<ValidationError>();
+        try (var inputStream = getClass()
+                .getResourceAsStream("/scl/validation/example-with-compas-validation-errors.scd")) {
+            var data = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            new XSDValidator(errorList, data).validate();
+
+            assertEquals(4, errorList.size());
+
+            var error = errorList.get(0);
+            assertEquals("Value 'INVALID' is not facet-valid with respect to enumeration '[SSD, IID, ICD, SCD, CID, " +
+                    "SED, ISD, STD]'. It must be a value from the enumeration.", error.getMessage());
+            assertEquals("XSD/cvc-enumeration-valid", error.getRuleName());
+            assertEquals(10, error.getLineNumber());
+            assertEquals(57, error.getColumnNumber());
+
+            error = errorList.get(2);
+            assertEquals("Value 'Invalid Label' is not facet-valid with respect to pattern '[A-Za-z][0-9A-Za-z_-]*' " +
+                    "for type 'tCompasLabel'.", error.getMessage());
+            assertEquals("XSD/cvc-pattern-valid", error.getRuleName());
+            assertEquals(12, error.getLineNumber());
+            assertEquals(55, error.getColumnNumber());
+        }
+    }
+
+    @Test
     void validate_WhenCalledWithSclDataContainingInvalidVersion_ThenExceptionIsThrown() throws IOException {
         var errorList = new ArrayList<ValidationError>();
         try (var inputStream = getClass()
