@@ -12,6 +12,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
@@ -35,10 +36,12 @@ public class XSDValidator {
         var sclVersion = info.getSclVersion();
 
         try {
+            var sclXsd = new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd"));
+            var compasXsd = new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL_CoMPAS.xsd"));
+
             var factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             factory.setResourceResolver(new ResourceResolver(sclVersion));
-            var schema = factory.newSchema(
-                    new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/SCL" + sclVersion + "/SCL.xsd")));
+            var schema = factory.newSchema(new Source[]{sclXsd, compasXsd});
             validator = schema.newValidator();
             validator.setErrorHandler(new XSDErrorHandler(errorList));
         } catch (SAXException exception) {
