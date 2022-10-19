@@ -44,7 +44,7 @@ class XSDValidatorTest {
             var error = errorList.get(2);
             assertEquals("Attribute 'name' must appear on element 'BDA'.", error.getMessage());
             assertEquals("XSD/cvc-complex-type.4", error.getRuleName());
-            assertEquals("/SCL/DataTypeTemplates[1]/DAType[1]/BDA[2]", error.getXPath());
+            assertEquals("/SCL/DataTypeTemplates[1]/DAType[1]/BDA[2]", error.getXpath());
         }
     }
 
@@ -64,13 +64,13 @@ class XSDValidatorTest {
             assertEquals("Value 'INVALID' is not facet-valid with respect to enumeration '[SSD, IID, ICD, SCD, CID, " +
                     "SED, ISD, STD]'. It must be a value from the enumeration.", error.getMessage());
             assertEquals("XSD/cvc-enumeration-valid", error.getRuleName());
-            assertEquals("/SCL/Private[1]/compas:SclFileType[1]", error.getXPath());
+            assertEquals("/SCL/Private[1]/compas:SclFileType[1]", error.getXpath());
 
             error = errorList.get(2);
             assertEquals("Value 'Invalid Label' is not facet-valid with respect to pattern '[A-Za-z][0-9A-Za-z_-]*' " +
                     "for type 'tCompasLabel'.", error.getMessage());
             assertEquals("XSD/cvc-pattern-valid", error.getRuleName());
-            assertEquals("/SCL/Private[1]/compas:Labels[1]/compas:Label[1]", error.getXPath());
+            assertEquals("/SCL/Private[1]/compas:Labels[1]/compas:Label[1]", error.getXpath());
         }
     }
 

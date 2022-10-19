@@ -43,7 +43,7 @@ public class ValidationError {
             example = "/SCL/Substation[1]/VoltageLevel[1]/Bay[5]")
     @XmlElement(name = "XPath",
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
-    private String xPath;
+    private String xpath;
 
     public String getMessage() {
         return message;
@@ -77,11 +77,11 @@ public class ValidationError {
         this.columnNumber = columnNumber;
     }
 
-    public String getXPath() {
-        return xPath;
+    public String getXpath() {
+        return xpath;
     }
 
-    public void setXPath(String xPath) {
-        this.xPath = xPath;
+    public void setXpath(String xPath) {
+        this.xpath = xPath;
     }
 }

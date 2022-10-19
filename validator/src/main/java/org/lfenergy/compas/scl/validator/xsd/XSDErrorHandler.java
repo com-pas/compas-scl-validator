@@ -39,7 +39,7 @@ public class XSDErrorHandler implements ErrorHandler {
 
         LOGGER.debug("XSD Validation - warning: '{}' (XPath {})",
                 validationError.getMessage(),
-                validationError.getXPath());
+                validationError.getXpath());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class XSDErrorHandler implements ErrorHandler {
 
         LOGGER.debug("XSD Validation - error: '{}' (XPath {})",
                 validationError.getMessage(),
-                validationError.getXPath());
+                validationError.getXpath());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class XSDErrorHandler implements ErrorHandler {
 
         LOGGER.debug("XSD Validation - fatal error, stopping: '{}' (XPath {})",
                 validationError.getMessage(),
-                validationError.getXPath());
+                validationError.getXpath());
     }
 
     private ValidationError createValidationError(SAXParseException exception) throws SAXException {
@@ -67,7 +67,7 @@ public class XSDErrorHandler implements ErrorHandler {
         var xsdMessage = exception.getMessage();
         validationError.setMessage(getMessage(xsdMessage));
         validationError.setRuleName(getRuleName(xsdMessage));
-        validationError.setXPath(getXPath(getCurrentNode()));
+        validationError.setXpath(getXPath(getCurrentNode()));
         return validationError;
     }
 

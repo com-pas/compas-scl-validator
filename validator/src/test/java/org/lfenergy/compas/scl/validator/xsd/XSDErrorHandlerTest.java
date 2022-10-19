@@ -91,7 +91,7 @@ class XSDErrorHandlerTest {
     private void assertValidationError(List<ValidationError> errorList, String message) throws SAXException {
         assertEquals(1, errorList.size());
         assertEquals(message, errorList.get(0).getMessage());
-        assertEquals("/SCL", errorList.get(0).getXPath());
+        assertEquals("/SCL", errorList.get(0).getXpath());
         assertNull(errorList.get(0).getLineNumber());
         assertNull(errorList.get(0).getColumnNumber());
 
