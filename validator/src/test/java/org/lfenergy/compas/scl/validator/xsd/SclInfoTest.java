@@ -4,42 +4,43 @@
 package org.lfenergy.compas.scl.validator.xsd;
 
 import org.junit.jupiter.api.Test;
-import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
-import java.io.File;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_SCL_FILE_ERROR_CODE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class SclInfoTest {
     @Test
-    void constructor_WhenCalledWithInvalidSclFile_ThenExceptionThrownDuringConstruction() throws IOException {
-        var scdFile = new File(getClass().getResource("/scl/invalid.scd").getFile());
-
-        var path = scdFile.toPath();
-        var content = Files.readString(path);
-
-        var exception = assertThrows(SclValidatorException.class, () -> new SclInfo(content));
-        assertEquals(LOADING_SCL_FILE_ERROR_CODE, exception.getErrorCode());
-    }
-
-    @Test
-    void getSclVersion_WhenCalledWithValidSclFile_ThenSclVersionFromFileReturned() throws IOException {
-        var scdFile = new File(getClass().getResource("/scl/example.scd").getFile());
-        var sclInfo = new SclInfo(Files.readString(scdFile.toPath()));
+    void getSclVersion_WhenCalledWithValidSclFile_ThenSclVersionFromFileReturned()
+            throws IOException, ParserConfigurationException, SAXException {
+        var document = getDocument("/scl/example.scd");
+        var sclInfo = new SclInfo(document);
 
         assertNotNull(sclInfo.getSclVersion());
         assertEquals("2007B4", sclInfo.getSclVersion());
     }
 
     @Test
-    void getSclVersion_WhenCalledWithSclFileWithMissingVersion_ThenSclVersionFromFileReturned() throws IOException {
-        var scdFile = new File(getClass().getResource("/scl/validation/example-with-missing-version.scd").getFile());
-        var sclInfo = new SclInfo(Files.readString(scdFile.toPath()));
+    void getSclVersion_WhenCalledWithSclFileWithMissingVersion_ThenSclVersionFromFileReturned()
+            throws IOException, ParserConfigurationException, SAXException {
+        var document = getDocument("/scl/validation/example-with-missing-version.scd");
+        var sclInfo = new SclInfo(document);
 
         assertNotNull(sclInfo.getSclVersion());
         assertEquals("", sclInfo.getSclVersion());
+    }
+
+    private Document getDocument(String filename) throws IOException, ParserConfigurationException, SAXException {
+        try (var inputStream = getClass().getResourceAsStream(filename)) {
+            assertNotNull(inputStream);
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            return dbf.newDocumentBuilder().parse(inputStream);
+        }
     }
 }

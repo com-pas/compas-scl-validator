@@ -26,7 +26,7 @@ SPDX-License-Identifier: Apache-2.0
         <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
         <compas.core.version>0.9.3</compas.core.version>
 
-        <quarkus.platform.version>2.13.0.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.13.3.Final</quarkus.platform.version>
         <slf4j.version>2.0.3</slf4j.version>
         <openpojo.version>0.9.1</openpojo.version>
     </properties>
@@ -103,6 +103,17 @@ SPDX-License-Identifier: Apache-2.0
                 <groupId>org.lfenergy.compas.core</groupId>
                 <artifactId>jaxrs-commons</artifactId>
                 <version>${compas.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xerces</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>2.12.2</version>
             </dependency>
 
             <dependency>

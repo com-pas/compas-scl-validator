@@ -11,6 +11,7 @@ public class SclValidatorErrorCode {
     public static final String NO_SCL_ELEMENT_FOUND_ERROR_CODE = "SVS-0001";
     public static final String LOADING_SCL_FILE_ERROR_CODE = "SVS-0002";
     public static final String LOADING_XSD_FILE_ERROR_CODE = "SVS-0003";
+    public static final String CREATE_XPATH_ELEMENT_ERROR_CODE = "SVS-0004";
 
     public static final String WEBSOCKET_DECODER_ERROR_CODE = "SVS-0100";
     public static final String WEBSOCKET_ENCODER_ERROR_CODE = "SVS-0101";

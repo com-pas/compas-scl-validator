@@ -39,6 +39,12 @@ public class ValidationError {
             namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
     private Integer columnNumber;
 
+    @Schema(description = "The XPath expression to find the element where the validation error occurred",
+            example = "/SCL/Substation[1]/VoltageLevel[1]/Bay[5]")
+    @XmlElement(name = "XPath",
+            namespace = SCL_VALIDATOR_SERVICE_V1_NS_URI)
+    private String xpath;
+
     public String getMessage() {
         return message;
     }
@@ -69,5 +75,13 @@ public class ValidationError {
 
     public void setColumnNumber(Integer columnNumber) {
         this.columnNumber = columnNumber;
+    }
+
+    public String getXpath() {
+        return xpath;
+    }
+
+    public void setXpath(String xPath) {
+        this.xpath = xPath;
     }
 }
