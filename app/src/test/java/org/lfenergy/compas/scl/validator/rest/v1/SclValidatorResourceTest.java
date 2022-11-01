@@ -34,7 +34,7 @@ class SclValidatorResourceTest {
     private SclValidatorService sclValidatorService;
 
     @Test
-    void updateSCL_WhenCalled_ThenExpectedResponseIsRetrieved() throws IOException {
+    void validate_WhenCalled_ThenExpectedResponseIsRetrieved() throws IOException {
         var sclFileTye = SclFileType.CID;
         var request = new SclValidateRequest();
         request.setSclData(TestSupportUtil.readSCL("scl-1.scd"));

@@ -12,10 +12,6 @@ public class SclValidatorEventRequest {
     private final SclFileType type;
     private final String sclData;
 
-    public SclValidatorEventRequest(SclFileType type, String sclData) {
-        this(null, type, sclData);
-    }
-
     public SclValidatorEventRequest(Session session, SclFileType type, String sclData) {
         this.session = session;
         this.type = type;
