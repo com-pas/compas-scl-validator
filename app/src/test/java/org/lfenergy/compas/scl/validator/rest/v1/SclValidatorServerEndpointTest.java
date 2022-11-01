@@ -42,7 +42,7 @@ class SclValidatorServerEndpointTest {
     private URI uri;
 
     @Test
-    void updateSCL_WhenCalled_ThenExpectedResponseIsRetrieved() throws Exception {
+    void validate_WhenCalled_ThenExpectedResponseIsRetrieved() throws Exception {
         var encoder = new SclValidateRequestEncoder();
         var sclFileTye = SclFileType.SCD;
         var request = new SclValidateRequest();

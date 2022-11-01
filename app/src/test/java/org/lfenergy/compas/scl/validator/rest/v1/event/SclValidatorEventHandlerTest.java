@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +31,7 @@ class SclValidatorEventHandlerTest {
     private SclValidatorEventHandler eventHandler;
 
     @Test
-    void validateWebsocketsEvent_WhenCalled_ThenExpectedCallsAreMade() throws IOException {
+    void validateWebsocketsEvent_WhenCalled_ThenExpectedCallsAreMade() {
         var veList = new ArrayList<ValidationError>();
         var type = SclFileType.CID;
         var sclData = "Some SCL Data";

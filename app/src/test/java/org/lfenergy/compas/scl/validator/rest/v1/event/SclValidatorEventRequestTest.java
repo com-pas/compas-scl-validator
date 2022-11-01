@@ -14,21 +14,8 @@ import org.mockito.Mockito;
 import javax.websocket.Session;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SclValidatorEventRequestTest {
-    @Test
-    void constructor_WhenCalledWith2Arguments_ThenValuesSet() {
-        var type = SclFileType.CID;
-        var sclData = "Some SCL Data";
-
-        var result = new SclValidatorEventRequest(type, sclData);
-
-        assertNull(result.getSession());
-        assertEquals(type, result.getType());
-        assertEquals(sclData, result.getSclData());
-    }
-
     @Test
     void constructor_WhenCalledWith3Arguments_ThenValuesSet() {
         var session = Mockito.mock(Session.class);
@@ -46,9 +33,9 @@ class SclValidatorEventRequestTest {
     void validateSettersAndGetters() {
         var personPojo = PojoClassFactory.getPojoClass(SclValidatorEventRequest.class);
         var validator = ValidatorBuilder.create()
-                // Lets make sure that we have a getter for every field defined.
+                // Let's make sure that we have a getter for every field defined.
                 .with(new GetterMustExistRule())
-                // Lets also validate that they are behaving as expected
+                // Let's also validate that they are behaving as expected
                 .with(new GetterTester())
                 .build();
 
