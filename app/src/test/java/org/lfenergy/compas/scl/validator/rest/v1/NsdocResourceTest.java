@@ -9,7 +9,6 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.lfenergy.compas.core.jaxrs.JaxrsConstants;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
@@ -22,6 +21,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.config.XmlPathConfig.xmlPathConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.lfenergy.compas.core.commons.CommonConstants.COMPAS_COMMONS_V1_NS_URI;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.ID_PARAM;
 import static org.mockito.Mockito.*;
@@ -99,7 +99,7 @@ class NsdocResourceTest {
                 .response();
 
         var xmlPath = response.xmlPath()
-                .using(xmlPathConfig().declaredNamespace("commons", JaxrsConstants.COMPAS_COMMONS_V1_NS_URI));
+                .using(xmlPathConfig().declaredNamespace("commons", COMPAS_COMMONS_V1_NS_URI));
         var messages = xmlPath.getList("commons:ErrorResponse.commons:ErrorMessage");
         assertNotNull(messages);
         assertEquals(1, messages.size());
