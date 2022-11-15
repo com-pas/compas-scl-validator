@@ -4,6 +4,7 @@
 package org.lfenergy.compas.scl.validator.rest.v1.event;
 
 import io.quarkus.vertx.ConsumeEvent;
+import org.lfenergy.compas.core.websocket.WebsocketHandler;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 
@@ -24,10 +25,10 @@ public class SclValidatorEventHandler {
 
     @ConsumeEvent(value = "validate-ws", blocking = true)
     public void validateWebsocketsEvent(SclValidatorEventRequest request) {
-        var response = new SclValidateResponse();
-        response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
-
-        var session = request.getSession();
-        session.getAsyncRemote().sendObject(response);
+        new WebsocketHandler<SclValidateResponse>().execute(request.getSession(), () -> {
+            var response = new SclValidateResponse();
+            response.setValidationErrorList(sclValidatorService.validate(request.getType(), request.getSclData()));
+            return response;
+        });
     }
 }

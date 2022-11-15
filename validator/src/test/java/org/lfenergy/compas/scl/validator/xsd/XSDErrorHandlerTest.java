@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.CREATE_XPATH_ELEMENT_ERROR_CODE;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_PREFIX;
 import static org.lfenergy.compas.scl.validator.xsd.XSDErrorHandler.DEFAULT_RULE_NAME;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class XSDErrorHandlerTest {
@@ -95,7 +96,7 @@ class XSDErrorHandlerTest {
         assertNull(errorList.get(0).getLineNumber());
         assertNull(errorList.get(0).getColumnNumber());
 
-        verify(validator, times(1)).getProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY);
+        verify(validator).getProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY);
     }
 
     @Test

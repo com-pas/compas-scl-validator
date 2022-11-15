@@ -12,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CompasSclValidatorConfigurationTest {
@@ -32,7 +33,7 @@ class CompasSclValidatorConfigurationTest {
 
         assertNotNull(new CompasSclValidatorConfiguration().createOclFileCollector(validatorProperties));
 
-        verify(validatorProperties, times(1)).oclCustomDirectory();
+        verify(validatorProperties).oclCustomDirectory();
     }
 
     @Test
@@ -43,7 +44,7 @@ class CompasSclValidatorConfigurationTest {
                 oclFileCollector,
                 validatorProperties));
 
-        verify(validatorProperties, times(1)).tempDirectory();
+        verify(validatorProperties).tempDirectory();
     }
 
     @Test
@@ -58,6 +59,6 @@ class CompasSclValidatorConfigurationTest {
         assertNotNull(new CompasSclValidatorConfiguration().createNsdocFinder(
                 validatorProperties));
 
-        verify(validatorProperties, times(1)).nsdocDirectory();
+        verify(validatorProperties).nsdocDirectory();
     }
 }

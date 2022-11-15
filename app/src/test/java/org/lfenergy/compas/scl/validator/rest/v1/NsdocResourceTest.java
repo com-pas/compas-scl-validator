@@ -9,7 +9,6 @@ import io.quarkus.test.junit.mockito.InjectMock;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.lfenergy.compas.core.jaxrs.JaxrsConstants;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
@@ -22,9 +21,11 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.config.XmlPathConfig.xmlPathConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.lfenergy.compas.core.commons.CommonConstants.COMPAS_COMMONS_V1_NS_URI;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.ID_PARAM;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 @TestHTTPEndpoint(NsdocResource.class)
@@ -52,7 +53,7 @@ class NsdocResourceTest {
         var files = xmlPath.getList("svs:NsdocListResponse.svs:NsdocFile");
         assertNotNull(files);
         assertEquals(1, files.size());
-        verify(nsdocService, times(1)).list();
+        verify(nsdocService).list();
     }
 
     @Test
@@ -78,7 +79,7 @@ class NsdocResourceTest {
         var nsdocFile = xmlPath.getString("svs:NsdocResponse.svs:NsdocFile");
         assertNotNull(nsdocFile);
         assertEquals(result, nsdocFile);
-        verify(nsdocService, times(1)).get(id);
+        verify(nsdocService).get(id);
     }
 
     @Test
@@ -99,7 +100,7 @@ class NsdocResourceTest {
                 .response();
 
         var xmlPath = response.xmlPath()
-                .using(xmlPathConfig().declaredNamespace("commons", JaxrsConstants.COMPAS_COMMONS_V1_NS_URI));
+                .using(xmlPathConfig().declaredNamespace("commons", COMPAS_COMMONS_V1_NS_URI));
         var messages = xmlPath.getList("commons:ErrorResponse.commons:ErrorMessage");
         assertNotNull(messages);
         assertEquals(1, messages.size());
@@ -107,6 +108,6 @@ class NsdocResourceTest {
         var code = xmlPath.getString("commons:ErrorResponse.commons:ErrorMessage.commons:Code");
         assertEquals(SclValidatorErrorCode.NSDOC_FILE_NOT_FOUND, code);
 
-        verify(nsdocService, times(1)).get(id);
+        verify(nsdocService).get(id);
     }
 }
