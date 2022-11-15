@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.lfenergy.compas.core.commons.exception.CompasErrorCode.WEBSOCKET_GENERAL_ERROR_CODE;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_OCL_FILES_FAILED;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SclValidatorEventHandlerTest {
@@ -49,13 +50,13 @@ class SclValidatorEventHandlerTest {
 
         eventHandler.validateWebsocketsEvent(request);
 
-        verify(session, times(1)).getAsyncRemote();
+        verify(session).getAsyncRemote();
         ArgumentCaptor<SclValidateResponse> captor = ArgumentCaptor.forClass(SclValidateResponse.class);
-        verify(async, times(1)).sendObject(captor.capture());
+        verify(async).sendObject(captor.capture());
         var response = captor.getValue();
         assertEquals(veList, response.getValidationErrorList());
 
-        verify(service, times(1)).validate(type, sclData);
+        verify(service).validate(type, sclData);
     }
 
     @Test
@@ -74,16 +75,16 @@ class SclValidatorEventHandlerTest {
 
         eventHandler.validateWebsocketsEvent(request);
 
-        verify(session, times(1)).getAsyncRemote();
+        verify(session).getAsyncRemote();
         ArgumentCaptor<ErrorResponse> captor = ArgumentCaptor.forClass(ErrorResponse.class);
-        verify(async, times(1)).sendObject(captor.capture());
+        verify(async).sendObject(captor.capture());
         var response = captor.getValue();
         assertEquals(1, response.getErrorMessages().size());
         var message = response.getErrorMessages().get(0);
         assertEquals(LOADING_OCL_FILES_FAILED, message.getCode());
         assertEquals(errorMessage, message.getMessage());
 
-        verify(service, times(1)).validate(type, sclData);
+        verify(service).validate(type, sclData);
     }
 
     @Test
@@ -101,15 +102,15 @@ class SclValidatorEventHandlerTest {
 
         eventHandler.validateWebsocketsEvent(request);
 
-        verify(session, times(1)).getAsyncRemote();
+        verify(session).getAsyncRemote();
         ArgumentCaptor<ErrorResponse> captor = ArgumentCaptor.forClass(ErrorResponse.class);
-        verify(async, times(1)).sendObject(captor.capture());
+        verify(async).sendObject(captor.capture());
         var response = captor.getValue();
         assertEquals(1, response.getErrorMessages().size());
         var message = response.getErrorMessages().get(0);
         assertEquals(WEBSOCKET_GENERAL_ERROR_CODE, message.getCode());
         assertEquals(errorMessage, message.getMessage());
 
-        verify(service, times(1)).validate(type, sclData);
+        verify(service).validate(type, sclData);
     }
 }

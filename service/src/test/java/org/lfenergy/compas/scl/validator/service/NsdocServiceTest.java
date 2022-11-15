@@ -16,7 +16,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class NsdocServiceTest {
@@ -40,7 +41,7 @@ class NsdocServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
 
-        verify(nsdocFinder, times(1)).getNsdocFiles();
+        verify(nsdocFinder).getNsdocFiles();
     }
 
     @Test
@@ -55,6 +56,6 @@ class NsdocServiceTest {
         assertNotNull(result);
         assertEquals(content, result);
 
-        verify(nsdocFinder, times(1)).getNsdocFile(id);
+        verify(nsdocFinder).getNsdocFile(id);
     }
 }

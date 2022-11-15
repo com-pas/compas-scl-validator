@@ -116,7 +116,7 @@ class OclFileLoaderTest {
         var validator = mock(ComposedEValidator.class);
         loader.prepareValidator(validator);
 
-        verify(validator, times(1)).addChild(any(CompleteOCLEObjectValidator.class));
+        verify(validator).addChild(any(CompleteOCLEObjectValidator.class));
     }
 
     @AfterEach

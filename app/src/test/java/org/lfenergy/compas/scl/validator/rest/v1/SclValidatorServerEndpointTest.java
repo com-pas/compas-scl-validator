@@ -32,7 +32,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.lfenergy.compas.core.commons.exception.CompasErrorCode.WEBSOCKET_DECODER_ERROR_CODE;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 @TestSecurity(user = "test-user")
@@ -61,7 +62,7 @@ class SclValidatorServerEndpointTest {
 
             assertNotNull(validationErrors.poll(10, TimeUnit.SECONDS));
             assertEquals(0, validationErrors.size());
-            verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());
+            verify(sclValidatorService).validate(sclFileTye, request.getSclData());
         }
     }
 

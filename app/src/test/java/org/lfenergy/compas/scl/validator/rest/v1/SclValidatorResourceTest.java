@@ -24,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_PATH_PARAM;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 @TestHTTPEndpoint(SclValidatorResource.class)
@@ -58,6 +59,6 @@ class SclValidatorResourceTest {
         var errors = xmlPath.getList("svs:SclValidateResponse.svs:ValidationErrors");
         assertNotNull(errors);
         assertEquals(1, errors.size());
-        verify(sclValidatorService, times(1)).validate(sclFileTye, request.getSclData());
+        verify(sclValidatorService).validate(sclFileTye, request.getSclData());
     }
 }
