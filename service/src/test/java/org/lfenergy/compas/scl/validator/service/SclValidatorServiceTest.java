@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
-import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
+import org.lfenergy.compas.scl.validator.xsd.SclXsdValidator;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -45,8 +45,8 @@ class SclValidatorServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
 
-        verify(sclValidator, times(1)).validate(type, sclData);
-        verify(xsdValidator, times(1)).validate(sclData);
+        verify(sclValidator).validate(type, sclData);
+        verify(xsdValidator).validate(sclData);
     }
 
     @Test
@@ -61,7 +61,7 @@ class SclValidatorServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
 
-        verify(xsdValidator, times(1)).validate(sclData);
+        verify(xsdValidator).validate(sclData);
         verify(sclValidator, never()).validate(type, sclData);
     }
 }

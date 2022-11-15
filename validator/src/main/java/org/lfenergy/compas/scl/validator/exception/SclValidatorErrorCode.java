@@ -13,9 +13,6 @@ public class SclValidatorErrorCode {
     public static final String LOADING_XSD_FILE_ERROR_CODE = "SVS-0003";
     public static final String CREATE_XPATH_ELEMENT_ERROR_CODE = "SVS-0004";
 
-    public static final String WEBSOCKET_DECODER_ERROR_CODE = "SVS-0100";
-    public static final String WEBSOCKET_ENCODER_ERROR_CODE = "SVS-0101";
-
     public static final String LOADING_OCL_FILES_FAILED = "SVS-1001";
     public static final String LOADING_CUSTOM_OCL_FILES_FAILED = "SVS-1002";
 

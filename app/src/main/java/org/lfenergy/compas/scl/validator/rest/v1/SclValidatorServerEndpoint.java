@@ -5,6 +5,7 @@ package org.lfenergy.compas.scl.validator.rest.v1;
 
 import io.quarkus.security.Authenticated;
 import io.vertx.mutiny.core.eventbus.EventBus;
+import org.lfenergy.compas.core.websocket.ErrorResponseEncoder;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.rest.v1.event.SclValidatorEventRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
@@ -21,13 +22,14 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import static org.lfenergy.compas.core.websocket.WebsocketSupport.handleException;
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_PATH_PARAM;
 
 @Authenticated
 @ApplicationScoped
 @ServerEndpoint(value = "/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
         decoders = {SclValidateRequestDecoder.class, SclValidateResponseDecoder.class},
-        encoders = {SclValidateRequestEncoder.class, SclValidateResponseEncoder.class})
+        encoders = {SclValidateRequestEncoder.class, SclValidateResponseEncoder.class, ErrorResponseEncoder.class})
 public class SclValidatorServerEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(SclValidatorServerEndpoint.class);
 
@@ -53,6 +55,7 @@ public class SclValidatorServerEndpoint {
     @OnError
     public void onError(Session session, @PathParam(TYPE_PATH_PARAM) String type, Throwable throwable) {
         LOGGER.warn("Error with session {} for type {}.", session.getId(), type, throwable);
+        handleException(session, throwable);
     }
 
     @OnClose

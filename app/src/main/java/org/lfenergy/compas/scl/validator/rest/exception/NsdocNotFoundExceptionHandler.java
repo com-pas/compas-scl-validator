@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.rest.exception;
 
-import org.lfenergy.compas.core.jaxrs.model.ErrorResponse;
+import org.lfenergy.compas.core.commons.model.ErrorResponse;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
 
 import javax.ws.rs.core.Response;
