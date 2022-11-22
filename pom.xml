@@ -142,12 +142,6 @@ SPDX-License-Identifier: Apache-2.0
                 <artifactId>log4j-core</artifactId>
                 <version>${log4j2.version}</version>
             </dependency>
-            <!-- Bridge is needed for PowSysBl dependency -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.lfenergy.compas.scl.validator</groupId>
