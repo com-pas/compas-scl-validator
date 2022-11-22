@@ -56,7 +56,7 @@ public class NsdocFinder {
             nsdocFile.setChecksum(calculateChecksum(file));
             return nsdocFile;
         } catch (Exception exp) {
-            LOGGER.warn("Error loading NSDoc File '" + file.getName() + "'. Skipping file.", exp);
+            LOGGER.warn("Error loading NSDoc File '{}'. Skipping file.", file.getName(), exp);
             return null;
         }
     }
