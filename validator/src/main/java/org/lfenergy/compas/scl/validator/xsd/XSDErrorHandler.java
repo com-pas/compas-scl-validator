@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.xsd;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.impl.Constants;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -19,7 +19,7 @@ import java.util.List;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.CREATE_XPATH_ELEMENT_ERROR_CODE;
 
 public class XSDErrorHandler implements ErrorHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(XSDErrorHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(XSDErrorHandler.class);
 
     public static final String DEFAULT_PREFIX = "XSD/";
     public static final String DEFAULT_RULE_NAME = DEFAULT_PREFIX + "general";
