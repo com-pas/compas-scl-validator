@@ -5,13 +5,13 @@ package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceFactoryImpl;
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.util.SclResourceSetImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +21,7 @@ import java.util.UUID;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_SCL_FILE_ERROR_CODE;
 
 public class SclModelLoader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SclModelLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger(SclModelLoader.class);
 
     private final ResourceSet resourceSet;
 

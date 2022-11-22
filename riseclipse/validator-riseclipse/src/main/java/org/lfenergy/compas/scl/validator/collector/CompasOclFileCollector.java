@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.collector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * directory configured.
  */
 public class CompasOclFileCollector extends AbstractFileCollector {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompasOclFileCollector.class);
+    private static final Logger LOGGER = LogManager.getLogger(CompasOclFileCollector.class);
 
     private final String oclCustomDirectory;
 

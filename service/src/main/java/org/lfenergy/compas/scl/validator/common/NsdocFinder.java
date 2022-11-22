@@ -4,11 +4,11 @@
 package org.lfenergy.compas.scl.validator.common;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lfenergy.compas.scl.validator.exception.NsdocFileNotFoundException;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,7 +22,7 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_NSDOC_FILE_FAILED;
 
 public class NsdocFinder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NsdocFinder.class);
+    private static final Logger LOGGER = LogManager.getLogger(NsdocFinder.class);
 
     private final String nsdocDirectory;
     private final Map<UUID, NsdocFile> nsdocFiles;

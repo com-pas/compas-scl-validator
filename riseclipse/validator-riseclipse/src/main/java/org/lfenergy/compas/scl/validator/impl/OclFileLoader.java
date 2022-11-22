@@ -4,6 +4,8 @@
 package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
@@ -12,8 +14,6 @@ import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.validation.ComposedEValidator;
 import org.eclipse.ocl.xtext.completeocl.validation.CompleteOCLEObjectValidator;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.List;
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.*;
 
 public class OclFileLoader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OclFileLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger(OclFileLoader.class);
 
     private final List<URI> oclFiles;
     private final Path oclTempFile;
