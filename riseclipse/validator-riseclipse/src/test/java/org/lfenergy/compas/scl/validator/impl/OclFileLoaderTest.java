@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
-import org.lfenergy.compas.scl.validator.util.OclUtil;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;

@@ -3,12 +3,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lfenergy.compas.scl.validator.xsd;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
 import org.lfenergy.compas.scl.validator.xsd.resourceresolver.ResourceResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -29,7 +29,7 @@ import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.
 import static org.lfenergy.compas.scl.validator.exception.SclValidatorErrorCode.LOADING_XSD_FILE_ERROR_CODE;
 
 public class XSDValidator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
+    private static final Logger LOGGER = LogManager.getLogger(XSDValidator.class);
 
     private final Validator validator;
     private final Document doc;
