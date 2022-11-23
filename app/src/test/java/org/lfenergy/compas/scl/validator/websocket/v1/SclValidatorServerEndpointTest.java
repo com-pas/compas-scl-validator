@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1;
+package org.lfenergy.compas.scl.validator.websocket.v1;
 
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -13,12 +13,12 @@ import org.lfenergy.compas.core.commons.model.ErrorResponse;
 import org.lfenergy.compas.core.websocket.ErrorResponseDecoder;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
-import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestEncoder;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseDecoder;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 import org.lfenergy.compas.scl.validator.util.TestSupportUtil;
+import org.lfenergy.compas.scl.validator.websocket.v1.decoder.SclValidateWsResponseDecoder;
+import org.lfenergy.compas.scl.validator.websocket.v1.encoder.SclValidateWsRequestEncoder;
+import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsRequest;
+import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsResponse;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
@@ -49,9 +49,9 @@ class SclValidatorServerEndpointTest {
 
     @Test
     void validate_WhenCalled_ThenExpectedResponseIsRetrieved() throws Exception {
-        var encoder = new SclValidateRequestEncoder();
+        var encoder = new SclValidateWsRequestEncoder();
         var sclFileTye = SclFileType.SCD;
-        var request = new SclValidateRequest();
+        var request = new SclValidateWsRequest();
         request.setSclData(TestSupportUtil.readSCL("scl-1.scd"));
 
         when(sclValidatorService.validate(sclFileTye, request.getSclData()))
@@ -77,10 +77,10 @@ class SclValidatorServerEndpointTest {
         }
     }
 
-    @ClientEndpoint(decoders = SclValidateResponseDecoder.class)
+    @ClientEndpoint(decoders = SclValidateWsResponseDecoder.class)
     private static class Client {
         @OnMessage
-        public void onMessage(SclValidateResponse response) {
+        public void onMessage(SclValidateWsResponse response) {
             validationErrors.addAll(response.getValidationErrorList());
         }
     }

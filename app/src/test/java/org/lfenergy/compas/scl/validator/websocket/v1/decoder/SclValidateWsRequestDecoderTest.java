@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1.websocket;
+package org.lfenergy.compas.scl.validator.websocket.v1.decoder;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.lfenergy.compas.core.commons.exception.CompasErrorCode.WEBSOCKET_DECODER_ERROR_CODE;
 import static org.lfenergy.compas.scl.validator.SclValidatorConstants.SCL_VALIDATOR_SERVICE_V1_NS_URI;
 
-class SclValidateResponseDecoderTest {
-    private SclValidateResponseDecoder decoder;
+class SclValidateWsRequestDecoderTest {
+    private SclValidateWsRequestDecoder decoder;
 
     @BeforeEach
     void init() {
-        decoder = new SclValidateResponseDecoder();
+        decoder = new SclValidateWsRequestDecoder();
         decoder.init(null);
     }
 
@@ -36,38 +36,23 @@ class SclValidateResponseDecoderTest {
 
     @Test
     void decode_WhenCalledWithCorrectRequestXML_ThenStringConvertedToObject() {
-        var validationMessage = "Some validation error";
-        var ruleName = "Rule Name 1";
-        var lineNumber = 15;
-        var columnNumber = 34;
-
+        var sclData = "Some SCL Data";
         var message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<svs:SclValidateResponse xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">"
-                + "<svs:ValidationErrors>"
-                + "<svs:Message>" + validationMessage + "</svs:Message>"
-                + "<svs:RuleName>" + ruleName + "</svs:RuleName>"
-                + "<svs:LineNumber>" + lineNumber + "</svs:LineNumber>"
-                + "<svs:ColumnNumber>" + columnNumber + "</svs:ColumnNumber>"
-                + "</svs:ValidationErrors>"
-                + "</svs:SclValidateResponse>";
+                + "<svs:SclValidateWsRequest xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">"
+                + "<svs:SclData><![CDATA[" + sclData + "]]></svs:SclData>"
+                + "</svs:SclValidateWsRequest>";
 
         var result = decoder.decode(message);
 
         assertNotNull(result);
-        assertEquals(1, result.getValidationErrorList().size());
-
-        var validationError = result.getValidationErrorList().get(0);
-        assertEquals(validationMessage, validationError.getMessage());
-        assertEquals(ruleName, validationError.getRuleName());
-        assertEquals(lineNumber, validationError.getLineNumber());
-        assertEquals(columnNumber, validationError.getColumnNumber());
+        assertEquals(sclData, result.getSclData());
     }
 
     @Test
     void decode_WhenCalledWithWrongXML_ThenExceptionThrown() {
         var message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<svs:SclValidateRequest xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">"
-                + "</svs:SclValidateRequest>";
+                + "<svs:InvalidRequest xmlns:svs=\"" + SCL_VALIDATOR_SERVICE_V1_NS_URI + "\">"
+                + "</svs:InvalidRequest>";
 
         var exception = assertThrows(CompasException.class, () -> decoder.decode(message));
         assertEquals(WEBSOCKET_DECODER_ERROR_CODE, exception.getErrorCode());
