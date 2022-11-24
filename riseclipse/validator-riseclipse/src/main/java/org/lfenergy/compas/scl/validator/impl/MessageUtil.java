@@ -1,16 +1,16 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.util;
+package org.lfenergy.compas.scl.validator.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 public class MessageUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(MessageUtil.class);
 
     MessageUtil() {
         throw new UnsupportedOperationException("MessageUtil class");

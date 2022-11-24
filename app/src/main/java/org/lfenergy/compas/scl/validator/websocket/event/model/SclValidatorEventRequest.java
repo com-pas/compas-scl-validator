@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1.event;
+package org.lfenergy.compas.scl.validator.websocket.event.model;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 

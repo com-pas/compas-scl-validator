@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.exception.SclValidatorException;
-import org.lfenergy.compas.scl.validator.util.OclUtil;
 
 import java.io.IOException;
 

@@ -1,23 +1,22 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1;
+package org.lfenergy.compas.scl.validator.websocket.v1;
 
 import io.quarkus.security.Authenticated;
 import io.vertx.mutiny.core.eventbus.EventBus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lfenergy.compas.core.websocket.ErrorResponseEncoder;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
-import org.lfenergy.compas.scl.validator.rest.v1.event.SclValidatorEventRequest;
-import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestDecoder;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateRequestEncoder;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseDecoder;
-import org.lfenergy.compas.scl.validator.rest.v1.websocket.SclValidateResponseEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.lfenergy.compas.scl.validator.websocket.event.model.SclValidatorEventRequest;
+import org.lfenergy.compas.scl.validator.websocket.v1.decoder.SclValidateWsRequestDecoder;
+import org.lfenergy.compas.scl.validator.websocket.v1.encoder.SclValidateWsResponseEncoder;
+import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsRequest;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -28,10 +27,10 @@ import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_P
 @Authenticated
 @ApplicationScoped
 @ServerEndpoint(value = "/validate-ws/v1/{" + TYPE_PATH_PARAM + "}",
-        decoders = {SclValidateRequestDecoder.class, SclValidateResponseDecoder.class},
-        encoders = {SclValidateRequestEncoder.class, SclValidateResponseEncoder.class, ErrorResponseEncoder.class})
+        decoders = {SclValidateWsRequestDecoder.class},
+        encoders = {SclValidateWsResponseEncoder.class, ErrorResponseEncoder.class})
 public class SclValidatorServerEndpoint {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SclValidatorServerEndpoint.class);
+    private static final Logger LOGGER = LogManager.getLogger(SclValidatorServerEndpoint.class);
 
     private final EventBus eventBus;
 
@@ -46,7 +45,9 @@ public class SclValidatorServerEndpoint {
     }
 
     @OnMessage
-    public void onMessage(Session session, SclValidateRequest request, @PathParam(TYPE_PATH_PARAM) String type) {
+    public void onMessage(Session session,
+                          @Valid SclValidateWsRequest request,
+                          @PathParam(TYPE_PATH_PARAM) String type) {
         LOGGER.info("Message from session {} for type {}.", session.getId(), type);
         eventBus.send("validate-ws", new SclValidatorEventRequest(
                 session, SclFileType.valueOf(type), request.getSclData()));

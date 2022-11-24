@@ -5,6 +5,8 @@ package org.lfenergy.compas.scl.validator.rest.v1;
 
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
@@ -22,6 +24,8 @@ import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_P
 @RequestScoped
 @Path("/validate/v1/{" + TYPE_PATH_PARAM + "}")
 public class SclValidatorResource {
+    private static final Logger LOGGER = LogManager.getLogger(SclValidatorResource.class);
+
     private final SclValidatorService sclValidatorService;
 
     @Inject
@@ -34,6 +38,7 @@ public class SclValidatorResource {
     @Produces(MediaType.APPLICATION_XML)
     public Uni<SclValidateResponse> validateSCL(@PathParam(TYPE_PATH_PARAM) SclFileType type,
                                                 @Valid SclValidateRequest request) {
+        LOGGER.info("Validating SCL File for type {}.", type);
         var response = new SclValidateResponse();
         response.setValidationErrorList(sclValidatorService.validate(type, request.getSclData()));
         return Uni.createFrom().item(response);

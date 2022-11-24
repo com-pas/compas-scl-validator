@@ -4,6 +4,8 @@
 package org.lfenergy.compas.scl.validator.impl;
 
 import fr.centralesupelec.edf.riseclipse.iec61850.scl.SclPackage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -17,18 +19,15 @@ import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.SclValidator;
 import org.lfenergy.compas.scl.validator.collector.OclFileCollector;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.lfenergy.compas.scl.validator.util.OclUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lfenergy.compas.scl.validator.util.MessageUtil.createValidationError;
+import static org.lfenergy.compas.scl.validator.impl.MessageUtil.createValidationError;
 
 public class SclRiseClipseValidator implements SclValidator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SclRiseClipseValidator.class);
+    private static final Logger LOGGER = LogManager.getLogger(SclRiseClipseValidator.class);
 
     private final List<URI> oclFiles = new ArrayList<>();
     private final Path tempDirectory;

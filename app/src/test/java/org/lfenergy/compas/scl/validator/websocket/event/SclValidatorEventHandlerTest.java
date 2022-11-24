@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Alliander N.V.
 //
 // SPDX-License-Identifier: Apache-2.0
-package org.lfenergy.compas.scl.validator.rest.v1.event;
+package org.lfenergy.compas.scl.validator.websocket.event;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +9,9 @@ import org.lfenergy.compas.core.commons.exception.CompasException;
 import org.lfenergy.compas.core.commons.model.ErrorResponse;
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 import org.lfenergy.compas.scl.validator.model.ValidationError;
-import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
+import org.lfenergy.compas.scl.validator.websocket.event.model.SclValidatorEventRequest;
+import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsResponse;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -51,7 +52,7 @@ class SclValidatorEventHandlerTest {
         eventHandler.validateWebsocketsEvent(request);
 
         verify(session).getAsyncRemote();
-        ArgumentCaptor<SclValidateResponse> captor = ArgumentCaptor.forClass(SclValidateResponse.class);
+        ArgumentCaptor<SclValidateWsResponse> captor = ArgumentCaptor.forClass(SclValidateWsResponse.class);
         verify(async).sendObject(captor.capture());
         var response = captor.getValue();
         assertEquals(veList, response.getValidationErrorList());

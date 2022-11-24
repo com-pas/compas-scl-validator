@@ -68,12 +68,18 @@ SPDX-License-Identifier: Apache-2.0
             <artifactId>org.antlr.runtime</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.log4j</groupId>
-            <artifactId>org.apache.log4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -92,11 +98,6 @@ SPDX-License-Identifier: Apache-2.0
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
