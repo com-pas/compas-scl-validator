@@ -74,7 +74,7 @@ class OclFileLoaderTest {
     }
 
     private boolean isWindows() {
-        return System.getProperty("os.name").contains("win");
+        return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
     @Test
