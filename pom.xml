@@ -20,13 +20,13 @@ SPDX-License-Identifier: Apache-2.0
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <surefire-plugin.version>3.0.0-M9</surefire-plugin.version>
         <sonarqube-plugin.version>3.2.0</sonarqube-plugin.version>
 
         <compas.scl.xsd.version>0.0.4</compas.scl.xsd.version>
         <compas.core.version>0.12.0</compas.core.version>
 
-        <quarkus.platform.version>2.14.1.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.16.3.Final</quarkus.platform.version>
         <log4j2.version>2.19.0</log4j2.version>
         <openpojo.version>0.9.1</openpojo.version>
     </properties>
@@ -123,7 +123,7 @@ SPDX-License-Identifier: Apache-2.0
             <dependency>
                 <groupId>com.fasterxml.woodstox</groupId>
                 <artifactId>woodstox-core</artifactId>
-                <version>6.4.0</version>
+                <version>6.5.0</version>
             </dependency>
 
             <dependency>
@@ -291,7 +291,7 @@ SPDX-License-Identifier: Apache-2.0
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>3.4.1</version>
+                            <version>3.5.0</version>
                             <executions>
                                 <execution>
                                     <id>attach-javadocs</id>
