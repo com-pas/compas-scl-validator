@@ -29,6 +29,8 @@ SPDX-License-Identifier: Apache-2.0
         <quarkus.platform.version>2.16.3.Final</quarkus.platform.version>
         <log4j2.version>2.19.0</log4j2.version>
         <openpojo.version>0.9.1</openpojo.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <modules>
@@ -173,6 +175,8 @@ SPDX-License-Identifier: Apache-2.0
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <parameters>${maven.compiler.parameters}</parameters>
+                        <meminitial>2024m</meminitial>
+                        <maxmem>4024m</maxmem>
                     </configuration>
                 </plugin>
 
