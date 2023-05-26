@@ -9,8 +9,8 @@ import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 import org.lfenergy.compas.scl.validator.websocket.event.model.SclValidatorEventRequest;
 import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsResponse;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Event Handler used to execute the validation asynchronized.

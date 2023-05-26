@@ -12,11 +12,11 @@ import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateRequest;
 import org.lfenergy.compas.scl.validator.rest.v1.model.SclValidateResponse;
 import org.lfenergy.compas.scl.validator.service.SclValidatorService;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_PATH_PARAM;
 

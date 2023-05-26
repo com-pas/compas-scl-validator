@@ -11,9 +11,9 @@ import org.lfenergy.compas.scl.validator.rest.v1.model.NsdocListResponse;
 import org.lfenergy.compas.scl.validator.rest.v1.model.NsdocResponse;
 import org.lfenergy.compas.scl.validator.service.NsdocService;
 
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.util.UUID;
 
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.ID_PARAM;

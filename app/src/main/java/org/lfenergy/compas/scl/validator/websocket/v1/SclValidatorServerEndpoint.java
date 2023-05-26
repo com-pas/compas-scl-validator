@@ -14,12 +14,12 @@ import org.lfenergy.compas.scl.validator.websocket.v1.decoder.SclValidateWsReque
 import org.lfenergy.compas.scl.validator.websocket.v1.encoder.SclValidateWsResponseEncoder;
 import org.lfenergy.compas.scl.validator.websocket.v1.model.SclValidateWsRequest;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.websocket.*;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 
 import static org.lfenergy.compas.core.websocket.WebsocketSupport.handleException;
 import static org.lfenergy.compas.scl.validator.rest.SclResourceConstants.TYPE_PATH_PARAM;
