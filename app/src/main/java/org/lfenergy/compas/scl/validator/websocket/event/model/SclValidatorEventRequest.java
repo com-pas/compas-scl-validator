@@ -5,7 +5,7 @@ package org.lfenergy.compas.scl.validator.websocket.event.model;
 
 import org.lfenergy.compas.scl.extensions.model.SclFileType;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 public class SclValidatorEventRequest {
     private Session session;
