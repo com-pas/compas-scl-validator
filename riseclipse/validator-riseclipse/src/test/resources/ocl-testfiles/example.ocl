@@ -1,6 +1,6 @@
 /*
 *************************************************************************
-**  Copyright (c) 2016-2021 CentraleSupélec & EDF.
+**  SPDX-FileCopyrightText: Copyright (c) 2016-2021 CentraleSupélec & EDF.
 **  All rights reserved. This program and the accompanying materials
 **  are made available under the terms of the Eclipse Public License v2.0
 **  which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@
 **      aurelie.dehouck-neveu@edf.fr
 **  Web site:
 **      https://riseclipse.github.io/
+**
+**  SPDX-License-Identifier: Eclipse Public License v2.0
 *************************************************************************
 */
 
