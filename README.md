@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Alliander N.V.
 
-SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0 or EPL-2.0
 -->
 
 [![Maven Build Github Action Status](<https://img.shields.io/github/workflow/status/com-pas/compas-scl-validator/Build%20Project?logo=GitHub>)](https://github.com/com-pas/compas-scl-validator/actions?query=workflow%3A%22Build+Project%22)
