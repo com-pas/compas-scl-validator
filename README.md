@@ -14,6 +14,8 @@ SPDX-License-Identifier: Apache-2.0 or EPL-2.0
 
 Service to validate SCL Files.
 
+**The CoMPAS SCL validator is currently not maintained. It is waiting for a refactor to work properly.**
+
 ## Rest and Websockets versions
 
 The validation can be done using both Rest and Websockets as transportation technic.
