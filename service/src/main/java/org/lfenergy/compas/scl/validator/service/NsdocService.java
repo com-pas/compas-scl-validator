@@ -6,8 +6,8 @@ package org.lfenergy.compas.scl.validator.service;
 import org.lfenergy.compas.scl.validator.common.NsdocFinder;
 import org.lfenergy.compas.scl.validator.model.NsdocFile;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.Collection;
 import java.util.UUID;
 
